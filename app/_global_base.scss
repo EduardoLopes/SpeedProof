@@ -1,0 +1,12 @@
+%rectangle{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: hidden;
+  padding: 2em;
+  display: flex;
+  align-items: center;
+}

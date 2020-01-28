@@ -1,0 +1,10 @@
+ {
+  "modules": true,
+  "plugins": {
+    "postcss-modules": {
+      "globalModulePaths": [
+        "global.css"
+      ]
+    }
+  }
+}
