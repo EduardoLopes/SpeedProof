@@ -1,19 +1,106 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
+const  {app, BrowserWindow, session} = require('electron');
+const electron = require('electron');
 const path = require('path');
 const isDev = require("electron-is-dev");
+const {ipcMain} = require('electron');
+const speedtest = require("speedtest-net");
+
+let mainWindow;
+
+ipcMain.on('request-data', (event, arg) => {
+
+  const speedTest = require('speedtest-net')({timeout: 5000});
+
+  speedTest.on('data', data => {
+
+    mainWindow.webContents.send('data', data);
+
+  });
+
+  speedTest.on('downloadprogress', progress => {
+
+    mainWindow.webContents.send('download-progress', progress);
+
+  });
+
+  speedTest.on('uploadprogress', progress => {
+
+    mainWindow.webContents.send('upload-progress', progress);
+
+  });
+
+  speedTest.on('config', config => {
+
+    mainWindow.webContents.send('config', config);
+
+  });
+
+  speedTest.on('servers', servers => {
+
+    mainWindow.webContents.send('servers', servers);
+
+  });
+
+  speedTest.on('bestservers', servers => {
+
+    mainWindow.webContents.send('best-servers', servers);
+
+  });
+
+  speedTest.on('testserver', server => {
+
+    mainWindow.webContents.send('test-server', server);
+
+  });
+
+  speedTest.on('downloadspeed', speed => {
+
+    mainWindow.webContents.send('download-speed', speed);
+
+  });
+
+  speedTest.on('uploadspeed', speed => {
+
+    mainWindow.webContents.send('upload-speed', speed);
+
+  });
+
+  speedTest.on('downloadspeedprogress', speed => {
+
+    mainWindow.webContents.send('download-speed-progress', speed);
+
+  });
+
+  speedTest.on('uploadspeedprogress', speed => {
+
+    mainWindow.webContents.send('upload-speed-progress', speed);
+
+  });
+
+  speedTest.on('result', url => {
+
+    mainWindow.webContents.send('result', url);
+
+  });
+
+  speedTest.on('error', err => {
+    console.error(err);
+  });
+
+
+});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
-
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false
+      nodeIntegration: true,
+      webSecurity: false
     }
   });
 
