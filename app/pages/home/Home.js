@@ -42,11 +42,21 @@ export default function Home(){
     console.log(data);
 
     setStartButton({
-      disabled: false,
-      color: "green",
-      loading: false,
-      content: "Start Test"
+      disabled: true,
+      content: "Please wait"
     });
+
+    setTimeout(() => {
+
+      setStartButton({
+        disabled: false,
+        color: "green",
+        loading: false,
+        content: "Start Test"
+      });
+
+     }, 2000);
+
 
   };
 
@@ -82,8 +92,6 @@ export default function Home(){
 
   function configReceiver(event, data){
     setConfig(data);
-
-    console.log(data);
   }
 
   function serversReceiver(event, data){
@@ -112,6 +120,15 @@ export default function Home(){
 
   function uploadProgressSpeedReceiver(event, data){
     setUploadSpeedProgress(data);
+  }
+
+  function lastRequestRunningEvent(event, data){
+
+    setStartButton({
+      disabled: true,
+      content: "Please wait"
+    });
+
   }
 
   // const lists = useMemo(() => {
@@ -149,6 +166,7 @@ export default function Home(){
     electron.ipcRenderer.on('upload-speed', uploadSpeedReceiver);
     electron.ipcRenderer.on('download-speed-progress', downloadSpeedProgressReceiver);
     electron.ipcRenderer.on('upload-speed-progress', uploadProgressSpeedReceiver);
+    electron.ipcRenderer.on('last-request-running', lastRequestRunningEvent);
 
     return () => {
 
@@ -163,6 +181,7 @@ export default function Home(){
       electron.ipcRenderer.removeListener('upload-speed', uploadSpeedReceiver);
       electron.ipcRenderer.removeListener('download-speed-progress', downloadSpeedProgressReceiver);
       electron.ipcRenderer.removeListener('upload-speed-progress', uploadProgressSpeedReceiver);
+      electron.ipcRenderer.removeListener('last-request-running', lastRequestRunningEvent);
 
     }
 

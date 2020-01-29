@@ -8,13 +8,25 @@ const speedtest = require("speedtest-net");
 
 let mainWindow;
 
+let requestRunning = false;
+
 ipcMain.on('request-data', (event, arg) => {
+
+  if(requestRunning === true){
+
+    mainWindow.webContents.send('last-request-running', "wait");
+
+    return null;
+  }
+
+  requestRunning = true;
 
   const speedTest = require('speedtest-net')({timeout: 5000});
 
   speedTest.on('data', data => {
 
     mainWindow.webContents.send('data', data);
+    requestRunning = false;
 
   });
 
