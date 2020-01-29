@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Icon} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress} from 'semantic-ui-react'
 const electron = window.require("electron");
 
 
@@ -18,7 +18,7 @@ export default function Home(){
   const [config, setConfig] = useState({});
   const [servers, setServers] = useState([{}]);
   const [bestServers, setBestServers] = useState([{}]);
-  const [testServer, setTestServer] = useState({});
+  const [testServer, setTestServer] = useState(null);
   const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const [downloadSpeedProgress, setDownloadSpeedProgress] = useState(0);
@@ -49,6 +49,10 @@ export default function Home(){
     });
 
   };
+
+  function formatSpeed(speed){
+   return speed.toFixed(2) + ' Mbps';
+  }
 
   function downloadProgressReceiver(event, data){
     setDownloadProgress(data);
@@ -90,27 +94,27 @@ export default function Home(){
     setUploadSpeedProgress(data);
   }
 
-   const lists = useMemo(() => {
+  // const lists = useMemo(() => {
 
-    return Object.keys(config).map(function(key, index) {
+  //   return Object.keys(config).map(function(key, index) {
 
-      const lis = Object.keys(config[key]).map(function(key_2, index_2) {
+  //     const lis = Object.keys(config[key]).map(function(key_2, index_2) {
 
-        return (
-          <li key={`${key_2}-${index_2}`}>{key_2}: <b>{config[key][key_2]}</b></li>
-        );
+  //       return (
+  //         <li key={`${key_2}-${index_2}`}>{key_2}: <b>{config[key][key_2]}</b></li>
+  //       );
 
-      });
+  //     });
 
-      return (
-        <ul key={`${key}-${index}`}>
-          <b style={{textTransform: "uppercase"}}>{key}</b>: {lis}
-        </ul>
-      );
+  //     return (
+  //       <ul key={`${key}-${index}`}>
+  //         <b style={{textTransform: "uppercase"}}>{key}</b>: {lis}
+  //       </ul>
+  //     );
 
-    });
+  //   });
 
-  }, [config]);
+  // }, [config]);
 
   useEffect(() => {
 
@@ -144,10 +148,34 @@ export default function Home(){
 
   }, []);
 
+  console.log();
+
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
-      <ul>
+      <Segment.Group horizontal>
+        <Segment size="massive">
+          <Label color='blue' size="large" ribbon>
+          <Icon name='angle double right'/> Ping
+          </Label>
+          {testServer !== null ? Math.floor(testServer.bestPing) : '...' }
+        </Segment>
+        <Segment size="massive">
+          <Progress percent={downloadProgress} attached='top' indicating />
+          <Label color='violet' size="large" ribbon>
+          <Icon name='download'/> Download
+          </Label>
+          {downloadSpeed !== 0 ? formatSpeed(downloadSpeed) : formatSpeed(downloadSpeedProgress) }
+        </Segment>
+        <Segment size="massive">
+          <Progress percent={uploadProgress} attached='top' indicating />
+          <Label color='teal' size="large" ribbon>
+          <Icon name='upload'/> Upload
+          </Label>
+          {uploadSpeed !== 0 ? formatSpeed(uploadSpeed) : formatSpeed(uploadSpeedProgress) }
+        </Segment>
+      </Segment.Group>
+      {/* <ul>
         <li>Download progress:  {downloadProgress}</li>
         <li>Upload progress: {uploadProgress}</li>
         <li>Download speed: {downloadSpeed}</li>
@@ -155,7 +183,7 @@ export default function Home(){
         <li>Download speed progress: {downloadSpeedProgress}</li>
         <li>Upload speed progress: {uploadSpeedProgress}</li>
         <li>Config progress: {lists}</li>
-      </ul>
+      </ul> */}
     </Container>
   );
 
