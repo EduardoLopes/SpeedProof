@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress, Grid, Divider, Header, Placeholder} from 'semantic-ui-react'
 const electron = window.require("electron");
 
 
@@ -15,7 +15,7 @@ export default function Home(){
 
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [config, setConfig] = useState({});
+  const [config, setConfig] = useState(null);
   const [servers, setServers] = useState([{}]);
   const [bestServers, setBestServers] = useState([{}]);
   const [testServer, setTestServer] = useState(null);
@@ -64,6 +64,8 @@ export default function Home(){
 
   function configReceiver(event, data){
     setConfig(data);
+
+    console.log(data);
   }
 
   function serversReceiver(event, data){
@@ -76,6 +78,9 @@ export default function Home(){
 
   function testServerReceiver(event, data){
     setTestServer(data);
+
+    console.log("test ", data);
+
   }
 
   function downloadSpeedReceiver(event, data){
@@ -175,6 +180,30 @@ export default function Home(){
           {uploadSpeed !== 0 ? formatSpeed(uploadSpeed) : formatSpeed(uploadSpeedProgress) }
         </Segment>
       </Segment.Group>
+
+      <Segment size="big">
+
+        <Label size="large" color="orange" ribbon>
+          Client
+        </Label>
+
+        {config !== null ? config.client.isp : ""  }
+
+        <Divider horizontal><Icon name='angle double down'/></Divider>
+
+        <Label size="large" color="orange" ribbon>
+          Server
+        </Label>
+
+        {testServer !== null ? `${testServer.sponsor} ` : "" }
+
+        {testServer !== null ? (<Label size="large">
+      <Icon name='point' />
+      Alagoinhas
+    </Label>) : "" }
+
+      </Segment>
+
       {/* <ul>
         <li>Download progress:  {downloadProgress}</li>
         <li>Upload progress: {uploadProgress}</li>
