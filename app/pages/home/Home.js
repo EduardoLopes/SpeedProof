@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress, Grid, Divider, Header, Placeholder} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress, Grid, Divider, Statistic, Placeholder} from 'semantic-ui-react'
 const electron = window.require("electron");
 
 
@@ -51,7 +51,25 @@ export default function Home(){
   };
 
   function formatSpeed(speed){
-   return speed.toFixed(2) + ' Mbps';
+
+    return (
+      <Statistic>
+        <Statistic.Value>{speed.toFixed(2)}</Statistic.Value>
+        <Statistic.Label>Mbps</Statistic.Label>
+      </Statistic>
+    );
+
+  }
+
+  function formatPing(time){
+
+    return (
+      <Statistic>
+        <Statistic.Value>{Math.floor(time)}</Statistic.Value>
+        <Statistic.Label>ms</Statistic.Label>
+      </Statistic>
+    );
+
   }
 
   function downloadProgressReceiver(event, data){
@@ -78,9 +96,6 @@ export default function Home(){
 
   function testServerReceiver(event, data){
     setTestServer(data);
-
-    console.log("test ", data);
-
   }
 
   function downloadSpeedReceiver(event, data){
@@ -159,22 +174,22 @@ export default function Home(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
       <Segment.Group horizontal>
-        <Segment size="massive">
-          <Label color='blue' size="large" ribbon>
+        <Segment size="massive" textAlign="center">
+          <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='angle double right'/> Ping
           </Label>
-          {testServer !== null ? Math.floor(testServer.bestPing) : '...' }
+          {testServer !== null ? formatPing(testServer.bestPing) : formatPing(0) }
         </Segment>
-        <Segment size="massive">
-          <Progress percent={downloadProgress} attached='top' indicating />
-          <Label color='violet' size="large" ribbon>
+        <Segment size="massive" textAlign="center">
+          <Progress percent={downloadProgress} attached='bottom' indicating />
+          <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='download'/> Download
           </Label>
           {downloadSpeed !== 0 ? formatSpeed(downloadSpeed) : formatSpeed(downloadSpeedProgress) }
         </Segment>
-        <Segment size="massive">
-          <Progress percent={uploadProgress} attached='top' indicating />
-          <Label color='teal' size="large" ribbon>
+        <Segment size="massive" textAlign="center">
+          <Progress percent={uploadProgress} attached='bottom' indicating />
+          <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='upload'/> Upload
           </Label>
           {uploadSpeed !== 0 ? formatSpeed(uploadSpeed) : formatSpeed(uploadSpeedProgress) }
