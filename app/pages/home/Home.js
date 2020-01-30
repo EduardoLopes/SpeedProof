@@ -15,14 +15,10 @@ export default function Home(){
 
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [config, setConfig] = useState(null);
-  const [servers, setServers] = useState([{}]);
-  const [bestServers, setBestServers] = useState([{}]);
   const [testServer, setTestServer] = useState(null);
   const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
-  const [downloadSpeedProgress, setDownloadSpeedProgress] = useState(0);
-  const [uploadSpeedProgress, setUploadSpeedProgress] = useState(0);
+  const [ping, setPing] = useState(0);
 
 
   function requestData(){
@@ -38,8 +34,6 @@ export default function Home(){
   }
 
   function receiveData(event, data){
-
-    console.log(data);
 
     setStartButton({
       disabled: true,
@@ -82,47 +76,33 @@ export default function Home(){
 
   }
 
-  function downloadProgressReceiver(event, data){
-    setDownloadProgress(data);
+  function receivePing(event, data){
+
+    setPing(data.ping.latency);
+
   }
 
-  function uploadProgressReceiver(event, data){
-    setUploadProgress(data);
+  function receiveDownload(event, data){
+
+    setDownloadSpeed(data.download.bandwidth / 125000);
+    setDownloadProgress(data.download.progress * 100);
+
   }
 
-  function configReceiver(event, data){
-    setConfig(data);
+  function receiveUpload(event, data){
+
+    setUploadSpeed(data.upload.bandwidth / 125000);
+    setUploadProgress(data.upload.progress * 100);
+
   }
 
-  function serversReceiver(event, data){
-    setServers(data);
-  }
+  function receiveTestStart(event, data){
 
-  function bestServersReceiver(event, data){
-    setBestServers(data);
-  }
-
-  function testServerReceiver(event, data){
     setTestServer(data);
+
   }
 
-  function downloadSpeedReceiver(event, data){
-    setDownloadSpeed(data);
-  }
-
-  function uploadSpeedReceiver(event, data){
-    setUploadSpeed(data);
-  }
-
-  function downloadSpeedProgressReceiver(event, data){
-    setDownloadSpeedProgress(data);
-  }
-
-  function uploadProgressSpeedReceiver(event, data){
-    setUploadSpeedProgress(data);
-  }
-
-  function lastRequestRunningEvent(event, data){
+  function receiveWait(event, data){
 
     setStartButton({
       disabled: true,
@@ -131,63 +111,29 @@ export default function Home(){
 
   }
 
-  // const lists = useMemo(() => {
-
-  //   return Object.keys(config).map(function(key, index) {
-
-  //     const lis = Object.keys(config[key]).map(function(key_2, index_2) {
-
-  //       return (
-  //         <li key={`${key_2}-${index_2}`}>{key_2}: <b>{config[key][key_2]}</b></li>
-  //       );
-
-  //     });
-
-  //     return (
-  //       <ul key={`${key}-${index}`}>
-  //         <b style={{textTransform: "uppercase"}}>{key}</b>: {lis}
-  //       </ul>
-  //     );
-
-  //   });
-
-  // }, [config]);
 
   useEffect(() => {
 
-    electron.ipcRenderer.on('data', receiveData);
-    electron.ipcRenderer.on('download-progress', downloadProgressReceiver);
-    electron.ipcRenderer.on('upload-progress', uploadProgressReceiver);
-    electron.ipcRenderer.on('config', configReceiver);
-    electron.ipcRenderer.on('servers', serversReceiver);
-    electron.ipcRenderer.on('best-servers', bestServersReceiver);
-    electron.ipcRenderer.on('test-server', testServerReceiver);
-    electron.ipcRenderer.on('download-speed', downloadSpeedReceiver);
-    electron.ipcRenderer.on('upload-speed', uploadSpeedReceiver);
-    electron.ipcRenderer.on('download-speed-progress', downloadSpeedProgressReceiver);
-    electron.ipcRenderer.on('upload-speed-progress', uploadProgressSpeedReceiver);
-    electron.ipcRenderer.on('last-request-running', lastRequestRunningEvent);
+    electron.ipcRenderer.on('ping', receivePing);
+    electron.ipcRenderer.on('download', receiveDownload);
+    electron.ipcRenderer.on('upload', receiveUpload);
+    electron.ipcRenderer.on('testStart', receiveTestStart);
+    electron.ipcRenderer.on('result', receiveData);
+    electron.ipcRenderer.on('last-request-running', receiveWait);
+
 
     return () => {
 
-      electron.ipcRenderer.removeListener('data', receiveData);
-      electron.ipcRenderer.removeListener('download-progress', downloadProgressReceiver);
-      electron.ipcRenderer.removeListener('upload-progress', uploadProgressReceiver);
-      electron.ipcRenderer.removeListener('config', configReceiver);
-      electron.ipcRenderer.removeListener('servers', serversReceiver);
-      electron.ipcRenderer.removeListener('best-servers', bestServersReceiver);
-      electron.ipcRenderer.removeListener('test-server', bestServersReceiver);
-      electron.ipcRenderer.removeListener('download-speed', downloadSpeedReceiver);
-      electron.ipcRenderer.removeListener('upload-speed', uploadSpeedReceiver);
-      electron.ipcRenderer.removeListener('download-speed-progress', downloadSpeedProgressReceiver);
-      electron.ipcRenderer.removeListener('upload-speed-progress', uploadProgressSpeedReceiver);
-      electron.ipcRenderer.removeListener('last-request-running', lastRequestRunningEvent);
+      electron.ipcRenderer.removeListener('ping', receivePing);
+      electron.ipcRenderer.removeListener('download', receiveDownload);
+      electron.ipcRenderer.removeListener('upload', receiveUpload);
+      electron.ipcRenderer.removeListener('testStart', receiveTestStart);
+      electron.ipcRenderer.removeListener('result', receiveData);
+      electron.ipcRenderer.removeListener('last-request-running', receiveWait);
 
     }
 
   }, []);
-
-  console.log();
 
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
@@ -197,21 +143,21 @@ export default function Home(){
           <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='angle double right'/> Ping
           </Label>
-          {testServer !== null ? formatPing(testServer.bestPing) : formatPing(0) }
+          {formatPing(ping)}
         </Segment>
         <Segment size="massive" textAlign="center">
           <Progress percent={downloadProgress} attached='bottom' indicating />
           <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='download'/> Download
           </Label>
-          {downloadSpeed !== 0 ? formatSpeed(downloadSpeed) : formatSpeed(downloadSpeedProgress) }
+          {formatSpeed(downloadSpeed)}
         </Segment>
         <Segment size="massive" textAlign="center">
           <Progress percent={uploadProgress} attached='bottom' indicating />
           <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='upload'/> Upload
           </Label>
-          {uploadSpeed !== 0 ? formatSpeed(uploadSpeed) : formatSpeed(uploadSpeedProgress) }
+          {formatSpeed(uploadSpeed)}
         </Segment>
       </Segment.Group>
 
@@ -221,32 +167,18 @@ export default function Home(){
           Client
         </Label>
 
-        {config !== null ? config.client.isp : ""  }
-
+        {testServer !== null ? testServer.isp : ""  }
         <Divider horizontal><Icon name='angle double down'/></Divider>
 
         <Label size="large" color="orange" ribbon>
           Server
         </Label>
 
-        {testServer !== null ? `${testServer.sponsor} ` : "" }
-
-        {testServer !== null ? (<Label size="large">
-      <Icon name='point' />
-      Alagoinhas
-    </Label>) : "" }
+        {testServer !== null ? `${testServer.server.name} ` : "" }
+        {testServer !== null ? (<Label size="large"><Icon name='point' />{testServer.server.location}</Label>) : "" }
 
       </Segment>
 
-      {/* <ul>
-        <li>Download progress:  {downloadProgress}</li>
-        <li>Upload progress: {uploadProgress}</li>
-        <li>Download speed: {downloadSpeed}</li>
-        <li>Upload speed: {uploadSpeed}</li>
-        <li>Download speed progress: {downloadSpeedProgress}</li>
-        <li>Upload speed progress: {uploadSpeedProgress}</li>
-        <li>Config progress: {lists}</li>
-      </ul> */}
     </Container>
   );
 

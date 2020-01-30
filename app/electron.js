@@ -10,6 +10,9 @@ let mainWindow;
 
 let requestRunning = false;
 
+const { spawn } = require('child_process');
+
+
 ipcMain.on('request-data', (event, arg) => {
 
   if(requestRunning === true){
@@ -21,85 +24,29 @@ ipcMain.on('request-data', (event, arg) => {
 
   requestRunning = true;
 
-  const speedTest = require('speedtest-net')({timeout: 5000});
+  const child = spawn(path.join(__dirname, "ookla-speedtest-1.0.0-win64/speedtest.exe"), ['--format', 'jsonl']);
 
-  speedTest.on('data', data => {
+  child.stdout.setEncoding('utf8');
+  child.stdout.on('data', (chunk) => {
 
-    mainWindow.webContents.send('data', data);
+    if(chunk.length > 10){
+      const json = JSON.parse(chunk);
+      mainWindow.webContents.send(`${json.type}`, json);
+
+      if(json.type == "result"){
+        requestRunning = false;
+      }
+
+    }
+
+  });
+
+  child.on('close', (code) => {
+
+    //console.log(`child process exited with code ${code}`);
     requestRunning = false;
 
   });
-
-  speedTest.on('downloadprogress', progress => {
-
-    mainWindow.webContents.send('download-progress', progress);
-
-  });
-
-  speedTest.on('uploadprogress', progress => {
-
-    mainWindow.webContents.send('upload-progress', progress);
-
-  });
-
-  speedTest.on('config', config => {
-
-    mainWindow.webContents.send('config', config);
-
-  });
-
-  speedTest.on('servers', servers => {
-
-    mainWindow.webContents.send('servers', servers);
-
-  });
-
-  speedTest.on('bestservers', servers => {
-
-    mainWindow.webContents.send('best-servers', servers);
-
-  });
-
-  speedTest.on('testserver', server => {
-
-    mainWindow.webContents.send('test-server', server);
-
-  });
-
-  speedTest.on('downloadspeed', speed => {
-
-    mainWindow.webContents.send('download-speed', speed);
-
-  });
-
-  speedTest.on('uploadspeed', speed => {
-
-    mainWindow.webContents.send('upload-speed', speed);
-
-  });
-
-  speedTest.on('downloadspeedprogress', speed => {
-
-    mainWindow.webContents.send('download-speed-progress', speed);
-
-  });
-
-  speedTest.on('uploadspeedprogress', speed => {
-
-    mainWindow.webContents.send('upload-speed-progress', speed);
-
-  });
-
-  speedTest.on('result', url => {
-
-    mainWindow.webContents.send('result', url);
-
-  });
-
-  speedTest.on('error', err => {
-    console.error(err);
-  });
-
 
 });
 
@@ -112,7 +59,8 @@ function createWindow () {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      webSecurity: false,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 
