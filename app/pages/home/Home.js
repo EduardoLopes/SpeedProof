@@ -140,6 +140,7 @@ export default function Home(){
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
+      <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/>
       <Segment.Group horizontal>
         <Segment size="massive" textAlign="center">
           <Progress percent={pingProgress} attached='bottom' indicating />
