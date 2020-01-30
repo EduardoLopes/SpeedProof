@@ -13,6 +13,7 @@ export default function Home(){
     content: "Start Test"
   });
 
+  const [pingProgress, setPingProgress] = useState(0);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [testServer, setTestServer] = useState(null);
@@ -79,6 +80,7 @@ export default function Home(){
   function receivePing(event, data){
 
     setPing(data.ping.latency);
+    setPingProgress(data.ping.progress * 100);
 
   }
 
@@ -140,6 +142,7 @@ export default function Home(){
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
       <Segment.Group horizontal>
         <Segment size="massive" textAlign="center">
+          <Progress percent={pingProgress} attached='bottom' indicating />
           <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
           <Icon name='angle double right'/> Ping
           </Label>
