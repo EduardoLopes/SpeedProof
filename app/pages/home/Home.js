@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
 import { Container, Button, Segment, Label, Icon, Progress, Grid, Divider, Statistic, Placeholder} from 'semantic-ui-react'
+import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
-
-
 
 export default function Home(){
 
@@ -58,7 +57,7 @@ export default function Home(){
   function formatSpeed(speed){
 
     return (
-      <Statistic>
+      <Statistic size='small'>
         <Statistic.Value>{speed.toFixed(2)}</Statistic.Value>
         <Statistic.Label>Mbps</Statistic.Label>
       </Statistic>
@@ -69,7 +68,7 @@ export default function Home(){
   function formatPing(time){
 
     return (
-      <Statistic>
+      <Statistic size='small'>
         <Statistic.Value>{Math.floor(time)}</Statistic.Value>
         <Statistic.Label>ms</Statistic.Label>
       </Statistic>
@@ -139,6 +138,7 @@ export default function Home(){
 
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+      <Navbar />
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
       <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/>
       <Segment.Group horizontal>

@@ -4,7 +4,6 @@ const electron = require('electron');
 const path = require('path');
 const isDev = require("electron-is-dev");
 const {ipcMain} = require('electron');
-const speedtest = require("speedtest-net");
 
 let mainWindow;
 
