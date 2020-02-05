@@ -79,6 +79,12 @@ ipcMain.on('request-data', (event, arg) => {
 
 });
 
+ipcMain.on('request-tests-data', (event, arg) => {
+
+  DB.getTests(mainWindow);
+
+});
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 function createWindow () {
