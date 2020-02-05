@@ -1,5 +1,5 @@
 {
-  "name": "Ping",
+  "name": "ping",
   "version": "0.0.0",
   "description": "Test the internet speed",
   "main": "app/electron.js",

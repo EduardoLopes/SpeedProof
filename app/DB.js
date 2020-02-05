@@ -37,38 +37,42 @@ db.serialize(function() {
 
 });
 
-  function insertTest(values){
+function insertTest(values){
 
-  var stmt = db.run(`
-  INSERT INTO
-    tests
-  VALUES (
-    $id,
-    $timestamp,
-    $ping_jitter,
-    $ping_latency,
-    $download_bandwidth,
-    $download_bytes,
-    $download_elapsed,
-    $upload_bandwidth,
-    $upload_bytes,
-    $upload_elapsed,
-    $isp,
-    $interface_internal_ip,
-    $interface_name,
-    $interface_mac_addr,
-    $interface_is_vpn,
-    $interface_external_ip,
-    $server_id,
-    $server_name,
-    $server_location,
-    $server_country,
-    $server_host,
-    $server_port,
-    $server_ip,
-    $speedtest_id,
-    $speedtest_url
-  )`, values);
+  db.serialize(function() {
+
+    var stmt = db.run(`
+    INSERT INTO
+      tests
+    VALUES (
+      $id,
+      $timestamp,
+      $ping_jitter,
+      $ping_latency,
+      $download_bandwidth,
+      $download_bytes,
+      $download_elapsed,
+      $upload_bandwidth,
+      $upload_bytes,
+      $upload_elapsed,
+      $isp,
+      $interface_internal_ip,
+      $interface_name,
+      $interface_mac_addr,
+      $interface_is_vpn,
+      $interface_external_ip,
+      $server_id,
+      $server_name,
+      $server_location,
+      $server_country,
+      $server_host,
+      $server_port,
+      $server_ip,
+      $speedtest_id,
+      $speedtest_url
+    )`, values);
+
+  });
 
 }
 
