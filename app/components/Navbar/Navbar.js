@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Menu, Icon } from 'semantic-ui-react'
 
 
-export default function Navbar(){
+export default function Navbar(props){
 
   return (
     <Menu inverted pointing size='huge'>
@@ -16,15 +16,16 @@ export default function Navbar(){
         <Icon name='home' />
         Home
       </Menu.Item>
-      <Menu.Item
+      {!props.testsItemDisabled &&
+      (<Menu.Item
         as={NavLink}
         exact
-        to="/tests"
+        to={"/tests"}
         name='tests'
       >
         <Icon name='line graph' />
-        Days
-      </Menu.Item>
+        Tests
+      </Menu.Item>)}
     </Menu>
   );
 
