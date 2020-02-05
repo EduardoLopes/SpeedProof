@@ -22,7 +22,7 @@ ipcMain.on('request-data', (event, arg) => {
 
   requestRunning = true;
 
-  const speedtest = isDev ? `file://${path.join(__dirname, "../build/index.html")}` : path.join(rootPath, "/resources/bin/speedtest.exe");
+  const speedtest = isDev ? path.join(__dirname, "/ookla-speedtest-1.0.0-win64/speedtest.exe") : path.join(rootPath, "/resources/bin/speedtest.exe");
 
   const child = spawn(speedtest, ['--format', 'jsonl']);
 
