@@ -1,17 +1,15 @@
 // Modules to control application life and create native browser window
-const  {app, BrowserWindow, session} = require('electron');
-const electron = require('electron');
+const  {app, BrowserWindow, ipcMain} = require('electron');
 const path = require('path');
 const isDev = require("electron-is-dev");
-const {ipcMain} = require('electron');
-const DB = require(path.join(__dirname, "./DB.js"));
+const DB = require("./DB.js");
+const rootPath = require('electron-root-path').rootPath;
 
 let mainWindow;
 
 let requestRunning = false;
 
 const { spawn } = require('child_process');
-
 
 ipcMain.on('request-data', (event, arg) => {
 
@@ -24,7 +22,9 @@ ipcMain.on('request-data', (event, arg) => {
 
   requestRunning = true;
 
-  const child = spawn(path.join(__dirname, "ookla-speedtest-1.0.0-win64/speedtest.exe"), ['--format', 'jsonl']);
+  const speedtest = isDev ? `file://${path.join(__dirname, "../build/index.html")}` : path.join(rootPath, "/resources/bin/speedtest.exe");
+
+  const child = spawn(speedtest, ['--format', 'jsonl']);
 
   child.stdout.setEncoding('utf8');
   child.stdout.on('data', (chunk) => {
@@ -110,8 +110,6 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
 
-    DB.close();
-
   });
 
 }
@@ -125,6 +123,9 @@ app.on('ready', createWindow);
 app.on('window-all-closed', function () {
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
+
+  DB.close();
+
   if (process.platform !== 'darwin') app.quit()
 });
 

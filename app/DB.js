@@ -31,11 +31,6 @@ db.serialize(function() {
     speedtest_url TEXT NOT NULL
   )`);
 
-
-
-
-
-
   // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
   //     console.log(row.id + ": " + row.info);
   // });
@@ -78,3 +73,5 @@ db.serialize(function() {
 }
 
 exports.insertTest = insertTest;
+
+exports.close = db.close;
