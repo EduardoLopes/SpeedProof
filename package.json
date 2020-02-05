@@ -12,11 +12,21 @@
     "wait-server": "wait-on http://localhost:3000",
     "clean-build": "yarn run del build/ .cache dist/",
     "build": "yarn run clean-build && yarn run parcel-build && yarn run electron-builder --dir",
-    "pack": "yarn run electron-builder",
+    "pack": "yarn run electron-builder --win",
     "dev": "yarn run del build/ && yarn run concurrently \"yarn run parcel-server\" \"yarn run wait-server && cross-env NODE_ENV=development electron .\""
   },
   "build": {
     "appId": "com.ping",
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
     "extraFiles": [
       {
         "from": "app/ookla-speedtest-1.0.0-win64",
