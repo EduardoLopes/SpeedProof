@@ -20,7 +20,6 @@ export default function Home(){
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const [ping, setPing] = useState(0);
 
-
   function requestData(){
 
     electron.ipcRenderer.send('request-data', "date");
@@ -112,7 +111,6 @@ export default function Home(){
 
   }
 
-
   useEffect(() => {
 
     electron.ipcRenderer.on('ping', receivePing);
@@ -138,7 +136,7 @@ export default function Home(){
 
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
-      <Navbar />
+      <Navbar testsItemDisabled={startButton.disabled}/>
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
       <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/>
       <Segment.Group horizontal>

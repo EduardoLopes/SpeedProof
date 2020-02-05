@@ -81,7 +81,7 @@ function getTests(mainWindow){
 
   db.serialize(function() {
 
-    db.all("SELECT * FROM tests", function(err, row) {
+    db.all("SELECT * FROM tests ORDER BY id DESC", function(err, row) {
 
       mainWindow.webContents.send('tests-data', row);
 
@@ -94,4 +94,4 @@ function getTests(mainWindow){
 exports.insertTest = insertTest;
 exports.getTests = getTests;
 
-exports.close = db.close;
+exports.close = function (){ db.close() };
