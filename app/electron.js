@@ -6,7 +6,7 @@ const DB = require("./DB.js");
 const rootPath = require('electron-root-path').rootPath;
 
 let mainWindow;
-
+let speedtest;
 let requestRunning = false;
 
 const { spawn } = require('child_process');
@@ -22,12 +22,12 @@ ipcMain.on('request-data', (event, arg) => {
 
   requestRunning = true;
 
-  const speedtest = isDev ? path.join(__dirname, "/ookla-speedtest-1.0.0-win64/speedtest.exe") : path.join(rootPath, "/resources/bin/speedtest.exe");
+  const speedtest_path = isDev ? path.join(__dirname, "/ookla-speedtest-1.0.0-win64/speedtest.exe") : path.join(rootPath, "/resources/bin/speedtest.exe");
 
-  const child = spawn(speedtest, ['--format', 'jsonl']);
+  speedtest = spawn(speedtest_path, ['--format', 'jsonl']);
 
-  child.stdout.setEncoding('utf8');
-  child.stdout.on('data', (chunk) => {
+  speedtest.stdout.setEncoding('utf8');
+  speedtest.stdout.on('data', (chunk) => {
 
     if(chunk.length > 10){
       const json = JSON.parse(chunk);
@@ -70,7 +70,7 @@ ipcMain.on('request-data', (event, arg) => {
 
   });
 
-  child.on('close', (code) => {
+  speedtest.on('close', (code) => {
 
     //console.log(`child process exited with code ${code}`);
     requestRunning = false;
@@ -82,6 +82,15 @@ ipcMain.on('request-data', (event, arg) => {
 ipcMain.on('request-tests-data', (event, arg) => {
 
   DB.getTests(mainWindow);
+
+});
+
+ipcMain.on('before-unload', (event, arg) => {
+
+  if(speedtest){
+    speedtest.stdin.pause();
+    speedtest.kill();
+  }
 
 });
 
