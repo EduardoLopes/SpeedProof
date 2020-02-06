@@ -130,6 +130,9 @@ export default function Home(){
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
 
+      //kill speedtest process if it is running and the page is changed
+      electron.ipcRenderer.send('before-unload', "data");
+
     }
 
   }, []);

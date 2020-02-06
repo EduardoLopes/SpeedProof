@@ -17,7 +17,6 @@ function App() {
     window.addEventListener('beforeunload', evt => {
 
       electron.ipcRenderer.send('before-unload', "data");
-      console.log("before unload renderer");
 
     });
 
