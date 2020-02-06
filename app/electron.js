@@ -85,6 +85,12 @@ ipcMain.on('request-tests-data', (event, arg) => {
 
 });
 
+ipcMain.on('request-test-data', (event, arg) => {
+
+  DB.getTest(mainWindow, arg);
+
+});
+
 ipcMain.on('before-unload', (event, arg) => {
 
   if(speedtest){

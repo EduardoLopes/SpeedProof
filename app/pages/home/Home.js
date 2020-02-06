@@ -146,7 +146,7 @@ export default function Home(){
         <Segment size="massive" textAlign="center">
           <Progress percent={pingProgress} attached='bottom' indicating />
           <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-          <Icon name='angle double right'/> Ping
+          <Icon name='sync'/> Ping
           </Label>
           {formatPing(ping)}
         </Segment>

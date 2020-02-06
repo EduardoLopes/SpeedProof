@@ -1,4 +1,4 @@
-const  {ipcMain} = require('electron');
+const {ipcMain} = require('electron');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./tests.db');
 
@@ -91,7 +91,23 @@ function getTests(mainWindow){
 
 }
 
+
+function getTest(mainWindow, id){
+
+  db.serialize(function() {
+
+    db.each(`SELECT * FROM tests WHERE id = ${id}`, function(err, row) {
+
+      mainWindow.webContents.send('test-data', row);
+
+    });
+
+  });
+
+}
+
 exports.insertTest = insertTest;
 exports.getTests = getTests;
+exports.getTest = getTest;
 
 exports.close = function (){ db.close() };

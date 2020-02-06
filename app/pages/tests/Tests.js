@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo} from "react";
-import { Container, Table } from 'semantic-ui-react'
+import { Container, Table, Button, Icon } from 'semantic-ui-react'
 import styles from "./Tests.scss";
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
 import moment from "moment";
+import { NavLink } from "react-router-dom";
+
 
 export default function Tests(){
 
@@ -30,13 +32,18 @@ export default function Tests(){
 
   const testsRows = testsData.map((test, index) => (
       <Table.Row key={test.id}>
-        <Table.Cell>{test.id}</Table.Cell>
-        <Table.Cell>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
-        <Table.Cell>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-        <Table.Cell>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+        <Table.Cell >{test.id}</Table.Cell>
+        <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
+        <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+        <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
         <Table.Cell>{test.isp}</Table.Cell>
         <Table.Cell>{test.server_name}</Table.Cell>
-        <Table.Cell>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
+        <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
+        <Table.Cell selectable>
+          <NavLink exact to={`/info/${test.id}`}>
+            <Icon name='arrow right' />
+          </NavLink>
+        </Table.Cell>
       </Table.Row>
     ));
 
@@ -54,6 +61,7 @@ export default function Tests(){
             <Table.HeaderCell>ISP</Table.HeaderCell>
             <Table.HeaderCell>Server</Table.HeaderCell>
             <Table.HeaderCell>When</Table.HeaderCell>
+            <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
         <Table.Body>

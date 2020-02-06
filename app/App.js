@@ -9,6 +9,7 @@ const electron = window.require("electron");
 
 import Home from "./pages/home/Home.js";
 import Tests from "./pages/tests/Tests.js";
+import Info from "./pages/info/Info.js";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/tests" component={Tests} />
+        <Route exact path="/info/:id" component={Info} />
       </Switch>
     </Router>
   );
