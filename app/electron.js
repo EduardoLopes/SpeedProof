@@ -32,6 +32,13 @@ ipcMain.on('request-data', (event, arg) => {
     // check if is a empty string
     if(!(/^\s*$/.test(chunk))){
       const json = JSON.parse(chunk);
+
+      if(json.error){
+        mainWindow.webContents.send(`speedtest-error`, json.error);
+
+        return;
+      }
+
       mainWindow.webContents.send(`${json.type}`, json);
 
       if(json.type == "result"){

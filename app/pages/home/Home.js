@@ -48,7 +48,7 @@ export default function Home(){
         content: "Start Test"
       });
 
-     }, 2000);
+     }, 1000);
 
 
   };
@@ -111,6 +111,24 @@ export default function Home(){
 
   }
 
+  function handleSpeedtestError(event, data){
+
+    electron.ipcRenderer.send('before-unload', "data");
+    console.log("error: " + data);
+
+    setTimeout(() => {
+
+      setStartButton({
+        disabled: false,
+        color: "green",
+        loading: false,
+        content: "Start Test"
+      });
+
+     }, 1000);
+
+  }
+
   useEffect(() => {
 
     electron.ipcRenderer.on('ping', receivePing);
@@ -119,7 +137,7 @@ export default function Home(){
     electron.ipcRenderer.on('testStart', receiveTestStart);
     electron.ipcRenderer.on('result', receiveData);
     electron.ipcRenderer.on('last-request-running', receiveWait);
-
+    electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
 
     return () => {
 
@@ -129,6 +147,7 @@ export default function Home(){
       electron.ipcRenderer.removeListener('testStart', receiveTestStart);
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
+      electron.ipcRenderer.removeListener('speedtest-error', handleSpeedtestError);
 
       //kill speedtest process if it is running and the page is changed
       electron.ipcRenderer.send('before-unload', "data");
