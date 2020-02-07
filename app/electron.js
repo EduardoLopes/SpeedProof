@@ -31,46 +31,55 @@ ipcMain.on('request-data', (event, arg) => {
 
     // check if is a empty string
     if(!(/^\s*$/.test(chunk))){
-      const json = JSON.parse(chunk);
 
-      if(json.error){
-        mainWindow.webContents.send(`speedtest-error`, json.error);
+      const lines = chunk.split("\n");
 
-        return;
-      }
+      for (let i = 0; i < lines.length - 1; i++) {
 
-      mainWindow.webContents.send(`${json.type}`, json);
+        const line = lines[i];
 
-      if(json.type == "result"){
-        requestRunning = false;
+        const json = JSON.parse(line);
 
-        DB.insertTest({
-          $id: null,
-          $timestamp: json.timestamp,
-          $ping_jitter: json.ping.jitter,
-          $ping_latency: json.ping.latency,
-          $download_bandwidth: json.download.bandwidth,
-          $download_bytes: json.download.bytes,
-          $download_elapsed: json.download.elapsed,
-          $upload_bandwidth: json.upload.bandwidth,
-          $upload_bytes: json.upload.bytes,
-          $upload_elapsed: json.upload.elapsed,
-          $isp: json.isp,
-          $interface_internal_ip: json.interface.internalIp,
-          $interface_name: json.interface.name,
-          $interface_mac_addr: json.interface.macAddr,
-          $interface_is_vpn: json.interface.isVpn ? 1 : 0,
-          $interface_external_ip: json.interface.externalIp,
-          $server_id: json.server.id,
-          $server_name: json.server.name,
-          $server_location: json.server.location,
-          $server_country: json.server.country,
-          $server_host: json.server.host,
-          $server_port: json.server.port,
-          $server_ip: json.server.ip,
-          $speedtest_id: json.result.id,
-          $speedtest_url: json.result.url
-        });
+        if(json.error){
+          mainWindow.webContents.send(`speedtest-error`, json.error);
+
+          return;
+        }
+
+        mainWindow.webContents.send(`${json.type}`, json);
+
+        if(json.type == "result"){
+          requestRunning = false;
+
+          DB.insertTest({
+            $id: null,
+            $timestamp: json.timestamp,
+            $ping_jitter: json.ping.jitter,
+            $ping_latency: json.ping.latency,
+            $download_bandwidth: json.download.bandwidth,
+            $download_bytes: json.download.bytes,
+            $download_elapsed: json.download.elapsed,
+            $upload_bandwidth: json.upload.bandwidth,
+            $upload_bytes: json.upload.bytes,
+            $upload_elapsed: json.upload.elapsed,
+            $isp: json.isp,
+            $interface_internal_ip: json.interface.internalIp,
+            $interface_name: json.interface.name,
+            $interface_mac_addr: json.interface.macAddr,
+            $interface_is_vpn: json.interface.isVpn ? 1 : 0,
+            $interface_external_ip: json.interface.externalIp,
+            $server_id: json.server.id,
+            $server_name: json.server.name,
+            $server_location: json.server.location,
+            $server_country: json.server.country,
+            $server_host: json.server.host,
+            $server_port: json.server.port,
+            $server_ip: json.server.ip,
+            $speedtest_id: json.result.id,
+            $speedtest_url: json.result.url
+          });
+
+        }
 
       }
 
@@ -139,6 +148,11 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
 
+    if(speedtest){
+      speedtest.stdin.pause();
+      speedtest.kill();
+    }
+
   });
 
 }
@@ -154,6 +168,11 @@ app.on('window-all-closed', function () {
   // to stay active until the user quits explicitly with Cmd + Q
 
   DB.close();
+
+  if(speedtest){
+    speedtest.stdin.pause();
+    speedtest.kill();
+  }
 
   if (process.platform !== 'darwin') app.quit()
 });
