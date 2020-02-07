@@ -30,6 +30,14 @@ export default function Home(){
       content: "Loading..."
     });
 
+    setPingProgress(0);
+    setDownloadProgress(0);
+    setUploadProgress(0);
+    setTestServer(null);
+    setDownloadSpeed(0);
+    setUploadSpeed(0);
+    setPing(0);
+
   }
 
   function receiveData(event, data){
