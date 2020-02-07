@@ -29,7 +29,8 @@ ipcMain.on('request-data', (event, arg) => {
   speedtest.stdout.setEncoding('utf8');
   speedtest.stdout.on('data', (chunk) => {
 
-    if(chunk.length > 10){
+    // check if is a empty string
+    if(!(/^\s*$/.test(chunk))){
       const json = JSON.parse(chunk);
       mainWindow.webContents.send(`${json.type}`, json);
 
