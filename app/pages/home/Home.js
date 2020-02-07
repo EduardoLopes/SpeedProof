@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress, Grid, Divider, Statistic, Placeholder} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
 
@@ -19,6 +19,7 @@ export default function Home(){
   const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const [ping, setPing] = useState(0);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   function requestData(){
 
@@ -37,6 +38,7 @@ export default function Home(){
     setDownloadSpeed(0);
     setUploadSpeed(0);
     setPing(0);
+    setErrorMessage(null);
 
   }
 
@@ -122,7 +124,8 @@ export default function Home(){
   function handleSpeedtestError(event, data){
 
     electron.ipcRenderer.send('before-unload', "data");
-    console.log("error: " + data);
+
+    setErrorMessage(data);
 
     setTimeout(() => {
 
@@ -168,7 +171,11 @@ export default function Home(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Navbar testsItemDisabled={startButton.disabled}/>
       <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
-      <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/>
+      {errorMessage && (<Message negative>
+        <Message.Header>Error</Message.Header>
+        <p>{errorMessage}</p>
+      </Message>)}
+      {/* <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/> */}
       <Segment.Group horizontal>
         <Segment size="massive" textAlign="center">
           <Progress percent={pingProgress} attached='bottom' indicating />
