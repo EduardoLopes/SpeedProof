@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo} from "react";
-import { Container, Table, Button, Icon } from 'semantic-ui-react'
+import { Container, Table, Grid, Form, Icon, Button, Segment } from 'semantic-ui-react'
 import styles from "./Tests.scss";
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
@@ -10,6 +10,11 @@ import { NavLink } from "react-router-dom";
 export default function Tests(){
 
   const [testsData, setTestsData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchByTag, setSearchByTag] = useState(true);
+  const [searchByISP, setSearchByISP] = useState(true);
+  const [searchByServerName, setSearchByServerName] = useState(true);
+
 
   function receiveData(event, data){
 
@@ -17,14 +22,63 @@ export default function Tests(){
 
   }
 
+  function handleOnSubmit(event){
+
+    requestSearchData();
+
+    if(searchKeyword.length == 0){
+      electron.ipcRenderer.send('request-tests-data', "data");
+    }
+
+  }
+
+  function requestSearchData(){
+
+    if(searchKeyword.length > 0 && (searchByTag === true || searchByISP === true || searchByServerName === true)){
+
+      electron.ipcRenderer.send('request-test-search-data', {
+        keyword: searchKeyword,
+        byTag: searchByTag,
+        byISP: searchByISP,
+        byServerName: searchByServerName
+      });
+
+    }
+
+  }
+
+  function receiveSearchData(event, data){
+
+    setTestsData(data);
+
+  }
+
+  function handleSearchOnChange(event){
+
+    setSearchKeyword(event.target.value);
+
+  }
+
+  useEffect(() => {
+
+    requestSearchData();
+
+    if(searchByTag === false && searchByISP === false && searchByServerName === false){
+      electron.ipcRenderer.send('request-tests-data', "data");
+    }
+
+  }, [searchByTag, searchByISP, searchByServerName]);
+
   useEffect(() => {
 
     electron.ipcRenderer.send('request-tests-data', "data");
     electron.ipcRenderer.on('tests-data', receiveData);
+    electron.ipcRenderer.on('tests-search-data', receiveSearchData);
 
     return () => {
 
       electron.ipcRenderer.removeListener('tests-data', receiveData);
+      electron.ipcRenderer.removeListener('tests-search-data', receiveSearchData);
 
     }
 
@@ -50,7 +104,39 @@ export default function Tests(){
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Navbar />
+      <Segment>
+        <Form onSubmit={handleOnSubmit}>
+          <Grid>
+            <Grid.Column width={12}>
+              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Form.Button style={{width: '100%'}} color="green" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+            </Grid.Column>
+          </Grid>
+          </Form>
+          <Grid>
+            <Grid.Column width={16} textAlign="right">
+              <Button.Group size={'tiny'}>
+                <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
+                  setSearchByTag(!searchByTag);
+
+                  }}>By Tags</Button>
+                <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
+
+                  setSearchByISP(!searchByISP);
+
+                  }}>By ISP</Button>
+                <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
+
+                  setSearchByServerName(!searchByServerName);
+
+                  }}>By Server Name</Button>
+              </Button.Group>
+            </Grid.Column>
+          </Grid>
+      </Segment>
       <Table celled padded>
         <Table.Header>
           <Table.Row>

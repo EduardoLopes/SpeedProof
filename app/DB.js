@@ -97,6 +97,42 @@ function getTests(mainWindow){
 
 }
 
+function getTestsSearch(mainWindow, keyword, byTag, byISP, byServerName){
+
+  const queries = [];
+
+  if(byTag === true){
+    queries.push(`SELECT * FROM tests WHERE tags LIKE '%${keyword}%'`);
+  }
+
+  if(byISP === true){
+    queries.push(`SELECT * FROM tests WHERE isp LIKE '%${keyword}%'`);
+  }
+
+  if(byServerName === true){
+    queries.push(`SELECT * FROM tests WHERE server_name LIKE '%${keyword}%'`);
+  }
+
+  if(queries.length !== 0){
+
+    const query = queries.reduce((query, currentQuery, index) => {
+      return query +` UNION ${currentQuery}`
+    });
+
+
+    db.serialize(function() {
+
+      db.all(query, function(err, row) {
+
+        mainWindow.webContents.send('tests-search-data', row);
+
+      });
+
+    });
+
+  }
+
+}
 
 function getTest(mainWindow, id){
 
@@ -142,6 +178,7 @@ function updateTags(id, tags){
 
 exports.insertTest = insertTest;
 exports.getTests = getTests;
+exports.getTestsSearch = getTestsSearch;
 exports.getTest = getTest;
 exports.getTags = getTags;
 exports.updateTags = updateTags;

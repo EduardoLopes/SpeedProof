@@ -109,6 +109,12 @@ ipcMain.on('request-test-data', (event, arg) => {
 
 });
 
+ipcMain.on('request-test-search-data', (event, arg) => {
+
+  DB.getTestsSearch(mainWindow, arg.keyword, arg.byTag, arg.byISP, arg.byServerName);
+
+});
+
 ipcMain.on('request-tags-data', (event, arg) => {
 
   DB.getTags(mainWindow, arg);
