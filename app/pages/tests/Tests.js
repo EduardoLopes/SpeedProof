@@ -137,7 +137,7 @@ export default function Tests(){
               <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
             <Grid.Column width={4}>
-              <Form.Button style={{width: '100%'}} color="green" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+              <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
           </Grid>
           </Form>
