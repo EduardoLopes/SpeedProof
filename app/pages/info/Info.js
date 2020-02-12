@@ -175,8 +175,9 @@ export default function Info(){
         </Segment.Group>
 
         <Tags id={testData.id}/>
-
-        <Button floated="right" onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
+        <Segment>
+          <Button style={{width: '100%'}} onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
+        </Segment>
       </Container>
     )}
     </div>
