@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic, Grid, Form} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
 
@@ -20,6 +20,8 @@ export default function Home(){
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const [ping, setPing] = useState(0);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [testFinished, setTestFinished] = useState(false);
+  const [tags, setTags] = useState([]);
 
   function requestData(){
 
@@ -39,6 +41,7 @@ export default function Home(){
     setUploadSpeed(0);
     setPing(0);
     setErrorMessage(null);
+    setTestFinished(false);
 
   }
 
@@ -215,6 +218,43 @@ export default function Home(){
 
         {testServer !== null ? `${testServer.server.name} ` : "" }
         {testServer !== null ? (<Label size="large"><Icon name='point' />{testServer.server.location}</Label>) : "" }
+
+      </Segment>
+
+      <Segment>
+
+        <Form onSubmit={(event) => {
+
+        }}>
+            <Grid>
+            <Grid.Column width={13}>
+                <Form.Input
+                  placeholder='Tags'
+                  name='name'
+                  onChange={(event) => {
+
+                    let splitedTags = event.target.value.split(",");
+
+                    splitedTags = splitedTags.map((tag) => tag.trim());
+
+                    splitedTags = splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
+
+                    setTags(splitedTags);
+
+                  }}
+                />
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Form.Button style={{width: '100%'}} color="green" content='Add tags' />
+              </Grid.Column>
+            </Grid>
+        </Form>
+        {tags.length !== 0 ? (<Divider/>) : ""}
+        {tags.map((tag, index) => {
+          return (<Label className={ styles.tagsLable }key={index}>
+            {tag}
+          </Label>)
+        })}
 
       </Segment>
 
