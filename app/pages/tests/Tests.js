@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
 import moment from "moment";
 import { NavLink } from "react-router-dom";
-
+import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 export default function Tests(){
 
@@ -14,7 +14,8 @@ export default function Tests(){
   const [searchByTag, setSearchByTag] = useState(true);
   const [searchByISP, setSearchByISP] = useState(true);
   const [searchByServerName, setSearchByServerName] = useState(true);
-
+  const [chartData, setChartData] = useState([]);
+  const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
 
   function receiveData(event, data){
 
@@ -68,6 +69,31 @@ export default function Tests(){
     }
 
   }, [searchByTag, searchByISP, searchByServerName]);
+
+  useEffect(() => {
+
+    const data = [];
+    let maxValue = 10;
+
+    testsData.forEach((test, index) => {
+
+      data.push({
+        name: moment(test.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a"),
+        download: (test.download_bandwidth / 125000).toFixed(2),
+        upload: (test.upload_bandwidth / 125000).toFixed(2)
+      });
+
+      maxValue = Math.max(maxValue, (test.download_bandwidth / 125000))
+      maxValue = Math.max(maxValue, (test.upload_bandwidth / 125000))
+
+    });
+
+    data.reverse();
+
+    setChartData(data);
+    setMaxValueDownloadUpload(maxValue);
+
+  }, [testsData]);
 
   useEffect(() => {
 
@@ -137,6 +163,29 @@ export default function Tests(){
             </Grid.Column>
           </Grid>
       </Segment>
+      {chartData.length > 0 && (<Segment>
+        <ResponsiveContainer width={"100%"} height={200}>
+          <AreaChart data={chartData} >
+            <defs>
+              <linearGradient id="colorDownload" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#6435c9" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#6435c9" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorUpload" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#00b5ad" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#00b5ad" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <YAxis type='number' width={ Math.floor(maxValueDownloadUpload).toString().length * 12}/>
+            <XAxis dataKey="name" hide={true} />
+            <Tooltip />
+            {/* <CartesianGrid strokeDasharray="3 3" /> */}
+            <Legend />
+            <Area type="monotone" dataKey="download" stroke="#6435c9" fillOpacity={1} fill="url(#colorDownload)" />
+            <Area type="monotone" dataKey="upload" stroke="#00b5ad" fillOpacity={1} fill="url(#colorUpload)" />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Segment>)}
       <Table celled padded>
         <Table.Header>
           <Table.Row>
