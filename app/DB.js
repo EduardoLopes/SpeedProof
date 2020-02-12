@@ -143,6 +143,7 @@ function updateTags(id, tags){
 exports.insertTest = insertTest;
 exports.getTests = getTests;
 exports.getTest = getTest;
+exports.getTags = getTags;
 exports.updateTags = updateTags;
 
 exports.close = function (){ db.close() };

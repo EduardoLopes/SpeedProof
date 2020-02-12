@@ -111,7 +111,7 @@ ipcMain.on('request-test-data', (event, arg) => {
 
 ipcMain.on('request-tags-data', (event, arg) => {
 
-  DB.getTest(mainWindow, arg);
+  DB.getTags(mainWindow, arg);
 
 });
 

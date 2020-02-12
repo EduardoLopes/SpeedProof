@@ -7,7 +7,7 @@ export default function Tags(props){
 
   const [tags, setTags] = useState([]);
   const [tagsOnDB, setTagsOnDB] = useState([]);
-  const [tagsInputValue, setTagsInputValue] = useState([]);
+  const [tagsInputValue, setTagsInputValue] = useState('');
 
   function tagColor(tag){
 
@@ -37,21 +37,47 @@ export default function Tags(props){
 
   }
 
+  function splitTags(string){
+
+    let splitedTags = string.split(",");
+    splitedTags = splitedTags.map((tag) => tag.trim());
+    return splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
+
+  }
+
   function handleOnChange(){
 
     setTagsInputValue(event.target.value);
 
-    let splitedTags = event.target.value.split(",");
-
-    splitedTags = splitedTags.map((tag) => tag.trim());
-
-    splitedTags = splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
-
+    let splitedTags = splitTags(event.target.value);
     splitedTags = [...new Set(splitedTags)];
 
     setTags(splitedTags);
 
   }
+
+  function receiveTagsData(event, data){
+
+    const t = splitTags(data.tags);
+
+    setTagsOnDB(t);
+    setTags(t);
+    setTagsInputValue(data.tags);
+
+  }
+
+   useEffect(() => {
+
+    electron.ipcRenderer.send('request-tags-data', props.id);
+    electron.ipcRenderer.on('tags-data', receiveTagsData);
+
+    return () => {
+
+      electron.ipcRenderer.removeListener('tags-data', receiveTagsData);
+
+    }
+
+  }, []);
 
   const allTags = [...new Set([...tags, ...tagsOnDB])];
 

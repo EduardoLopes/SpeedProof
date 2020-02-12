@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo} from "react";
 import { Container, Segment, Label,  Icon, Statistic, Button, List } from 'semantic-ui-react'
-import Navbar from "../../components/Navbar/Navbar.js";
+import Tags from "../../components/Tags/Tags.js";
 const electron = window.require("electron");
 import moment from "moment";
 import { useParams } from "react-router-dom";
@@ -38,9 +38,8 @@ export default function Info(){
 
     setTestData(data);
 
-    console.log(data);
-
   }
+
 
   useEffect(() => {
 
@@ -174,6 +173,9 @@ export default function Info(){
             </List>
           </Segment>
         </Segment.Group>
+
+        <Tags id={testData.id}/>
+
         <Button floated="right" onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
       </Container>
     )}
