@@ -39,9 +39,13 @@ export default function Tags(props){
 
   function splitTags(string){
 
-    let splitedTags = string.split(",");
-    splitedTags = splitedTags.map((tag) => tag.trim());
-    return splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
+    if(string){
+
+      let splitedTags = string.split(",");
+      splitedTags = splitedTags.map((tag) => tag.trim());
+      return splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
+
+    }
 
   }
 
@@ -58,11 +62,14 @@ export default function Tags(props){
 
   function receiveTagsData(event, data){
 
-    const t = splitTags(data.tags);
+    if(data.tags){
 
-    setTagsOnDB(t);
-    setTags(t);
-    setTagsInputValue(data.tags);
+      const t = splitTags(data.tags);
+      setTagsOnDB(t);
+      setTags(t);
+      setTagsInputValue(data.tags);
+
+    }
 
   }
 
