@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic, Grid, Form} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar/Navbar.js";
 import Tags from "../../components/Tags/Tags.js";
 const electron = window.require("electron");
@@ -42,6 +42,7 @@ export default function Home(){
     setUploadSpeed(0);
     setPing(0);
     setErrorMessage(null);
+    setLastID(null);
 
   }
 
