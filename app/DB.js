@@ -29,7 +29,8 @@ db.serialize(function() {
     server_port INTEGER NOT NULL,
     server_ip TEXT NOT NULL,
     speedtest_id TEXT NOT NULL,
-    speedtest_url TEXT NOT NULL
+    speedtest_url TEXT NOT NULL,
+    tags TEXT
   )`);
 
   // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
@@ -38,7 +39,7 @@ db.serialize(function() {
 
 });
 
-function insertTest(values){
+function insertTest(mainWindow, values){
 
   db.serialize(function() {
 
@@ -70,8 +71,13 @@ function insertTest(values){
       $server_port,
       $server_ip,
       $speedtest_id,
-      $speedtest_url
-    )`, values);
+      $speedtest_url,
+      $tags
+    )`, values, function(error, result){
+
+      mainWindow.webContents.send('last-id', `${this.lastID}`);
+
+    });
 
   });
 
@@ -106,8 +112,37 @@ function getTest(mainWindow, id){
 
 }
 
+function getTags(mainWindow, id){
+
+  db.serialize(function() {
+
+    db.each(`SELECT tags FROM tests WHERE id = ${id}`, function(err, row) {
+
+      mainWindow.webContents.send('tags-data', row);
+
+    });
+
+  });
+
+}
+
+function updateTags(id, tags){
+
+  db.serialize(function() {
+
+    var stmt = db.run(`
+    UPDATE
+      tests
+    SET tags = '${tags}'
+    WHERE id = ${id}`);
+
+  });
+
+}
+
 exports.insertTest = insertTest;
 exports.getTests = getTests;
 exports.getTest = getTest;
+exports.updateTags = updateTags;
 
 exports.close = function (){ db.close() };

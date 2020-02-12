@@ -51,7 +51,7 @@ ipcMain.on('request-data', (event, arg) => {
         if(json.type == "result"){
           requestRunning = false;
 
-          DB.insertTest({
+          DB.insertTest(mainWindow, {
             $id: null,
             $timestamp: json.timestamp,
             $ping_jitter: json.ping.jitter,
@@ -76,7 +76,8 @@ ipcMain.on('request-data', (event, arg) => {
             $server_port: json.server.port,
             $server_ip: json.server.ip,
             $speedtest_id: json.result.id,
-            $speedtest_url: json.result.url
+            $speedtest_url: json.result.url,
+            $tags: ""
           });
 
         }
@@ -105,6 +106,18 @@ ipcMain.on('request-tests-data', (event, arg) => {
 ipcMain.on('request-test-data', (event, arg) => {
 
   DB.getTest(mainWindow, arg);
+
+});
+
+ipcMain.on('request-tags-data', (event, arg) => {
+
+  DB.getTest(mainWindow, arg);
+
+});
+
+ipcMain.on('update-tags', (event, arg) => {
+
+  DB.updateTags(arg.id, arg.tags);
 
 });
 

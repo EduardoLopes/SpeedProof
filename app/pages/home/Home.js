@@ -22,6 +22,10 @@ export default function Home(){
   const [errorMessage, setErrorMessage] = useState(null);
   const [testFinished, setTestFinished] = useState(false);
   const [tags, setTags] = useState([]);
+  const [tagsOnDB, setTagsOnDB] = useState([]);
+  const [tagsInputValue, setTagsInputValue] = useState([]);
+  const [lastID, setLastID] = useState(null);
+
 
   function requestData(){
 
@@ -143,6 +147,30 @@ export default function Home(){
 
   }
 
+  function tagColor(tag){
+
+    let color = "grey";
+
+    color = tagsOnDB.includes(tag) ? 'green' : 'grey';
+
+    if(tagsOnDB.includes(tag) && tags.includes(tag)){
+      color = "green";
+    }
+
+    if(tagsOnDB.includes(tag) && tags.includes(tag) == false){
+      color = "red";
+    }
+
+    return color;
+
+  }
+
+  function receiveLastID(event, data){
+
+    setLastID(data);
+
+  }
+
   useEffect(() => {
 
     electron.ipcRenderer.on('ping', receivePing);
@@ -152,6 +180,7 @@ export default function Home(){
     electron.ipcRenderer.on('result', receiveData);
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
+    electron.ipcRenderer.on('last-id', receiveLastID);
 
     return () => {
 
@@ -162,6 +191,7 @@ export default function Home(){
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
       electron.ipcRenderer.removeListener('speedtest-error', handleSpeedtestError);
+      electron.ipcRenderer.removeListener('last-id', receiveLastID);
 
       //kill speedtest process if it is running and the page is changed
       electron.ipcRenderer.send('before-unload', "data");
@@ -221,17 +251,28 @@ export default function Home(){
 
       </Segment>
 
-      <Segment>
+      { lastID && (<Segment>
 
         <Form onSubmit={(event) => {
 
+          setTagsOnDB(tags);
+          setTagsInputValue(tags.toString());
+
+          electron.ipcRenderer.send('update-tags', {
+            id: lastID,
+            tags: tags.toString()
+          });
+
         }}>
             <Grid>
-            <Grid.Column width={13}>
+            <Grid.Column width={12}>
                 <Form.Input
                   placeholder='Tags'
                   name='name'
+                  value={tagsInputValue}
                   onChange={(event) => {
+
+                    setTagsInputValue(event.target.value);
 
                     let splitedTags = event.target.value.split(",");
 
@@ -239,24 +280,27 @@ export default function Home(){
 
                     splitedTags = splitedTags.filter((tag) => !(/^\s*$/.test(tag)));
 
+                    splitedTags = [...new Set(splitedTags)];
+
                     setTags(splitedTags);
+
 
                   }}
                 />
               </Grid.Column>
-              <Grid.Column width={3}>
-                <Form.Button style={{width: '100%'}} color="green" content='Add tags' />
+              <Grid.Column width={4}>
+                <Form.Button style={{width: '100%'}} color="green" content={tagsOnDB.length === 0 ? 'Add tags' : 'Update tags'} />
               </Grid.Column>
             </Grid>
         </Form>
-        {tags.length !== 0 ? (<Divider/>) : ""}
-        {tags.map((tag, index) => {
-          return (<Label className={ styles.tagsLable }key={index}>
+        {tags.length !== 0 || tagsOnDB.length !== 0 ? (<Divider/>) : ""}
+        {[...new Set([...tags, ...tagsOnDB])].map((tag, index) => {
+          return (<Label color={tagColor(tag)} className={ styles.tagsLable } key={index}>
             {tag}
           </Label>)
         })}
 
-      </Segment>
+      </Segment>)}
 
     </Container>
   );
