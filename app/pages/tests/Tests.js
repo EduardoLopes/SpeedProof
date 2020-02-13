@@ -127,7 +127,7 @@ export default function Tests(){
         <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
         <Table.Cell selectable>
           <NavLink exact to={`/info/${test.id}`}>
-            <Icon name='arrow right' />
+            <Icon name='arrow right' fitted size="small" />
           </NavLink>
         </Table.Cell>
       </Table.Row>
@@ -208,7 +208,7 @@ export default function Tests(){
           </AreaChart>
         </ResponsiveContainer>
       </Segment>)}
-      <Table celled padded>
+      <Table celled compact striped>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell>#</Table.HeaderCell>
