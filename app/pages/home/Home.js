@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./Home.scss";
-import { Container, Button, Segment, Label, Icon, Progress, Message, Divider, Statistic} from 'semantic-ui-react'
+import { Container, Button, Segment, Label, Icon, Message, Divider} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar/Navbar.js";
 import Tags from "../../components/Tags/Tags.js";
+import Panel from "../../components/Panel/Panel.js";
 const electron = window.require("electron");
 
 export default function Home(){
@@ -66,28 +67,6 @@ export default function Home(){
 
 
   };
-
-  function formatSpeed(speed){
-
-    return (
-      <Statistic size='small'>
-        <Statistic.Value>{speed.toFixed(2)}</Statistic.Value>
-        <Statistic.Label>Mbps</Statistic.Label>
-      </Statistic>
-    );
-
-  }
-
-  function formatPing(time){
-
-    return (
-      <Statistic size='small'>
-        <Statistic.Value>{Math.floor(time)}</Statistic.Value>
-        <Statistic.Label>ms</Statistic.Label>
-      </Statistic>
-    );
-
-  }
 
   function receivePing(event, data){
 
@@ -188,33 +167,17 @@ export default function Home(){
         <Message.Header>Error</Message.Header>
         <p>{errorMessage}</p>
       </Message>)}
-      {/* <Progress percent={ (pingProgress + downloadProgress + uploadProgress) / 3} size='tiny' className="general" indicating/> */}
-      <Segment.Group horizontal>
-        <Segment size="massive" textAlign="center">
-          <Progress percent={pingProgress} attached='bottom' indicating />
-          <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-          <Icon name='sync'/> Ping
-          </Label>
-          {formatPing(ping)}
-        </Segment>
-        <Segment size="massive" textAlign="center">
-          <Progress percent={downloadProgress} attached='bottom' indicating />
-          <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
-          <Icon name='download'/> Download
-          </Label>
-          {formatSpeed(downloadSpeed)}
-        </Segment>
-        <Segment size="massive" textAlign="center">
-          <Progress percent={uploadProgress} attached='bottom' indicating />
-          <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
-          <Icon name='upload'/> Upload
-          </Label>
-          {formatSpeed(uploadSpeed)}
-        </Segment>
-      </Segment.Group>
+
+      <Panel
+        pingProgress={pingProgress}
+        downloadProgress={downloadProgress}
+        uploadProgress={uploadProgress}
+        downloadSpeed={downloadSpeed}
+        uploadSpeed={uploadSpeed}
+        ping={ping}
+      />
 
       <Segment size="big">
-
         <Label size="large" color="orange" ribbon>
           Client
         </Label>

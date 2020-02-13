@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useMemo} from "react";
-import { Container, Segment, Label,  Icon, Statistic, Button, List } from 'semantic-ui-react'
+import React, { useState, useEffect } from "react";
+import { Container, Segment, Label,  Icon, Button, List } from 'semantic-ui-react'
 import Tags from "../../components/Tags/Tags.js";
+import Panel from "../../components/Panel/Panel.js";
 const electron = window.require("electron");
 import moment from "moment";
 import { useParams } from "react-router-dom";
@@ -11,28 +12,6 @@ export default function Info(){
   let { id } = useParams();
 
   const [testData, setTestData] = useState(null);
-
-  function formatSpeed(speed){
-
-    return (
-      <Statistic size='small'>
-        <Statistic.Value>{(speed / 125000).toFixed(2)}</Statistic.Value>
-        <Statistic.Label>Mbps</Statistic.Label>
-      </Statistic>
-    );
-
-  }
-
-  function formatPing(time){
-
-    return (
-      <Statistic size='small'>
-        <Statistic.Value>{Math.floor(time)}</Statistic.Value>
-        <Statistic.Label>ms</Statistic.Label>
-      </Statistic>
-    );
-
-  }
 
   function receiveData(event, data){
 
@@ -56,8 +35,8 @@ export default function Info(){
 
   return (
     <div>
-      { testData && (<Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
-        {/* <Navbar /> */}
+      { testData && (
+      <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
         <Button
           as={NavLink}
           exact
@@ -65,30 +44,14 @@ export default function Info(){
           content='Back'
           icon='arrow left'
         />
-    <Label size="large">
-      <Icon name='time' /> {moment(testData.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a")}
-    </Label>
-
-        <Segment.Group horizontal>
-          <Segment size="massive" textAlign="center">
-            <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='sync'/> Ping
-            </Label>
-            {formatPing(testData.ping_latency)}
-          </Segment>
-          <Segment size="massive" textAlign="center">
-            <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='download'/> Download
-            </Label>
-            {formatSpeed(testData.download_bandwidth)}
-          </Segment>
-          <Segment size="massive" textAlign="center">
-            <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='upload'/> Upload
-            </Label>
-            {formatSpeed(testData.upload_bandwidth)}
-          </Segment>
-        </Segment.Group>
+        <Label size="large">
+          <Icon name='time' /> {moment(testData.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a")}
+        </Label>
+        <Panel
+          downloadSpeed={testData.download_bandwidth}
+          uploadSpeed={testData.upload_bandwidth}
+          ping={testData.ping_latency}
+        />
 
         <Segment.Group compact={false} horizontal>
           <Segment padded>
