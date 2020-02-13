@@ -19,7 +19,10 @@ export default function Tests(){
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
   const [searchInputOnFocus, setSearchInputOnFocus] = useState(false);
-
+  const [sorted, setSorted] = useState({
+    column: '',
+    direction: 'ascending'
+  });
   function receiveData(event, data){
 
     setTestsData(data);
@@ -63,6 +66,29 @@ export default function Tests(){
 
   }
 
+  function handleSort(clickedColumn){
+
+    if(sorted.column !== clickedColumn){
+
+      setTestsData(collection.sortBy(testsData, [clickedColumn]));
+      setSorted({
+        column: clickedColumn,
+        direction: 'ascending'
+      });
+
+      return;
+
+    }
+
+    setTestsData(testsData.reverse());
+
+    setSorted({
+      column: clickedColumn,
+      direction: sorted.direction === 'ascending' ? 'descending' : 'ascending'
+    });
+
+  }
+
   useEffect(() => {
 
     requestSearchData();
@@ -95,13 +121,13 @@ export default function Tests(){
 
     });
 
-    collection.sortBy(data, ['milliseconds']);
+    //collection.sortBy(data, ['milliseconds']);
 
     setChartData(data);
     setMaxPing(maxP);
     setMaxValueDownloadUpload(maxValue);
 
-  }, [testsData]);
+  }, [testsData, sorted]);
 
   useEffect(() => {
 
@@ -212,16 +238,16 @@ export default function Tests(){
           </AreaChart>
         </ResponsiveContainer>
       </Segment>)}
-      <Table celled compact striped>
+      <Table sortable celled compact striped>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell>#</Table.HeaderCell>
-            <Table.HeaderCell>Ping</Table.HeaderCell>
-            <Table.HeaderCell>Download</Table.HeaderCell>
-            <Table.HeaderCell>Upload</Table.HeaderCell>
-            <Table.HeaderCell>ISP</Table.HeaderCell>
-            <Table.HeaderCell>Server</Table.HeaderCell>
-            <Table.HeaderCell>When</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'id' ? sorted.direction : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'ping_latency' ? sorted.direction : null} onClick={handleSort.bind(this, 'ping_latency')}>Ping</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'download_bandwidth' ? sorted.direction : null} onClick={handleSort.bind(this, 'download_bandwidth')}>Download</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'upload_bandwidth' ? sorted.direction : null} onClick={handleSort.bind(this, 'upload_bandwidth')}>Upload</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'isp' ? sorted.direction : null} onClick={handleSort.bind(this, 'isp')}>ISP</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'server_name' ? sorted.direction : null} onClick={handleSort.bind(this, 'server_name')}>Server</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'timestamp_milliseconds' ? sorted.direction : null} onClick={handleSort.bind(this, 'timestamp_milliseconds')}>When</Table.HeaderCell>
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
