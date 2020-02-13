@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "yarn run electron-builder install-app-deps",
-    "parcel-server": "yarn run parcel -p 3000 ./app/index.html --out-dir build/",
+    "parcel-server": "yarn run parcel -p 3000 ./app/index.html --out-dir build/ --no-autoinstall",
     "parcel-build": "yarn run parcel build ./app/index.html --out-dir build/ --public-url ./",
     "wait-server": "wait-on http://localhost:3000",
     "clean-build": "yarn run del build/ .cache dist/",
@@ -50,6 +50,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
+    "recharts": "^2.0.0-beta.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "speedtest-net": "^1.6.0",
