@@ -17,7 +17,7 @@ export default function Tests(){
   const [chartData, setChartData] = useState([]);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
-
+  const [searchInputOnFocus, setSearchInputOnFocus] = useState(false);
 
   function receiveData(event, data){
 
@@ -140,34 +140,36 @@ export default function Tests(){
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>
-              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+              <Form.Input onFocus={() => { setSearchInputOnFocus(true) }} onBlur={() => { setSearchInputOnFocus(false) }} placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
             <Grid.Column width={4}>
               <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
           </Grid>
           </Form>
-          <Grid>
-            <Grid.Column width={16} textAlign="right">
-              <Button.Group size={'tiny'}>
-                <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
+          {searchInputOnFocus && (
+            <Grid>
+              <Grid.Column width={16} textAlign="right">
+                <Button.Group size={'tiny'}>
+                  <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
-                  setSearchByTag(!searchByTag);
+                    setSearchByTag(!searchByTag);
 
-                  }}>By Tags</Button>
-                <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
+                    }}>By Tags</Button>
+                  <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
 
-                  setSearchByISP(!searchByISP);
+                    setSearchByISP(!searchByISP);
 
-                  }}>By ISP</Button>
-                <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
+                    }}>By ISP</Button>
+                  <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
 
-                  setSearchByServerName(!searchByServerName);
+                    setSearchByServerName(!searchByServerName);
 
-                  }}>By Server Name</Button>
-              </Button.Group>
-            </Grid.Column>
-          </Grid>
+                    }}>By Server Name</Button>
+                </Button.Group>
+              </Grid.Column>
+            </Grid>
+          )}
       </Segment>
       {chartData.length > 0 && (<Segment>
         <ResponsiveContainer width={"100%"} height={200}>
