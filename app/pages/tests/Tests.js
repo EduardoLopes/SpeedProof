@@ -6,6 +6,7 @@ const electron = window.require("electron");
 import moment from "moment";
 import { NavLink } from "react-router-dom";
 import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import collection from 'lodash/collection';
 
 export default function Tests(){
 
@@ -84,7 +85,8 @@ export default function Tests(){
         name: moment(test.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a"),
         download: (test.download_bandwidth / 125000).toFixed(2),
         upload: (test.upload_bandwidth / 125000).toFixed(2),
-        ping: test.ping_latency
+        ping: test.ping_latency,
+        milliseconds: test.timestamp_milliseconds
       });
 
       maxValue = Math.max(maxValue, (test.download_bandwidth / 125000));
@@ -93,7 +95,7 @@ export default function Tests(){
 
     });
 
-    data.reverse();
+    collection.sortBy(data, ['milliseconds']);
 
     setChartData(data);
     setMaxPing(maxP);
