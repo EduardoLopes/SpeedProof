@@ -77,14 +77,14 @@ export default function Home(){
 
   function receiveDownload(event, data){
 
-    setDownloadSpeed(data.download.bandwidth / 125000);
+    setDownloadSpeed(data.download.bandwidth);
     setDownloadProgress(data.download.progress * 100);
 
   }
 
   function receiveUpload(event, data){
 
-    setUploadSpeed(data.upload.bandwidth / 125000);
+    setUploadSpeed(data.upload.bandwidth);
     setUploadProgress(data.upload.progress * 100);
 
   }
