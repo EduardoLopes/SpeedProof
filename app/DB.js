@@ -7,6 +7,7 @@ db.serialize(function() {
   db.run(`CREATE TABLE IF NOT EXISTS tests (
     id INTEGER PRIMARY KEY,
     timestamp TEXT NOT NULL,
+    timestamp_milliseconds INTEGER NOT NULL,
     ping_jitter REAL NOT NULL,
     ping_latency REAL NOT NULL,
     download_bandwidth INTEGER NOT NULL,
@@ -49,6 +50,7 @@ function insertTest(mainWindow, values){
     VALUES (
       $id,
       $timestamp,
+      $timestamp_milliseconds,
       $ping_jitter,
       $ping_latency,
       $download_bandwidth,

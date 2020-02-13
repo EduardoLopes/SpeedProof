@@ -4,6 +4,7 @@ const path = require('path');
 const isDev = require("electron-is-dev");
 const DB = require("./DB.js");
 const rootPath = require('electron-root-path').rootPath;
+const moment = require('moment');
 
 let mainWindow;
 let speedtest;
@@ -54,6 +55,7 @@ ipcMain.on('request-data', (event, arg) => {
           DB.insertTest(mainWindow, {
             $id: null,
             $timestamp: json.timestamp,
+            $timestamp_milliseconds: parseInt(moment(json.timestamp, moment.ISO_8601).format("x")),
             $ping_jitter: json.ping.jitter,
             $ping_latency: json.ping.latency,
             $download_bandwidth: json.download.bandwidth,
