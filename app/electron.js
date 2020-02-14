@@ -30,6 +30,12 @@ ipcMain.on('request-data', (event, arg) => {
   const pingVariation = [];
   const downloadVariation = [];
   const uploadVariation = [];
+  const countResults = {
+    ping: 0,
+    download: 0,
+    upload: 0,
+    result: 1
+  };
 
   speedtest.stdout.setEncoding('utf8');
   speedtest.stdout.on('data', (chunk) => {
@@ -51,26 +57,31 @@ ipcMain.on('request-data', (event, arg) => {
           return;
         }
 
-        mainWindow.webContents.send(`${json.type}`, json);
+        if(countResults[json.type] > 0){
 
-        if(json.type === 'ping'){
+          mainWindow.webContents.send(`${json.type}`, json);
 
-          pingVariation.push(json.ping.latency);
+          if(json.type === 'ping'){
+
+            pingVariation.push(json.ping.latency);
+
+          }
+
+          if(json.type === 'download'){
+
+            downloadVariation.push(json.download.bandwidth);
+
+          }
+
+          if(json.type === 'upload'){
+
+            uploadVariation.push(json.upload.bandwidth);
+
+          }
 
         }
 
-        if(json.type === 'download'){
-
-          downloadVariation.push(json.download.bandwidth);
-
-        }
-
-        if(json.type === 'upload'){
-
-          uploadVariation.push(json.upload.bandwidth);
-
-        }
-
+        countResults[json.type] =+ 1;
 
         if(json.type == "result"){
 
