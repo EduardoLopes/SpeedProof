@@ -135,7 +135,7 @@ export default function Panel(props){
               </Label>
               {formatPing(ping)}
             </Segment>
-            <Segment>
+            <Segment style={{padding: 0}}>
               {pingProgress > 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
               {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" dataKey="ping"/>)}
             </Segment>
@@ -151,7 +151,7 @@ export default function Panel(props){
               {formatSpeed(downloadSpeed)}
             </Segment>
 
-            <Segment>
+            <Segment style={{padding: 0}}>
               {downloadProgress > 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
               {downloadData.length > 1 && (<Chart data={downloadData} color="#6435c9" dataKey="download"/>)}
             </Segment>
@@ -166,7 +166,7 @@ export default function Panel(props){
               </Label>
               {formatSpeed(uploadSpeed)}
             </Segment>
-            <Segment>
+            <Segment style={{padding: 0}}>
               {uploadProgress > 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
               {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload"/>)}
             </Segment>
