@@ -13,8 +13,9 @@ export default function Chart(props){
             <stop offset="95%" stopColor={props.color} stopOpacity={1}/>
           </linearGradient>
         </defs>
+        {props.domain && (<YAxis domain={props.domain} hide/>)}
         <Tooltip />
-        <Area type="monotone" dataKey={props.dataKey} stroke={props.color} fillOpacity={1} fill={`url(#id-${props.color})`} />
+        <Area baseLine={80} type="monotone" dataKey={props.dataKey} stroke={props.color} fillOpacity={1} fill={`url(#id-${props.color})`} />
       </AreaChart>
     </ResponsiveContainer>
   );

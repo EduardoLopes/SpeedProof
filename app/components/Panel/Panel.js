@@ -8,6 +8,7 @@ export default function Panel(props){
   const [pingData, setPingData] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
   const [uploadData, setUploadData] = useState([]);
+  const [maxDownload, setMaxDownload] = useState(0);
 
   function formatSpeed(speed){
 
@@ -43,6 +44,7 @@ export default function Panel(props){
 
       if(downloadSpeed !== 0){
         setDownloadData(downloadData => [...downloadData, {download: parseFloat((downloadSpeed / 125000).toFixed(2))}]);
+        setMaxDownload(Math.max(maxDownload, parseFloat((downloadSpeed / 125000).toFixed(2))));
       }
 
       if(downloadSpeed === 0){
@@ -78,14 +80,19 @@ export default function Panel(props){
     useEffect(() => {
 
       const data = [];
+      let max = 0;
 
       if(props.downloadData){
 
         props.downloadData.split(",").forEach((bandwidth, index) => {
           data.push({download: parseFloat((bandwidth / 125000).toFixed(2))});
+
+          max = Math.max(max, parseFloat((bandwidth / 125000).toFixed(2)));
         });
 
         setDownloadData(data);
+
+        setMaxDownload(max);
 
       }
 
@@ -168,7 +175,7 @@ export default function Panel(props){
             </Segment>
             <Segment style={{padding: 0}}>
               {uploadProgress > 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
-              {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload"/>)}
+              {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload" domain={[0, maxDownload]}/>)}
             </Segment>
           </Segment.Group>
         </Grid.Column>
