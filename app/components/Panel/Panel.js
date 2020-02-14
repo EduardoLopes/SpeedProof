@@ -1,5 +1,7 @@
-import React from 'react';
-import { Segment, Label, Icon, Statistic, Progress} from 'semantic-ui-react'
+import React, { useState, useEffect } from 'react';
+import { Segment, Label, Icon, Statistic, Progress, Grid} from 'semantic-ui-react'
+import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import styles from "./Panel.scss";
 
 export default function Panel(props){
 
@@ -34,7 +36,9 @@ export default function Panel(props){
     ping } = props;
 
   return (
-    <Segment.Group horizontal>
+    <Grid columns='equal' padded="vertically">
+      <Grid.Row stretched>
+      <Grid.Column>
       <Segment size="massive" textAlign="center">
         {pingProgress >= 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
         <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
@@ -42,6 +46,8 @@ export default function Panel(props){
         </Label>
         {formatPing(ping)}
       </Segment>
+      </Grid.Column>
+      <Grid.Column>
       <Segment size="massive" textAlign="center">
         {downloadProgress >= 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
         <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
@@ -49,6 +55,8 @@ export default function Panel(props){
         </Label>
         {formatSpeed(downloadSpeed)}
       </Segment>
+      </Grid.Column>
+      <Grid.Column>
       <Segment size="massive" textAlign="center">
         {uploadProgress >= 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
         <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
@@ -56,7 +64,9 @@ export default function Panel(props){
         </Label>
         {formatSpeed(uploadSpeed)}
       </Segment>
-    </Segment.Group>
+      </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 
 }

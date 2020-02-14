@@ -6,6 +6,7 @@ import Tags from "../../components/Tags/Tags.js";
 import Panel from "../../components/Panel/Panel.js";
 const electron = window.require("electron");
 
+
 export default function Home(){
 
   const [startButton, setStartButton] = useState({
@@ -162,7 +163,9 @@ export default function Home(){
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Navbar testsItemDisabled={startButton.disabled}/>
-      <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
+      <Segment style={{marginBottom: 0, paddingRight: "0", paddingLeft: "0"}} basic>
+        <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
+      </Segment>
       {errorMessage && (<Message negative>
         <Message.Header>Error</Message.Header>
         <p>{errorMessage}</p>
