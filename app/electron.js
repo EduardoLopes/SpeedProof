@@ -27,6 +27,10 @@ ipcMain.on('request-data', (event, arg) => {
 
   speedtest = spawn(speedtest_path, ['--format', 'jsonl']);
 
+  const pingVariation = [];
+  const downloadVariation = [];
+  const uploadVariation = [];
+
   speedtest.stdout.setEncoding('utf8');
   speedtest.stdout.on('data', (chunk) => {
 
@@ -49,7 +53,27 @@ ipcMain.on('request-data', (event, arg) => {
 
         mainWindow.webContents.send(`${json.type}`, json);
 
+        if(json.type === 'ping'){
+
+          pingVariation.push(json.ping.latency);
+
+        }
+
+        if(json.type === 'download'){
+
+          downloadVariation.push(json.download.bandwidth);
+
+        }
+
+        if(json.type === 'upload'){
+
+          uploadVariation.push(json.upload.bandwidth);
+
+        }
+
+
         if(json.type == "result"){
+
           requestRunning = false;
 
           DB.insertTest(mainWindow, {
@@ -58,12 +82,15 @@ ipcMain.on('request-data', (event, arg) => {
             $timestamp_milliseconds: parseInt(moment(json.timestamp, moment.ISO_8601).format("x")),
             $ping_jitter: json.ping.jitter,
             $ping_latency: json.ping.latency,
+            $ping_variation: pingVariation.toString(),
             $download_bandwidth: json.download.bandwidth,
             $download_bytes: json.download.bytes,
             $download_elapsed: json.download.elapsed,
+            $download_variation: downloadVariation.toString(),
             $upload_bandwidth: json.upload.bandwidth,
             $upload_bytes: json.upload.bytes,
             $upload_elapsed: json.upload.elapsed,
+            $upload_variation: uploadVariation.toString(),
             $isp: json.isp,
             $interface_internal_ip: json.interface.internalIp,
             $interface_name: json.interface.name,

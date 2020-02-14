@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Label, Icon, Statistic, Progress, Grid} from 'semantic-ui-react'
-import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import Chart from './Chart.js';
 import styles from "./Panel.scss";
 
 export default function Panel(props){
+
+  const [pingData, setPingData] = useState([]);
+  const [downloadData, setDownloadData] = useState([]);
+  const [uploadData, setUploadData] = useState([]);
 
   function formatSpeed(speed){
 
@@ -35,36 +39,139 @@ export default function Panel(props){
     uploadSpeed,
     ping } = props;
 
+    useEffect(() => {
+
+      if(downloadSpeed !== 0){
+        setDownloadData(downloadData => [...downloadData, {download: parseFloat((downloadSpeed / 125000).toFixed(2))}]);
+      }
+
+      if(downloadSpeed === 0){
+        setDownloadData([]);
+      }
+
+    }, [downloadSpeed]);
+
+    useEffect(() => {
+
+      if(uploadSpeed !== 0){
+        setUploadData(uploadData => [...uploadData, {upload: parseFloat((uploadSpeed / 125000).toFixed(2))}]);
+      }
+
+      if(uploadSpeed === 0){
+        setUploadData([]);
+      }
+
+    }, [uploadSpeed]);
+
+    useEffect(() => {
+
+      if(ping !== 0){
+        setPingData(pingData => [...pingData, {ping: ping}]);
+      }
+
+      if(ping === 0){
+        setPingData([]);
+      }
+
+    }, [ping]);
+
+    useEffect(() => {
+
+      const data = [];
+
+      if(props.downloadData){
+
+        props.downloadData.split(",").forEach((bandwidth, index) => {
+          data.push({download: parseFloat((bandwidth / 125000).toFixed(2))});
+        });
+
+        setDownloadData(data);
+
+      }
+
+    }, [props.downloadData]);
+
+    useEffect(() => {
+
+      const data = [];
+
+      if(props.uploadData){
+
+        props.uploadData.split(",").forEach((bandwidth, index) => {
+          data.push({upload: parseFloat((bandwidth / 125000).toFixed(2))});
+        });
+
+        setUploadData(data);
+
+      }
+
+    }, [props.uploadData]);
+
+    useEffect(() => {
+
+      const data = [];
+
+      if(props.pingData){
+
+        props.pingData.split(",").forEach((latency, index) => {
+          data.push({ping: latency});
+        });
+
+        setPingData(data);
+
+      }
+
+    }, [props.pingData]);
+
   return (
     <Grid columns='equal' padded="vertically">
-      <Grid.Row stretched>
-      <Grid.Column>
-      <Segment size="massive" textAlign="center">
-        {pingProgress >= 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
-        <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-        <Icon name='sync'/> Ping
-        </Label>
-        {formatPing(ping)}
-      </Segment>
-      </Grid.Column>
-      <Grid.Column>
-      <Segment size="massive" textAlign="center">
-        {downloadProgress >= 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
-        <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
-        <Icon name='download'/> Download
-        </Label>
-        {formatSpeed(downloadSpeed)}
-      </Segment>
-      </Grid.Column>
-      <Grid.Column>
-      <Segment size="massive" textAlign="center">
-        {uploadProgress >= 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
-        <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
-        <Icon name='upload'/> Upload
-        </Label>
-        {formatSpeed(uploadSpeed)}
-      </Segment>
-      </Grid.Column>
+      <Grid.Row>
+        <Grid.Column>
+          <Segment.Group>
+            <Segment size="massive" textAlign="center">
+
+              <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
+              <Icon name='sync'/> Ping
+              </Label>
+              {formatPing(ping)}
+            </Segment>
+            <Segment>
+              {pingProgress > 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
+              {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" dataKey="ping"/>)}
+            </Segment>
+          </Segment.Group>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment.Group>
+
+            <Segment size="massive" textAlign="center">
+              <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
+              <Icon name='download'/> Download
+              </Label>
+              {formatSpeed(downloadSpeed)}
+            </Segment>
+
+            <Segment>
+              {downloadProgress > 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
+              {downloadData.length > 1 && (<Chart data={downloadData} color="#6435c9" dataKey="download"/>)}
+            </Segment>
+
+          </Segment.Group>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment.Group>
+            <Segment size="massive" textAlign="center">
+              <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
+              <Icon name='upload'/> Upload
+              </Label>
+              {formatSpeed(uploadSpeed)}
+            </Segment>
+            <Segment>
+              {uploadProgress > 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
+              {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload"/>)}
+            </Segment>
+          </Segment.Group>
+        </Grid.Column>
       </Grid.Row>
     </Grid>
   );
