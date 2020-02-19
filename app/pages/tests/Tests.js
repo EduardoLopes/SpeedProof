@@ -7,6 +7,7 @@ import moment from "moment";
 import { NavLink } from "react-router-dom";
 import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import collection from 'lodash/collection';
+import Calendar from './Calendar.js';
 
 export default function Tests(){
 
@@ -177,6 +178,7 @@ export default function Tests(){
 
         <Grid>
           <Grid.Column width={16} textAlign="right">
+            <Calendar onChange={(value) => {console.log(value)}}/>
             <Button.Group size={'tiny'}>
               <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
@@ -195,6 +197,7 @@ export default function Tests(){
                 }}>By Server Name</Button>
             </Button.Group>
           </Grid.Column>
+
         </Grid>
 
       </Segment>
