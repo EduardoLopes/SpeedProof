@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo} from "react";
-import { Container, Table, Grid, Form, Icon, Button, Segment } from 'semantic-ui-react'
+import { Container, Table, Grid, Form, Icon, Button, Segment, Transition } from 'semantic-ui-react'
 import styles from "./Tests.scss";
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
@@ -18,7 +18,6 @@ export default function Tests(){
   const [chartData, setChartData] = useState([]);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
-  const [searchInputOnFocus, setSearchInputOnFocus] = useState(false);
   const [sorted, setSorted] = useState({
     column: '',
     direction: 'ascending'
@@ -168,37 +167,38 @@ export default function Tests(){
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>
-              <Form.Input onFocus={() => { setSearchInputOnFocus(true) }} onBlur={() => { setSearchInputOnFocus(false) }} placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
             <Grid.Column width={4}>
               <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
             </Grid.Column>
           </Grid>
-          </Form>
-          {searchInputOnFocus && (
-            <Grid>
-              <Grid.Column width={16} textAlign="right">
-                <Button.Group size={'tiny'}>
-                  <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
+        </Form>
 
-                    setSearchByTag(!searchByTag);
+        <Grid>
+          <Grid.Column width={16} textAlign="right">
+            <Button.Group size={'tiny'}>
+              <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
-                    }}>By Tags</Button>
-                  <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
+                setSearchByTag(!searchByTag);
 
-                    setSearchByISP(!searchByISP);
+                }}>By Tags</Button>
+              <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
 
-                    }}>By ISP</Button>
-                  <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
+                setSearchByISP(!searchByISP);
 
-                    setSearchByServerName(!searchByServerName);
+                }}>By ISP</Button>
+              <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
 
-                    }}>By Server Name</Button>
-                </Button.Group>
-              </Grid.Column>
-            </Grid>
-          )}
+                setSearchByServerName(!searchByServerName);
+
+                }}>By Server Name</Button>
+            </Button.Group>
+          </Grid.Column>
+        </Grid>
+
       </Segment>
+      <Transition.Group animation="fade down" duration={800}>
       {chartData.length > 0 && (<Segment>
         <ResponsiveContainer width={"100%"} height={200}>
           <AreaChart data={chartData} >
@@ -238,7 +238,9 @@ export default function Tests(){
           </AreaChart>
         </ResponsiveContainer>
       </Segment>)}
-      <Table sortable celled compact striped>
+      </Transition.Group>
+
+      {testsData.length > 0 && (<Table sortable celled compact striped>
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell sorted={sorted.column === 'id' ? sorted.direction : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>
@@ -254,7 +256,7 @@ export default function Tests(){
         <Table.Body>
           {testsRows}
         </Table.Body>
-      </Table>
+      </Table>)}
 
     </Container>
   );
