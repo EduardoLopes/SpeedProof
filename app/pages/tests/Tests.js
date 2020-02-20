@@ -18,7 +18,13 @@ export default function Tests(){
   const [searchByISP, setSearchByISP] = useState(true);
   const [searchByServerName, setSearchByServerName] = useState(true);
   const [searchDates, setSearchDates] = useState([]);
-  const [lastSearch, setLastSearch] = useState({});
+  const [lastSearch, setLastSearch] = useState({
+    keyword: '',
+    byTag: true,
+    byISP: true,
+    byServerName: true,
+    dates: []
+  });
   const [chartData, setChartData] = useState([]);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
