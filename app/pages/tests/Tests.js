@@ -7,6 +7,7 @@ import moment from "moment";
 import { NavLink } from "react-router-dom";
 import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import collection from 'lodash/collection';
+import _lang from 'lodash/lang';
 import Calendar from './Calendar.js';
 
 export default function Tests(){
@@ -16,6 +17,8 @@ export default function Tests(){
   const [searchByTag, setSearchByTag] = useState(true);
   const [searchByISP, setSearchByISP] = useState(true);
   const [searchByServerName, setSearchByServerName] = useState(true);
+  const [searchDates, setSearchDates] = useState([]);
+  const [lastSearch, setLastSearch] = useState({});
   const [chartData, setChartData] = useState([]);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
@@ -23,6 +26,7 @@ export default function Tests(){
     column: '',
     direction: 'ascending'
   });
+
   function receiveData(event, data){
 
     setTestsData(data);
@@ -33,7 +37,7 @@ export default function Tests(){
 
     requestSearchData();
 
-    if(searchKeyword.length == 0){
+    if(searchKeyword.length === 0 && searchDates.length === 0){
       electron.ipcRenderer.send('request-tests-data', "data");
     }
 
@@ -41,16 +45,26 @@ export default function Tests(){
 
   function requestSearchData(){
 
-    if(searchKeyword.length > 0 && (searchByTag === true || searchByISP === true || searchByServerName === true)){
+    const search = getSearchConfig();
 
-      electron.ipcRenderer.send('request-test-search-data', {
-        keyword: searchKeyword,
-        byTag: searchByTag,
-        byISP: searchByISP,
-        byServerName: searchByServerName
-      });
+    if(!_lang.isEqual(search, lastSearch)){
+
+      electron.ipcRenderer.send('request-test-search-data', search);
+      setLastSearch(search);
 
     }
+
+  }
+
+  function getSearchConfig(){
+
+    return {
+      keyword: searchKeyword,
+      byTag: searchByTag,
+      byISP: searchByISP,
+      byServerName: searchByServerName,
+      dates: searchDates
+    };
 
   }
 
@@ -89,15 +103,31 @@ export default function Tests(){
 
   }
 
-  useEffect(() => {
+  function handleCalendarChange(value){
 
-    requestSearchData();
+    if(value && value[0] && value[1]){
 
-    if(searchByTag === false && searchByISP === false && searchByServerName === false){
-      electron.ipcRenderer.send('request-tests-data', "data");
+      value[0].hour(0);
+      value[0].minute(0);
+      value[0].second(0);
+      value[1].hour(0);
+      value[1].minute(0);
+      value[1].second(0);
+
+      setSearchDates([
+        parseInt(value[0].format("x")),
+        parseInt(value[1].format("x"))
+      ]);
+
     }
 
-  }, [searchByTag, searchByISP, searchByServerName]);
+  }
+
+  // useEffect(() => {
+
+  //   requestSearchData();
+
+  // }, [searchByTag, searchByISP, searchByServerName]);
 
   useEffect(() => {
 
@@ -121,8 +151,6 @@ export default function Tests(){
 
     });
 
-    //collection.sortBy(data, ['milliseconds']);
-
     setChartData(data);
     setMaxPing(maxP);
     setMaxValueDownloadUpload(maxValue);
@@ -144,23 +172,6 @@ export default function Tests(){
 
   }, []);
 
-  const testsRows = testsData.map((test, index) => (
-      <Table.Row key={test.id}>
-        <Table.Cell >{test.id}</Table.Cell>
-        <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
-        <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-        <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-        <Table.Cell>{test.isp}</Table.Cell>
-        <Table.Cell>{test.server_name}</Table.Cell>
-        <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
-        <Table.Cell selectable>
-          <NavLink exact to={`/info/${test.id}`}>
-            <Icon name='arrow right' fitted size="small" />
-          </NavLink>
-        </Table.Cell>
-      </Table.Row>
-    ));
-
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Navbar />
@@ -168,17 +179,17 @@ export default function Tests(){
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>
-              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' />
             </Grid.Column>
             <Grid.Column width={4}>
-              <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={searchByTag == false && searchByISP == false && searchByServerName == false} />
+              <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} />
             </Grid.Column>
           </Grid>
         </Form>
 
         <Grid>
           <Grid.Column width={16} textAlign="right">
-            <Calendar onChange={(value) => {console.log(value)}}/>
+            <Calendar onChange={handleCalendarChange}/>
             <Button.Group size={'tiny'}>
               <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
@@ -257,7 +268,22 @@ export default function Tests(){
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {testsRows}
+          {testsData.map((test, index) => (
+          <Table.Row key={test.id}>
+            <Table.Cell >{test.id}</Table.Cell>
+            <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
+            <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+            <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+            <Table.Cell>{test.isp}</Table.Cell>
+            <Table.Cell>{test.server_name}</Table.Cell>
+            <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
+            <Table.Cell selectable>
+              <NavLink exact to={`/info/${test.id}`}>
+                <Icon name='arrow right' fitted size="small" />
+              </NavLink>
+            </Table.Cell>
+          </Table.Row>
+        ))}
         </Table.Body>
       </Table>)}
 

@@ -31,6 +31,11 @@ export default function Calendar(props) {
 
   }
 
+  function onClear(){
+
+    setCalendarValue([]);
+
+  }
 
   const calendar = (
     <RangeCalendar
@@ -39,6 +44,7 @@ export default function Calendar(props) {
       defaultValue={[now, now.clone().add(1, 'months')]}
     />
   );
+
   return (
     <Picker
       value={calendarValue}
@@ -47,7 +53,7 @@ export default function Calendar(props) {
       calendar={calendar}
     >
       {
-        ({ calendarValue }) => {
+        ({ value }) => {
           return (<span>
               <Input
                 size='mini'
@@ -56,7 +62,7 @@ export default function Calendar(props) {
                 style={{ width: 170, marginRight: 10 }}
                 readOnly
                 className="ant-calendar-picker-input ant-input"
-                value={isValidRange(calendarValue) && `${format(calendarValue[0])} | ${format(calendarValue[1])}` || ''}
+                value={isValidRange(value) && `${format(value[0])} | ${format(value[1])}` || ''}
               />
               </span>);
         }
