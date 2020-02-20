@@ -34,7 +34,8 @@ ipcMain.on('request-data', (event, arg) => {
     ping: 0,
     download: 0,
     upload: 0,
-    result: 1
+    result: 1,
+    testStart: 1
   };
 
   speedtest.stdout.setEncoding('utf8');
