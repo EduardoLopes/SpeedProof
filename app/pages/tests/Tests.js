@@ -178,6 +178,23 @@ export default function Tests(){
 
   }, []);
 
+  const tableRows = useMemo(() => testsData.map((test, index) => (
+    <Table.Row key={test.id}>
+      <Table.Cell >{test.id}</Table.Cell>
+      <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
+      <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+      <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+      <Table.Cell>{test.isp}</Table.Cell>
+      <Table.Cell>{test.server_name}</Table.Cell>
+      <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
+      <Table.Cell selectable>
+        <NavLink exact to={`/info/${test.id}`}>
+          <Icon name='arrow right' fitted size="small" />
+        </NavLink>
+      </Table.Cell>
+    </Table.Row>
+  )), [testsData]);
+
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       <Navbar />
@@ -274,22 +291,7 @@ export default function Tests(){
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {testsData.map((test, index) => (
-          <Table.Row key={test.id}>
-            <Table.Cell >{test.id}</Table.Cell>
-            <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
-            <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-            <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-            <Table.Cell>{test.isp}</Table.Cell>
-            <Table.Cell>{test.server_name}</Table.Cell>
-            <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
-            <Table.Cell selectable>
-              <NavLink exact to={`/info/${test.id}`}>
-                <Icon name='arrow right' fitted size="small" />
-              </NavLink>
-            </Table.Cell>
-          </Table.Row>
-        ))}
+          {tableRows}
         </Table.Body>
       </Table>)}
 
