@@ -110,9 +110,9 @@ export default function Tests(){
       value[0].hour(0);
       value[0].minute(0);
       value[0].second(0);
-      value[1].hour(0);
-      value[1].minute(0);
-      value[1].second(0);
+      value[1].hour(23);
+      value[1].minute(59);
+      value[1].second(59);
 
       setSearchDates([
         parseInt(value[0].format("x")),
