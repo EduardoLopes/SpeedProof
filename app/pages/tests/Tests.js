@@ -7,7 +7,6 @@ import moment from "moment";
 import { NavLink } from "react-router-dom";
 import collection from 'lodash/collection';
 import _lang from 'lodash/lang';
-import NoResultSearch from './NoResultSearch.js';
 import Search from './Search.js';
 import Charts from './Charts.js';
 
@@ -122,12 +121,10 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       
       <Navbar />      
-      <Search />             
-
-      {testsData.length === 0 && (<NoResultSearch />)}
+      <Search noResult={testsData.length === 0} />
       {chartData.length > 0 && (<Charts data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
       {testsData.length > 0 && (<Table sortable celled compact striped>
-      
+
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell sorted={sorted.column === 'id' ? sorted.direction : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Grid, Form, Button, Segment} from 'semantic-ui-react';
 import _lang from 'lodash/lang';
 import Calendar from './Calendar.js';
+import NoResultSearch from './NoResultSearch.js';
 
 const electron = window.require("electron");
 
@@ -104,43 +105,48 @@ export default function Search(props){
   }
   
   return(
-    <Segment>
-      <Form onSubmit={handleOnSubmit}>
+    <div>
+      <Segment>
+        <Form onSubmit={handleOnSubmit}>
+          <Grid>
+            <Grid.Column width={12}>
+              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} />
+            </Grid.Column>
+          </Grid>
+        </Form>
+
         <Grid>
-          <Grid.Column width={12}>
-            <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' />
+          <Grid.Column width={16} textAlign="right">
+            <Calendar onChange={handleCalendarChange}/>
+            <Button.Group size={'tiny'}>
+              <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
+
+                setSearchByTag(!searchByTag);
+
+                }}>By Tags</Button>
+              <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
+
+                setSearchByISP(!searchByISP);
+
+                }}>By ISP</Button>
+              <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
+
+                setSearchByServerName(!searchByServerName);
+
+                }}>By Server Name</Button>
+            </Button.Group>
           </Grid.Column>
-          <Grid.Column width={4}>
-            <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} />
-          </Grid.Column>
+
         </Grid>
-      </Form>
 
-      <Grid>
-        <Grid.Column width={16} textAlign="right">
-          <Calendar onChange={handleCalendarChange}/>
-          <Button.Group size={'tiny'}>
-            <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
+      </Segment>
+      
+      {(props.noResult && searchKeyword.length !== 0) && (<NoResultSearch />)}
 
-              setSearchByTag(!searchByTag);
-
-              }}>By Tags</Button>
-            <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
-
-              setSearchByISP(!searchByISP);
-
-              }}>By ISP</Button>
-            <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
-
-              setSearchByServerName(!searchByServerName);
-
-              }}>By Server Name</Button>
-          </Button.Group>
-        </Grid.Column>
-
-      </Grid>
-
-    </Segment>
+    </div>
   );
 
 }
