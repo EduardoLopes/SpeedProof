@@ -122,14 +122,12 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
       
       <Navbar />      
-      <Search />       
+      <Search />             
+
       {testsData.length === 0 && (<NoResultSearch />)}
-
-      <Transition.Group animation="fade down" duration={800}>
       {chartData.length > 0 && (<Charts data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
-      </Transition.Group>
-
       {testsData.length > 0 && (<Table sortable celled compact striped>
+      
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell sorted={sorted.column === 'id' ? sorted.direction : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>
