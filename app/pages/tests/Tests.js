@@ -5,11 +5,11 @@ import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
 import moment from "moment";
 import { NavLink } from "react-router-dom";
-import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import collection from 'lodash/collection';
 import _lang from 'lodash/lang';
 import NoResultSearch from './NoResultSearch.js';
 import Search from './Search.js';
+import Charts from './Charts.js';
 
 export default function Tests(){
 
@@ -126,45 +126,7 @@ export default function Tests(){
       {testsData.length === 0 && (<NoResultSearch />)}
 
       <Transition.Group animation="fade down" duration={800}>
-      {chartData.length > 0 && (<Segment>
-        <ResponsiveContainer width={"100%"} height={200}>
-          <AreaChart data={chartData} >
-            <defs>
-              <linearGradient id="colorDownload" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="15%" stopColor="#6435c9" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#6435c9" stopOpacity={0}/>
-              </linearGradient>
-              <linearGradient id="colorUpload" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="15%" stopColor="#00b5ad" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#00b5ad" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <YAxis stroke="#ccc" type='number' width={ Math.floor(maxValueDownloadUpload).toString().length * 12}/>
-            <XAxis dataKey="name" hide={true} />
-            <Tooltip />
-            {/* <CartesianGrid strokeDasharray="3 3" /> */}
-            <Legend />
-            <Area type="monotone" dataKey="download" stroke="#6435c9" fillOpacity={1} fill="url(#colorDownload)" />
-            <Area type="monotone" dataKey="upload" stroke="#00b5ad" fillOpacity={1} fill="url(#colorUpload)" />
-          </AreaChart>
-        </ResponsiveContainer>
-        <ResponsiveContainer width={"100%"} height={100}>
-          <AreaChart data={chartData} >
-            <defs>
-              <linearGradient id="colorPing" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#2185d0" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#2185d0" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <YAxis stroke="#ccc" type='number' width={ Math.floor(maxPing).toString().length * 12}/>
-            <XAxis dataKey="name" hide={true} />
-            <Tooltip />
-            {/* <CartesianGrid strokeDasharray="3 3" /> */}
-            <Legend />
-            <Area type="monotone" dataKey="ping" stroke="#2185d0" fillOpacity={1} fill="url(#colorPing)" />
-          </AreaChart>
-        </ResponsiveContainer>
-      </Segment>)}
+      {chartData.length > 0 && (<Charts data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
       </Transition.Group>
 
       {testsData.length > 0 && (<Table sortable celled compact striped>
