@@ -37,6 +37,8 @@ export default function Search(props){
       dates: []
     });
 
+    electron.ipcRenderer.send('request-tests-data', "data");
+
   }
 
   function handleOnSubmit(){
@@ -110,7 +112,7 @@ export default function Search(props){
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>
-              <Form.Input placeholder='Search' onChange={handleSearchOnChange} name='name' />
+              <Form.Input placeholder='Search' value={searchKeyword} onChange={handleSearchOnChange} name='name' />
             </Grid.Column>
             <Grid.Column width={4}>
               <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} />
@@ -144,7 +146,7 @@ export default function Search(props){
 
       </Segment>
       
-      {(props.noResult && searchKeyword.length !== 0) && (<NoResultSearch />)}
+      {(props.noResult && searchKeyword.length !== 0) && (<NoResultSearch onClear={resetSearch} />)}
 
     </div>
   );

@@ -18,7 +18,7 @@ export default function NoResultSearch(props){
         We don't have any test matching your query.
       </Header>
       <Segment.Inline>
-        {/* <Button onClick={onClear} primary>Clear Query</Button> */}
+        <Button onClick={onClear} primary>Clear Query</Button>
       </Segment.Inline>
     </Segment>
   );
