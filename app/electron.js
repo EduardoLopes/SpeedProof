@@ -28,8 +28,9 @@ ipcMain.on('request-data', (event, arg) => {
   speedtest = spawn(speedtest_path, ['--format', 'jsonl']);
 
   const pingVariation = [];
+  const pingJitterVariation = [];
   const downloadVariation = [];
-  const uploadVariation = [];
+  const uploadVariation = [];  
   const countResults = {
     ping: 0,
     download: 0,
@@ -65,6 +66,7 @@ ipcMain.on('request-data', (event, arg) => {
           if(json.type === 'ping'){
 
             pingVariation.push(json.ping.latency);
+            pingJitterVariation.push(json.ping.jitter);
 
           }
 
@@ -93,6 +95,7 @@ ipcMain.on('request-data', (event, arg) => {
             $timestamp: json.timestamp,
             $timestamp_milliseconds: parseInt(moment(json.timestamp, moment.ISO_8601).format("x")),
             $ping_jitter: json.ping.jitter,
+            $ping_jitter_variation: pingJitterVariation.toString(),
             $ping_latency: json.ping.latency,
             $ping_variation: pingVariation.toString(),
             $download_bandwidth: json.download.bandwidth,

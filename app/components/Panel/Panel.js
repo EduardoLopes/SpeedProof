@@ -38,7 +38,8 @@ export default function Panel(props){
     uploadProgress,
     downloadSpeed,
     uploadSpeed,
-    ping } = props;
+    ping
+     } = props;
 
     useEffect(() => {
 
@@ -67,12 +68,14 @@ export default function Panel(props){
 
     useEffect(() => {
 
-      if(ping !== 0){
-        setPingData(pingData => [...pingData, {ping: ping}]);
-      }
+      if(!props.pingData){
+        if(ping.latency !== 0 || ping.jitter !== 0){
+          setPingData(pingData => [...pingData, {latency: ping.latency, jitter: ping.jitter}]);
+        }
 
-      if(ping === 0){
-        setPingData([]);
+        if(ping.latency === 0 && ping.jitter === 0){
+          setPingData([]);
+        }
       }
 
     }, [ping]);
@@ -116,20 +119,32 @@ export default function Panel(props){
 
     useEffect(() => {
 
+      const latencyData = [];
       const data = [];
 
       if(props.pingData){
 
         props.pingData.split(",").forEach((latency, index) => {
-          data.push({ping: latency});
+          latencyData.push(latency);
         });
-
-        setPingData(data);
 
       }
 
-    }, [props.pingData]);
 
+      if(props.pingJitterData){
+
+        props.pingJitterData.split(",").forEach((jitter, index) => {
+          
+          data.push({latency: latencyData[index], jitter: jitter});
+
+        });
+
+      }
+
+      setPingData(data);
+
+    }, [props.pingData, props.pingJitterData]);
+    
   return (
     <Grid columns='equal' padded="vertically">
       <Grid.Row>
@@ -140,11 +155,11 @@ export default function Panel(props){
               <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
               <Icon name='sync'/> Ping
               </Label>
-              {formatPing(ping)}
+              {formatPing(ping.latency)}
             </Segment>
             <Segment style={{padding: 0}}>
               {pingProgress > 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
-              {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" dataKey="ping"/>)}
+              {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" color2="#fbbd08" dataKey="latency" dataKey2="jitter"/>)}
             </Segment>
           </Segment.Group>
         </Grid.Column>

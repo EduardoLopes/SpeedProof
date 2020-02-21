@@ -12,10 +12,15 @@ export default function Chart(props){
             <stop offset="5%" stopColor={props.color} stopOpacity={0.6}/>
             <stop offset="95%" stopColor={props.color} stopOpacity={1}/>
           </linearGradient>
+          {props.color2 && (<linearGradient id={`id-${props.color2}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={props.color2} stopOpacity={0.6}/>
+            <stop offset="95%" stopColor={props.color2} stopOpacity={1}/>
+          </linearGradient>)}
         </defs>
         {props.domain && (<YAxis domain={props.domain} hide/>)}
         <Tooltip />
         <Area baseLine={80} type="monotone" dataKey={props.dataKey} stroke={props.color} fillOpacity={1} fill={`url(#id-${props.color})`} />
+        {props.color2 && (<Area baseLine={80} type="monotone" dataKey={props.dataKey2} stroke={props.color2} fillOpacity={1} fill={`url(#id-${props.color2})`} />)}
       </AreaChart>
     </ResponsiveContainer>
   );

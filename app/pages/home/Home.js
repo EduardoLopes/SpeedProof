@@ -21,7 +21,11 @@ export default function Home(){
   const [testServer, setTestServer] = useState(null);
   const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
-  const [ping, setPing] = useState(0);
+  const [ping, setPing] = useState({
+    latency: 0,
+    jitter: 0
+  });
+  const [pingJitter, setPingJitter] = useState(0);
   const [errorMessage, setErrorMessage] = useState(null);
   const [lastID, setLastID] = useState(null);
 
@@ -42,7 +46,10 @@ export default function Home(){
     setTestServer(null);
     setDownloadSpeed(0);
     setUploadSpeed(0);
-    setPing(0);
+    setPing({
+      latency: 0,
+      jitter: 0
+    });
     setErrorMessage(null);
     setLastID(null);
 
@@ -71,7 +78,10 @@ export default function Home(){
 
   function receivePing(event, data){
 
-    setPing(data.ping.latency);
+    setPing({
+      latency: data.ping.latency,
+      jitter: data.ping.jitter
+    });
     setPingProgress(data.ping.progress * 100);
 
   }

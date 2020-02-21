@@ -54,11 +54,12 @@ export default function Info(){
         </Label>
         <Panel
           pingData={testData ? testData.ping_variation : null}
+          pingJitterData={testData ? testData.ping_jitter_variation : null}
           downloadData={testData ? testData.download_variation : null}
           uploadData={testData ? testData.upload_variation : null}
           downloadSpeed={testData.download_bandwidth}
           uploadSpeed={testData.upload_bandwidth}
-          ping={testData.ping_latency}
+          ping={{latency: testData.ping_latency}}          
         />
 
       <Grid columns='equal' padded="vertically">
