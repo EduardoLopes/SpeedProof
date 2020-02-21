@@ -146,7 +146,7 @@ export default function Search(props){
 
       </Segment>
       
-      {(props.noResult && searchKeyword.length !== 0) && (<NoResultSearch onClear={resetSearch} />)}
+      {(props.noResult && lastSearch.keyword.length !== 0) && (<NoResultSearch onClear={resetSearch} />)}
 
     </div>
   );
