@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo} from "react";
-import { Container, Table, Grid, Form, Icon, Button, Segment, Transition } from 'semantic-ui-react'
+import { Container, Table, Grid, Form, Icon, Button, Segment, Transition } from 'semantic-ui-react';
 import styles from "./Tests.scss";
 import Navbar from "../../components/Navbar/Navbar.js";
 const electron = window.require("electron");
@@ -9,6 +9,7 @@ import { AreaChart, Area, CartesianGrid, XAxis,YAxis, Tooltip, ResponsiveContain
 import collection from 'lodash/collection';
 import _lang from 'lodash/lang';
 import Calendar from './Calendar.js';
+import NoResultSearch from './NoResultSearch.js';
 
 export default function Tests(){
 
@@ -33,6 +34,23 @@ export default function Tests(){
     direction: 'ascending'
   });
 
+  function resetSearch(){
+
+    setSearchKeyword('');
+    setSearchByTag(true);
+    setSearchByISP(true);
+    setSearchByServerName(true);
+    setSearchDates([]);
+    setLastSearch({
+      keyword: '',
+      byTag: true,
+      byISP: true,
+      byServerName: true,
+      dates: []
+    });
+
+  }
+
   function receiveData(event, data){
 
     setTestsData(data);
@@ -42,10 +60,6 @@ export default function Tests(){
   function handleOnSubmit(event){
 
     requestSearchData();
-
-    if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', "data");
-    }
 
   }
 
@@ -129,11 +143,13 @@ export default function Tests(){
 
   }
 
-  // useEffect(() => {
+  useEffect(() => {
+    
+    if(searchKeyword.length === 0 && searchDates.length === 0){
+      electron.ipcRenderer.send('request-tests-data', "data");
+    }
 
-  //   requestSearchData();
-
-  // }, [searchByTag, searchByISP, searchByServerName]);
+  }, [searchKeyword, searchDates]);
 
   useEffect(() => {
 
@@ -235,6 +251,9 @@ export default function Tests(){
         </Grid>
 
       </Segment>
+      
+      {testsData.length === 0 && (<NoResultSearch onClear={resetSearch} />)}
+
       <Transition.Group animation="fade down" duration={800}>
       {chartData.length > 0 && (<Segment>
         <ResponsiveContainer width={"100%"} height={200}>
