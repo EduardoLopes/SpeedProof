@@ -182,14 +182,14 @@ export default function Home(){
 
       <Segment size="big">
         <Label size="large" color="orange" ribbon>
-          Client
+          <Icon name='computer'/> Client
         </Label>
 
         {testServer !== null ? testServer.isp : ""  }
         <Divider horizontal><Icon name='angle double down'/></Divider>
 
         <Label size="large" color="orange" ribbon>
-          Server
+          <Icon name='server'/> Server
         </Label>
 
         {testServer !== null ? `${testServer.server.name} ` : "" }
