@@ -46,6 +46,10 @@ export default function Search(props){
 
     requestSearchData();
 
+    if(searchKeyword.length === 0 && searchDates.length === 0){
+      electron.ipcRenderer.send('request-tests-data', "data");
+    }
+
   }
 
   function getSearchConfig(){
@@ -98,15 +102,6 @@ export default function Search(props){
     }
 
   }
-
-  useEffect(() => {
-    
-    if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', "data");
-    }
-
-  }, [searchKeyword, searchDates]);
-
   
   return(
     <Segment>
