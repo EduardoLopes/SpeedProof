@@ -186,7 +186,7 @@ export default function Home(){
         </Label>
 
         {testServer !== null ? testServer.isp : ""  }
-        <Divider horizontal><Icon name='angle double down'/></Divider>
+        <Divider horizontal><Icon name='sync'/></Divider>
 
         <Label size="large" color="orange" ribbon>
           <Icon name='server'/> Server
