@@ -180,7 +180,7 @@ export default function Tests(){
 
       {chartData.length > 0 && (
         <Segment style={{paddingRight: 0}} basic clearing>
-          <Pagination floated="right" inverted onPageChange={(event, data) => setOffset((data.activePage - 1) * limit) } defaultActivePage={1} totalPages={totalPages} />
+          <Pagination color={mode === 'search' ? 'blue' : ''} floated="right" inverted onPageChange={(event, data) => setOffset((data.activePage - 1) * limit) } defaultActivePage={1} totalPages={totalPages} />
         </Segment>
       )}
 
