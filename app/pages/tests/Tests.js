@@ -13,6 +13,7 @@ import Charts from './Charts.js';
 export default function Tests(){
 
   const [testsData, setTestsData] = useState([]);
+  const [testsDataChart, setTestsDataChart] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
@@ -36,6 +37,12 @@ export default function Tests(){
   function receiveSearchData(event, data){
 
     setTestsData(data);
+
+  }
+
+  function receiveChartData(event, data){
+
+    setTestsDataChart(data);
 
   }
 
@@ -74,7 +81,7 @@ export default function Tests(){
     let maxValue = 10;
     let maxP = 0;
 
-    testsData.forEach((test, index) => {
+    testsDataChart.forEach((test, index) => {
 
       data.push({
         name: moment(test.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a"),
@@ -94,7 +101,7 @@ export default function Tests(){
     setMaxPing(maxP);
     setMaxValueDownloadUpload(maxValue);
 
-  }, [testsData, sorted]);
+  }, [testsDataChart, sorted]);
 
   useEffect(() => {
 
@@ -105,6 +112,8 @@ export default function Tests(){
     electron.ipcRenderer.on('tests-search-data', receiveSearchData);
     electron.ipcRenderer.on('tests-count', receiveTestsCount);
     electron.ipcRenderer.on('tests-search-data-count', receiveTestsCount);
+    electron.ipcRenderer.on('tests-data-chart', receiveChartData);
+    electron.ipcRenderer.on('tests-search-data-chart', receiveChartData);
 
     return () => {
 
@@ -112,6 +121,8 @@ export default function Tests(){
       electron.ipcRenderer.removeListener('tests-search-data', receiveSearchData);
       electron.ipcRenderer.removeListener('tests-count', receiveTestsCount);
       electron.ipcRenderer.removeListener('tests-search-data-count', receiveTestsCount);
+      electron.ipcRenderer.removeListener('tests-data-chart', receiveChartData);
+      electron.ipcRenderer.removeListener('tests-search-data-chart', receiveChartData);
 
     }
 

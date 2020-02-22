@@ -103,6 +103,12 @@ function getTests(mainWindow, offset, limit){
 
     });
 
+    db.all(`SELECT * FROM tests ORDER BY id DESC LIMIT 0, 200`, function(err, row) {
+
+      mainWindow.webContents.send('tests-data-chart', row);
+
+    });
+
   });
 
 }
@@ -168,6 +174,12 @@ function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, 
       db.all(`SELECT COUNT(*) as count FROM (${query} ORDER BY id DESC)`, function(err, row) {
 
         mainWindow.webContents.send('tests-search-data-count', row);
+
+      });
+
+      db.all(`${query} ORDER BY id DESC LIMIT 0, 200`, function(err, row) {
+
+        mainWindow.webContents.send('tests-search-data-chart', row);
 
       });
 
