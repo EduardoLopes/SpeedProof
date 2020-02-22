@@ -118,7 +118,7 @@ export default function Search(props){
 
   return(
     <div>
-      <Segment>
+      <Segment color={props.mode === 'search' ? 'blue' : ''}>
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>

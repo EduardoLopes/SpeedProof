@@ -158,8 +158,8 @@ export default function Tests(){
 
       <Navbar />
       <Search onSubmit={() => setMode('search')} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
-      {chartData.length > 0 && (<Charts data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
-      {testsData.length > 0 && (<Table sortable celled compact striped>
+      {chartData.length > 0 && (<Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
+      {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : ''} sortable celled compact striped>
 
         <Table.Header>
           <Table.Row>
