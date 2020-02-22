@@ -161,7 +161,7 @@ ipcMain.on('request-test-data', (event, arg) => {
 
 ipcMain.on('request-test-search-data', (event, arg) => {
 
-  DB.getTestsSearch(mainWindow, arg.keyword, arg.dates, arg.byTag, arg.byISP, arg.byServerName);
+  DB.getTestsSearch(mainWindow, arg.keyword, arg.dates, arg.byTag, arg.byISP, arg.byServerName, arg.offset, arg.limit);
 
 });
 

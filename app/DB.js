@@ -121,38 +121,7 @@ function countTests(mainWindow){
 
 }
 
-function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName){
-
-  const queries = [];
-  let byDate = '';
-
-  if(dates.length > 0){
-    byDate = ` AND timestamp_milliseconds BETWEEN ${dates[0]} AND ${dates[1]}`;
-  }
-
-  if(byTag === true){
-    queries.push(`SELECT * FROM tests WHERE tags LIKE '%${keyword}%'${byDate}`);
-  }
-
-  if(byISP === true){
-    queries.push(`SELECT * FROM tests WHERE isp LIKE '%${keyword}%'${byDate}`);
-  }
-
-  if(byServerName === true){
-    queries.push(`SELECT * FROM tests WHERE server_name LIKE '%${keyword}%'${byDate}`);
-  }
-
-  if(queries.length === 0 && dates.length > 0){
-    queries.push(`SELECT * FROM tests WHERE timestamp_milliseconds BETWEEN ${dates[0]} AND ${dates[1]}`);
-  }
-
-  if(queries.length !== 0){
-
-    const query = queries.reduce((query, currentQuery, index) => {
-      return query +` UNION ${currentQuery}`
-    });
-
-    db.serialize(function() {function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, offset, limit){
+function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, offset, limit){
 
   const queries = [];
   let byDate = '';
@@ -196,15 +165,9 @@ function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName){
 
       });
 
-    });
+      db.all(`SELECT COUNT(*) as count FROM (${query} ORDER BY id DESC)`, function(err, row) {
 
-  }
-
-}
-
-      db.all(`${query} ORDER BY id DESC`, function(err, row) {
-
-        mainWindow.webContents.send('tests-search-data', row);
+        mainWindow.webContents.send('tests-search-data-count', row);
 
       });
 

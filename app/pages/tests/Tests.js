@@ -10,8 +10,6 @@ import _lang from 'lodash/lang';
 import Search from './Search.js';
 import Charts from './Charts.js';
 
-const ROW_LIMIT = 15;
-
 export default function Tests(){
 
   const [testsData, setTestsData] = useState([]);
@@ -24,10 +22,14 @@ export default function Tests(){
     direction: 'ascending'
   });
 
+  const [limit, setLimit] = useState(15);
+  const [offset, setOffset] = useState(0);
+  const [mode, setMode] = useState('normal'); //or search
 
   function receiveData(event, data){
 
     setTestsData(data);
+    setMode('normal');
 
   }
 
@@ -62,7 +64,7 @@ export default function Tests(){
 
   function receiveTestsCount(event, data){
 
-    setTotalPages(Math.ceil(data[0].count / ROW_LIMIT));
+    setTotalPages(Math.ceil(data[0].count / limit));
 
   }
 
@@ -96,21 +98,32 @@ export default function Tests(){
 
   useEffect(() => {
 
-    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: ROW_LIMIT});
+    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: limit});
     electron.ipcRenderer.send('request-tests-count');
+
     electron.ipcRenderer.on('tests-data', receiveData);
     electron.ipcRenderer.on('tests-search-data', receiveSearchData);
     electron.ipcRenderer.on('tests-count', receiveTestsCount);
+    electron.ipcRenderer.on('tests-search-data-count', receiveTestsCount);
 
     return () => {
 
       electron.ipcRenderer.removeListener('tests-data', receiveData);
       electron.ipcRenderer.removeListener('tests-search-data', receiveSearchData);
       electron.ipcRenderer.removeListener('tests-count', receiveTestsCount);
+      electron.ipcRenderer.removeListener('tests-search-data-count', receiveTestsCount);
 
     }
 
   }, []);
+
+  useEffect(() => {
+
+    if(mode == 'normal'){
+      electron.ipcRenderer.send('request-tests-data', {offset: offset, limit: limit});
+    }
+
+  }, [limit, offset]);
 
   const tableRows = useMemo(() => testsData.map((test, index) => (
     <Table.Row key={test.id}>
@@ -133,7 +146,7 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
 
       <Navbar />
-      <Search noResult={testsData.length === 0} />
+      <Search onSubmit={() => setMode('search')} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
       {chartData.length > 0 && (<Charts data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
       {testsData.length > 0 && (<Table sortable celled compact striped>
 
@@ -156,7 +169,7 @@ export default function Tests(){
 
       {chartData.length > 0 && (
         <Segment style={{paddingRight: 0}} basic clearing>
-          <Pagination floated="right" inverted onPageChange={(event, data) => electron.ipcRenderer.send('request-tests-data', {offset: (data.activePage - 1) * ROW_LIMIT, limit: ROW_LIMIT}) } defaultActivePage={1} totalPages={totalPages} />
+          <Pagination floated="right" inverted onPageChange={(event, data) => setOffset((data.activePage - 1) * limit) } defaultActivePage={1} totalPages={totalPages} />
         </Segment>
       )}
 

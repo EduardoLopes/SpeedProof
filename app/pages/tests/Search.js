@@ -21,7 +21,7 @@ export default function Search(props){
     dates: []
   });
 
-  
+
   function resetSearch(){
 
     setSearchKeyword('');
@@ -37,7 +37,7 @@ export default function Search(props){
       dates: []
     });
 
-    electron.ipcRenderer.send('request-tests-data', "data");
+    electron.ipcRenderer.send('request-tests-data', {offset: props.offset, limit: props.limit});
 
   }
 
@@ -50,7 +50,7 @@ export default function Search(props){
     requestSearchData();
 
     if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', "data");
+      electron.ipcRenderer.send('request-tests-data', {offset: props.offset, limit: props.limit});
     }
 
   }
@@ -62,11 +62,13 @@ export default function Search(props){
       byTag: searchByTag,
       byISP: searchByISP,
       byServerName: searchByServerName,
-      dates: searchDates
+      dates: searchDates,
+      offset: props.offset,
+      limit: props.limit
     };
 
   }
-   
+
   function requestSearchData(){
 
     const search = getSearchConfig();
@@ -98,14 +100,22 @@ export default function Search(props){
       value[1].second(59);
 
       setSearchDates([
-        parseInt(value[0].format("x")),
+        parseInt(value[0].format("x"))                                           ,
         parseInt(value[1].format("x"))
       ]);
 
     }
 
   }
-  
+
+  useEffect(() => {
+
+    if(props.mode == 'search'){
+      requestSearchData();
+    }
+
+  }, [props.limit, props.offset])
+
   return(
     <div>
       <Segment>
@@ -145,7 +155,7 @@ export default function Search(props){
         </Grid>
 
       </Segment>
-      
+
       {(props.noResult && lastSearch.keyword.length !== 0) && (<NoResultSearch onClear={resetSearch} />)}
 
     </div>
