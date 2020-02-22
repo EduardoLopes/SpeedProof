@@ -10,15 +10,15 @@ export default function Charts(props){
         <AreaChart data={props.data} >
           <defs>
             <linearGradient id="colorDownload" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="15%" stopColor="#6435c9" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#6435c9" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#6435c9" stopOpacity={0.6}/>
+              <stop offset="95%" stopColor="#6435c9" stopOpacity={1}/>
             </linearGradient>
             <linearGradient id="colorUpload" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="15%" stopColor="#00b5ad" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#00b5ad" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#00b5ad" stopOpacity={0.6}/>
+              <stop offset="95%" stopColor="#00b5ad" stopOpacity={1}/>
             </linearGradient>
           </defs>
-          <YAxis stroke="#ccc" type='number' width={ Math.floor(props.maxValueDownloadUpload).toString().length * 12}/>
+          <YAxis stroke="#ccc" hide type='number' width={ Math.floor(props.maxValueDownloadUpload).toString().length * 12}/>
           <XAxis dataKey="name" hide={true} />
           <Tooltip />
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
@@ -31,11 +31,11 @@ export default function Charts(props){
         <AreaChart data={props.data} >
           <defs>
             <linearGradient id="colorPing" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#2185d0" stopOpacity={0.8}/>
-              <stop offset="95%" stopColor="#2185d0" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#2185d0" stopOpacity={0.6}/>
+              <stop offset="95%" stopColor="#2185d0" stopOpacity={1}/>
             </linearGradient>
           </defs>
-          <YAxis stroke="#ccc" type='number' width={ Math.floor(props.maxPing).toString().length * 12}/>
+          <YAxis stroke="#ccc" type='number' width={ Math.floor(props.maxPing).toString().length * 12} hide/>
           <XAxis dataKey="name" hide={true} />
           <Tooltip />
           {/* <CartesianGrid strokeDasharray="3 3" /> */}
