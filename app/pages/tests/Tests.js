@@ -23,9 +23,11 @@ export default function Tests(){
     direction: 'ascending'
   });
 
+  const [activePage, setActivePage] = useState(1);
   const [limit, setLimit] = useState(15);
   const [offset, setOffset] = useState(0);
   const [mode, setMode] = useState('normal'); //or search
+
 
   function receiveData(event, data){
 
@@ -60,7 +62,7 @@ export default function Tests(){
 
     }
 
-    setTestsData(testsData.reverse());
+    setTestsData([...testsData.reverse()]);
 
     setSorted({
       column: clickedColumn,
@@ -136,6 +138,13 @@ export default function Tests(){
 
   }, [limit, offset]);
 
+  useEffect(() => {
+
+    setActivePage(1);
+    setOffset(0);
+
+  }, [mode]);
+
   const tableRows = useMemo(() => testsData.map((test, index) => (
     <Table.Row key={test.id}>
       <Table.Cell >{test.id}</Table.Cell>
@@ -157,9 +166,9 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
 
       <Navbar />
-      <Search onSubmit={() => setMode('search')} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
+      <Search onSubmit={() => { setMode('search'); }} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
       {chartData.length > 0 && (<Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
-      {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : ''} sortable celled compact striped>
+      {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : null} sortable celled compact striped>
 
         <Table.Header>
           <Table.Row>
@@ -180,7 +189,7 @@ export default function Tests(){
 
       {chartData.length > 0 && (
         <Segment style={{paddingRight: 0}} basic clearing>
-          <Pagination color={mode === 'search' ? 'blue' : ''} floated="right" inverted onPageChange={(event, data) => setOffset((data.activePage - 1) * limit) } defaultActivePage={1} totalPages={totalPages} />
+          <Pagination color={mode === 'search' ? 'blue' : null} floated="right" inverted onPageChange={(event, data) => {setOffset((data.activePage - 1) * limit); setActivePage(data.activePage)} } activePage={activePage} totalPages={totalPages} />
         </Segment>
       )}
 

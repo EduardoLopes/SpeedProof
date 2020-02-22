@@ -5,7 +5,7 @@ import React, { useState, useEffect, useMemo} from "react";
 export default function Charts(props){
 
   return(
-    <Segment  color={props.mode === 'search' ? 'blue' : ''}>
+    <Segment  color={props.mode === 'search' ? 'blue' : null}>
       <ResponsiveContainer width={"100%"} height={200}>
         <AreaChart data={props.data} >
           <defs>

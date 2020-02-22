@@ -50,7 +50,7 @@ export default function Search(props){
     requestSearchData();
 
     if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', {offset: props.offset, limit: props.limit});
+      electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: 15});
     }
 
   }
@@ -63,7 +63,7 @@ export default function Search(props){
       byISP: searchByISP,
       byServerName: searchByServerName,
       dates: searchDates,
-      offset: props.offset,
+      offset: (props.mode === 'search') ? props.offset : 0,
       limit: props.limit
     };
 
@@ -110,7 +110,7 @@ export default function Search(props){
 
   useEffect(() => {
 
-    if(props.mode == 'search'){
+    if(props.mode === 'search'){
       requestSearchData();
     }
 
@@ -118,7 +118,7 @@ export default function Search(props){
 
   return(
     <div>
-      <Segment color={props.mode === 'search' ? 'blue' : ''}>
+      <Segment color={props.mode === 'search' ? 'blue' : null}>
         <Form onSubmit={handleOnSubmit}>
           <Grid>
             <Grid.Column width={12}>
