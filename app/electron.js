@@ -30,7 +30,7 @@ ipcMain.on('request-data', (event, arg) => {
   const pingVariation = [];
   const pingJitterVariation = [];
   const downloadVariation = [];
-  const uploadVariation = [];  
+  const uploadVariation = [];
   const countResults = {
     ping: 0,
     download: 0,
@@ -143,7 +143,13 @@ ipcMain.on('request-data', (event, arg) => {
 
 ipcMain.on('request-tests-data', (event, arg) => {
 
-  DB.getTests(mainWindow);
+  DB.getTests(mainWindow, arg.offset, arg.limit);
+
+});
+
+ipcMain.on('request-tests-count', (event, arg) => {
+
+  DB.countTests(mainWindow);
 
 });
 
