@@ -10,6 +10,7 @@ import _lang from 'lodash/lang';
 import Search from './Search.js';
 import Charts from './Charts.js';
 
+
 export default function Tests(){
 
   const [testsData, setTestsData] = useState([]);
@@ -170,7 +171,7 @@ export default function Tests(){
 
       <Navbar />
       <Search onSubmit={() => { setMode('search'); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
-      {chartData.length > 0 && (<Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
+      <Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
       {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : null} sortable celled compact striped>
 
         <Table.Header>
