@@ -134,7 +134,7 @@ export default function Panel(props){
       if(props.pingJitterData){
 
         props.pingJitterData.split(",").forEach((jitter, index) => {
-          
+
           data.push({latency: latencyData[index], jitter: jitter});
 
         });
@@ -144,7 +144,7 @@ export default function Panel(props){
       setPingData(data);
 
     }, [props.pingData, props.pingJitterData]);
-    
+
   return (
     <Grid columns='equal' padded="vertically">
       <Grid.Row>
