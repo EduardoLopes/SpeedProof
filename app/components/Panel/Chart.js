@@ -20,7 +20,7 @@ export default function Chart(props){
         {props.domain && (<YAxis domain={props.domain} hide/>)}
         <Tooltip />
         <Area isAnimationActive={false} baseLine={80} type="monotone" dataKey={props.dataKey} stroke={props.color} fillOpacity={1} fill={`url(#id-${props.color})`} />
-        {props.color2 && (<Area baseLine={80} type="monotone" dataKey={props.dataKey2} stroke={props.color2} fillOpacity={1} fill={`url(#id-${props.color2})`} />)}
+        {props.color2 && (<Area isAnimationActive={false} baseLine={80} type="monotone" dataKey={props.dataKey2} stroke={props.color2} fillOpacity={1} fill={`url(#id-${props.color2})`} />)}
       </AreaChart>
     </ResponsiveContainer>
   );
