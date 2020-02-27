@@ -93,17 +93,17 @@ function insertTest(mainWindow, values){
 
 }
 
-function getTests(mainWindow, offset, limit){
+function getTests(mainWindow, offset, limit, sortDirection, sortColumn){
 
   db.serialize(function() {
 
-    db.all(`SELECT * FROM tests ORDER BY id DESC LIMIT ${offset}, ${limit}`, function(err, row) {
+    db.all(`SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`, function(err, row) {
 
       mainWindow.webContents.send('tests-data', row);
 
     });
 
-    db.all(`SELECT * FROM tests ORDER BY id DESC LIMIT 0, 200`, function(err, row) {
+    db.all(`SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`, function(err, row) {
 
       mainWindow.webContents.send('tests-data-chart', row);
 
@@ -127,7 +127,7 @@ function countTests(mainWindow){
 
 }
 
-function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, offset, limit){
+function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, offset, limit, sortDirection, sortColumn){
 
   const queries = [];
   let byDate = '';
@@ -165,19 +165,19 @@ function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, 
 
     db.serialize(function() {
 
-      db.all(`${query} ORDER BY id DESC LIMIT ${offset}, ${limit}`, function(err, row) {
+      db.all(`${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`, function(err, row) {
 
         mainWindow.webContents.send('tests-search-data', row);
 
       });
 
-      db.all(`SELECT COUNT(*) as count FROM (${query} ORDER BY id DESC)`, function(err, row) {
+      db.all(`SELECT COUNT(*) as count FROM (${query} ORDER BY ${sortColumn} ${sortDirection})`, function(err, row) {
 
         mainWindow.webContents.send('tests-search-data-count', row);
 
       });
 
-      db.all(`${query} ORDER BY id DESC LIMIT 0, 200`, function(err, row) {
+      db.all(`${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`, function(err, row) {
 
         mainWindow.webContents.send('tests-search-data-chart', row);
 

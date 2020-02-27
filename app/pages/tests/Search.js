@@ -37,7 +37,7 @@ export default function Search(props){
       dates: []
     });
 
-    electron.ipcRenderer.send('request-tests-data', {offset: props.offset, limit: props.limit});
+    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: props.limit, sortDirection: 'DESC', sortColumn: 'id'});
 
   }
 
@@ -50,7 +50,7 @@ export default function Search(props){
     requestSearchData();
 
     if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: 15});
+      electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: 15, sortDirection: 'DESC', sortColumn: 'id'});
     }
 
   }
@@ -64,7 +64,9 @@ export default function Search(props){
       byServerName: searchByServerName,
       dates: searchDates,
       offset: (props.mode === 'search') ? props.offset : 0,
-      limit: props.limit
+      limit: props.limit,
+      sortDirection: props.sortDirection,
+      sortColumn: props.sortColumn
     };
 
   }

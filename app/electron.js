@@ -143,7 +143,7 @@ ipcMain.on('request-data', (event, arg) => {
 
 ipcMain.on('request-tests-data', (event, arg) => {
 
-  DB.getTests(mainWindow, arg.offset, arg.limit);
+  DB.getTests(mainWindow, arg.offset, arg.limit, arg.sortDirection, arg.sortColumn);
 
 });
 
@@ -161,7 +161,7 @@ ipcMain.on('request-test-data', (event, arg) => {
 
 ipcMain.on('request-test-search-data', (event, arg) => {
 
-  DB.getTestsSearch(mainWindow, arg.keyword, arg.dates, arg.byTag, arg.byISP, arg.byServerName, arg.offset, arg.limit);
+  DB.getTestsSearch(mainWindow, arg.keyword, arg.dates, arg.byTag, arg.byISP, arg.byServerName, arg.offset, arg.limit, arg.sortDirection, arg.sortColumn);
 
 });
 

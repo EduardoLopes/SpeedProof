@@ -19,8 +19,8 @@ export default function Tests(){
   const [maxPing, setMaxPing] = useState(10);
   const [totalPages, setTotalPages] = useState(10);
   const [sorted, setSorted] = useState({
-    column: '',
-    direction: 'ascending'
+    column: 'id',
+    direction: 'DESC'
   });
 
   const [activePage, setActivePage] = useState(1);
@@ -52,21 +52,18 @@ export default function Tests(){
 
     if(sorted.column !== clickedColumn){
 
-      setTestsData(collection.sortBy(testsData, [clickedColumn]));
       setSorted({
         column: clickedColumn,
-        direction: 'ascending'
+        direction: 'ASC'
       });
 
       return;
 
     }
 
-    setTestsData([...testsData.reverse()]);
-
     setSorted({
       column: clickedColumn,
-      direction: sorted.direction === 'ascending' ? 'descending' : 'ascending'
+      direction: sorted.direction === 'ASC' ? 'DESC' : 'ASC'
     });
 
   }
@@ -107,7 +104,7 @@ export default function Tests(){
 
   useEffect(() => {
 
-    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: limit});
+    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: limit, sortDirection: sorted.direction, sortColumn: sorted.column});
     electron.ipcRenderer.send('request-tests-count');
 
     electron.ipcRenderer.on('tests-data', receiveData);
@@ -133,10 +130,10 @@ export default function Tests(){
   useEffect(() => {
 
     if(mode == 'normal'){
-      electron.ipcRenderer.send('request-tests-data', {offset: offset, limit: limit});
+      electron.ipcRenderer.send('request-tests-data', {offset: offset, limit: limit, sortDirection: sorted.direction, sortColumn: sorted.column});
     }
 
-  }, [limit, offset]);
+  }, [limit, offset, sorted]);
 
   useEffect(() => {
 
@@ -166,7 +163,7 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
 
       <Navbar />
-      <Search onSubmit={() => { setMode('search'); }} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
+      <Search onSubmit={() => { setMode('search'); }} sortDirection={sorted.direction} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
       {chartData.length > 0 && (<Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
       {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : null} sortable celled compact striped>
 
