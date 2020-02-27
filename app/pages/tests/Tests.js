@@ -9,6 +9,7 @@ import collection from 'lodash/collection';
 import _lang from 'lodash/lang';
 import Search from './Search.js';
 import Charts from './Charts.js';
+import TableDataPlacehold from './TableDataPlacehold.js';
 
 
 export default function Tests(){
@@ -149,22 +150,32 @@ export default function Tests(){
 
   }, [mode]);
 
-  const tableRows = useMemo(() => testsData.map((test, index) => (
-    <Table.Row key={test.id}>
-      <Table.Cell >{test.id}</Table.Cell>
-      <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
-      <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-      <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
-      <Table.Cell>{test.isp}</Table.Cell>
-      <Table.Cell>{test.server_name}</Table.Cell>
-      <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
-      <Table.Cell selectable>
-        <NavLink exact to={`/info/${test.id}`}>
-          <Icon name='arrow right' fitted size="small" />
-        </NavLink>
-      </Table.Cell>
-    </Table.Row>
-  )), [testsData]);
+  const tableRows = useMemo(() => {
+
+    if(testsData.length > 0 ){
+
+      return testsData.map((test, index) => (
+        <Table.Row key={test.id}>
+          <Table.Cell >{test.id}</Table.Cell>
+          <Table.Cell singleLine>{Math.floor(test.ping_latency)} <span className={styles.headerCellSecondaryText}>ms</span></Table.Cell>
+          <Table.Cell singleLine>{(test.download_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+          <Table.Cell singleLine>{(test.upload_bandwidth / 125000).toFixed(2)} <span className={styles.headerCellSecondaryText}>Mbps</span></Table.Cell>
+          <Table.Cell>{test.isp}</Table.Cell>
+          <Table.Cell>{test.server_name}</Table.Cell>
+          <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
+          <Table.Cell selectable>
+            <NavLink exact to={`/info/${test.id}`}>
+              <Icon name='arrow right' fitted size="small" />
+            </NavLink>
+          </Table.Cell>
+        </Table.Row>
+      ));
+
+    }
+
+    return (<TableDataPlacehold />);
+
+  }, [testsData]);
 
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
@@ -172,7 +183,7 @@ export default function Tests(){
       <Navbar />
       <Search onSubmit={() => { setMode('search'); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
       <Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
-      {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : null} sortable celled compact striped>
+      <Table  color={mode === 'search' ? 'blue' : null} sortable={testsData.length > 0} celled compact striped>
 
         <Table.Header>
           <Table.Row>
@@ -189,11 +200,11 @@ export default function Tests(){
         <Table.Body>
           {tableRows}
         </Table.Body>
-      </Table>)}
+      </Table>
 
       {chartData.length > 0 && (
         <Segment style={{paddingRight: 0}} basic clearing>
-          <Pagination color={mode === 'search' ? 'blue' : null} floated="right" inverted onPageChange={(event, data) => {setOffset((data.activePage - 1) * limit); setActivePage(data.activePage)} } activePage={activePage} totalPages={totalPages} />
+          <Pagination color={mode === 'search' ? 'blue' : null} floated="right" inverted onPageChange={(event, data) => {setOffset((data.activePage - 1) * limit); setActivePage(data.activePage);} } activePage={activePage} totalPages={totalPages} />
         </Segment>
       )}
 
