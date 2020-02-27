@@ -13,7 +13,7 @@
     "clean-build": "yarn run del build/ .cache dist/",
     "build": "yarn run clean-build && yarn run parcel-build && yarn run electron-builder --dir",
     "pack": "yarn run electron-builder --win",
-    "dev": "yarn run del build/ && yarn run concurrently \"yarn run parcel-server\" \"yarn run wait-server && cross-env NODE_ENV=development electron .\""
+    "dev": "yarn run concurrently \"yarn run parcel-server\" \"yarn run wait-server && cross-env NODE_ENV=development electron .\""
   },
   "build": {
     "appId": "com.ping",
