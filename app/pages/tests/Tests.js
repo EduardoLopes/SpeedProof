@@ -74,6 +74,12 @@ export default function Tests(){
 
   }
 
+  function getSortDirection(direction){
+
+    return direction === 'ASC' ? 'descending' : 'ascending'
+
+  }
+
   useEffect(() => {
 
     const data = [];
@@ -163,19 +169,19 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
 
       <Navbar />
-      <Search onSubmit={() => { setMode('search'); }} sortDirection={sorted.direction} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
+      <Search onSubmit={() => { setMode('search'); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
       {chartData.length > 0 && (<Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />)}
       {testsData.length > 0 && (<Table  color={mode === 'search' ? 'blue' : null} sortable celled compact striped>
 
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell sorted={sorted.column === 'id' ? sorted.direction : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'ping_latency' ? sorted.direction : null} onClick={handleSort.bind(this, 'ping_latency')}>Ping</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'download_bandwidth' ? sorted.direction : null} onClick={handleSort.bind(this, 'download_bandwidth')}>Download</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'upload_bandwidth' ? sorted.direction : null} onClick={handleSort.bind(this, 'upload_bandwidth')}>Upload</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'isp' ? sorted.direction : null} onClick={handleSort.bind(this, 'isp')}>ISP</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'server_name' ? sorted.direction : null} onClick={handleSort.bind(this, 'server_name')}>Server</Table.HeaderCell>
-            <Table.HeaderCell sorted={sorted.column === 'timestamp_milliseconds' ? sorted.direction : null} onClick={handleSort.bind(this, 'timestamp_milliseconds')}>When</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'id' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'id')}>#</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'ping_latency' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'ping_latency')}>Ping</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'download_bandwidth' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'download_bandwidth')}>Download</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'upload_bandwidth' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'upload_bandwidth')}>Upload</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'isp' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'isp')}>ISP</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'server_name' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'server_name')}>Server</Table.HeaderCell>
+            <Table.HeaderCell sorted={sorted.column === 'timestamp_milliseconds' ? getSortDirection(sorted.direction) : null} onClick={handleSort.bind(this, 'timestamp_milliseconds')}>When</Table.HeaderCell>
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>

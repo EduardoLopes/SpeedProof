@@ -116,7 +116,7 @@ export default function Search(props){
       requestSearchData();
     }
 
-  }, [props.limit, props.offset])
+  }, [props.limit, props.offset, props.sortDirection, props.sortColumn])
 
   return(
     <div>
