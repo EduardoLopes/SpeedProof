@@ -112,7 +112,6 @@ export default function Tests(){
 
   useEffect(() => {
 
-    electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: limit, sortDirection: sorted.direction, sortColumn: sorted.column});
     electron.ipcRenderer.send('request-tests-count');
 
     electron.ipcRenderer.on('tests-data', receiveData);
