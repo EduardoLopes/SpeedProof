@@ -11,10 +11,10 @@ export default function Navbar(props){
         as={NavLink}
         exact
         to="/"
-        name='home'
+        name='Speedtest'
       >
-        <Icon name='home' />
-        Home
+        <Icon name='rocket' />
+        Speedtest
       </Menu.Item>
       {!props.testsItemDisabled &&
       (<Menu.Item
