@@ -15,11 +15,15 @@ export default function Search(props){
   const [searchByServerName, setSearchByServerName] = useState(JSON.parse(storage.getItem('searchByServerName')) || true);
   const [searchDates, setSearchDates] = useState(JSON.parse(storage.getItem('searchDates')) || []);
   const [lastSearch, setLastSearch] = useState({
-    keyword: '',
-    byTag: true,
-    byISP: true,
-    byServerName: true,
-    dates: []
+    keyword: searchKeyword,
+    byTag: searchByTag,
+    byISP: searchByISP,
+    byServerName: searchByServerName,
+    dates: searchDates,
+    offset: (props.mode === 'search') ? props.offset : 0,
+    limit: props.limit,
+    sortDirection: props.sortDirection,
+    sortColumn: props.sortColumn
   });
 
   function updateLocalStorage(){
@@ -44,7 +48,11 @@ export default function Search(props){
       byTag: true,
       byISP: true,
       byServerName: true,
-      dates: []
+      dates: [],
+      offset: 0,
+      limit: props.limit,
+      sortDirection: 'DESC',
+      sortColumn: 'id'
     });
 
     updateLocalStorage();
