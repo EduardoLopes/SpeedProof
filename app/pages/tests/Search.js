@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { Grid, Form, Button, Segment} from 'semantic-ui-react';
+import React, {useState, useEffect, useRef} from 'react';
+import { Grid, Form, Button, Segment, Input} from 'semantic-ui-react';
 import _lang from 'lodash/lang';
 import Calendar from './Calendar.js';
 import NoResultSearch from './NoResultSearch.js';
@@ -61,7 +61,9 @@ export default function Search(props){
 
   }
 
-  function handleOnSubmit(){
+  function handleOnSubmit(event){
+
+    if( event.type === "keydown" && event.key !== 'Enter' || event.type !== "keydown" && event.type !== 'click') return;
 
     if(props.onSubmit){
       props.onSubmit();
@@ -153,18 +155,14 @@ export default function Search(props){
   return(
     <div>
       <Segment color={props.mode === 'search' ? 'blue' : null}>
-        <Form onSubmit={handleOnSubmit}>
-          <Grid>
-            <Grid.Column width={12}>
-              <Form.Input placeholder='Search' value={searchKeyword} onChange={handleSearchOnChange} name='name' />
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <Form.Button style={{width: '100%'}} color="blue" content='Search' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} />
-            </Grid.Column>
-          </Grid>
-        </Form>
-
         <Grid>
+          <Grid.Column style={{paddingBottom: 0}} width={16}>
+            <Input onKeyDown={handleOnSubmit} onChange={handleSearchOnChange} value={searchKeyword} style={{width: '100%'}} type='text' placeholder='Search...' action>
+              <input />
+              <Button color='blue' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} onClick={handleOnSubmit}>Search</Button>
+              <Button color='blue' basic as='div' icon="delete" onClick={resetSearch}></Button>
+            </Input>
+          </Grid.Column>
           <Grid.Column width={16} textAlign="right">
             <Calendar onChange={handleCalendarChange}/>
             <Button.Group size={'tiny'}>
@@ -184,6 +182,7 @@ export default function Search(props){
 
                 }}>By Server Name</Button>
             </Button.Group>
+
           </Grid.Column>
 
         </Grid>
