@@ -17,6 +17,7 @@ export default function Tests(){
   const [testsData, setTestsData] = useState([]);
   const [testsDataChart, setTestsDataChart] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [animateChart, setAnimateChart] = useState(false);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
   const [totalPages, setTotalPages] = useState(10);
@@ -51,6 +52,8 @@ export default function Tests(){
   }
 
   function handleSort(clickedColumn){
+
+    setAnimateChart(true);
 
     if(sorted.column !== clickedColumn){
 
@@ -181,7 +184,7 @@ export default function Tests(){
 
       <Navbar />
       <Search onSubmit={() => { setMode('search'); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
-      <Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
+      <Charts animate={animateChart} mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
       <Table  color={mode === 'search' ? 'blue' : null} sortable={testsData.length > 0} celled compact striped>
 
         <Table.Header>
