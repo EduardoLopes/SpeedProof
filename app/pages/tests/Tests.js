@@ -150,7 +150,6 @@ export default function Tests(){
 
     if(mode == 'normal'){
       electron.ipcRenderer.send('request-tests-data', {offset: offset, limit: limit, sortDirection: sorted.direction, sortColumn: sorted.column});
-      electron.ipcRenderer.send('request-tests-count');
     }
 
     storage.setItem('offset', offset);

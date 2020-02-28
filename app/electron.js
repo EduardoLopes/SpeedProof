@@ -147,12 +147,6 @@ ipcMain.on('request-tests-data', (event, arg) => {
 
 });
 
-ipcMain.on('request-tests-count', (event, arg) => {
-
-  DB.countTests(mainWindow);
-
-});
-
 ipcMain.on('request-test-data', (event, arg) => {
 
   DB.getTest(mainWindow, arg);

@@ -109,14 +109,6 @@ function getTests(mainWindow, offset, limit, sortDirection, sortColumn){
 
     });
 
-  });
-
-}
-
-function countTests(mainWindow){
-
-  db.serialize(function() {
-
     db.all(`SELECT COUNT(*) as count FROM tests`, function(err, row) {
 
       mainWindow.webContents.send('tests-count', row);
@@ -236,7 +228,6 @@ exports.getTests = getTests;
 exports.getTestsSearch = getTestsSearch;
 exports.getTest = getTest;
 exports.getTags = getTags;
-exports.countTests = countTests;
 exports.updateTags = updateTags;
 
 exports.close = function (){ db.close() };
