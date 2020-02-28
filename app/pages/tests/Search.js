@@ -10,9 +10,9 @@ const storage = window.localStorage;
 export default function Search(props){
 
   const [searchKeyword, setSearchKeyword] = useState(storage.getItem('searchKeyword') || '');
-  const [searchByTag, setSearchByTag] = useState(JSON.parse(storage.getItem('searchByTag')) || true);
-  const [searchByISP, setSearchByISP] = useState(JSON.parse(storage.getItem('searchByISP')) || true);
-  const [searchByServerName, setSearchByServerName] = useState(JSON.parse(storage.getItem('searchByServerName')) || true);
+  const [searchByTag, setSearchByTag] = useState(JSON.parse(storage.getItem('searchByTag')) === false ? false : true);
+  const [searchByISP, setSearchByISP] = useState(JSON.parse(storage.getItem('searchByISP')) === false ? false : true);
+  const [searchByServerName, setSearchByServerName] = useState(JSON.parse(storage.getItem('searchByServerName')) === false ? false : true);
   const [searchDates, setSearchDates] = useState(JSON.parse(storage.getItem('searchDates')) || []);
   const [lastSearch, setLastSearch] = useState({
     keyword: searchKeyword,
@@ -25,6 +25,8 @@ export default function Search(props){
     sortDirection: props.sortDirection,
     sortColumn: props.sortColumn
   });
+
+  console.log(searchByTag, storage.getItem('searchByTag'));
 
   function updateLocalStorage(){
 
@@ -70,6 +72,7 @@ export default function Search(props){
     }
 
     requestSearchData();
+    updateLocalStorage();
 
     if(searchKeyword.length === 0 && searchDates.length === 0){
       electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: 15, sortDirection: 'DESC', sortColumn: 'id'});
@@ -90,8 +93,6 @@ export default function Search(props){
       sortDirection: props.sortDirection,
       sortColumn: props.sortColumn
     };
-
-    updateLocalStorage();
 
     return config;
 
