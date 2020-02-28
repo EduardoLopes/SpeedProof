@@ -32,6 +32,7 @@ export default function Tests(){
   const [limit, setLimit] = useState(15);
   const [offset, setOffset] = useState( storage.getItem('offset') || 0);
   const [mode, setMode] = useState(storage.getItem('mode') || 'normal' ); //or search
+  const [testsCount, setTestsCount] = useState(null);
 
   function receiveData(event, data){
 
@@ -75,6 +76,8 @@ export default function Tests(){
   }
 
   function receiveTestsCount(event, data){
+
+    setTestsCount(data[0].count);
 
     setTotalPages(Math.ceil(data[0].count / limit));
 
@@ -193,8 +196,12 @@ export default function Tests(){
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
 
       <Navbar />
-      <Search onSubmit={() => { setMode('search'); setActivePage(1); setOffset(0); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsData.length === 0} mode={mode} offset={offset} limit={limit} />
-      <Charts animate={animateChart} mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
+      <Search onSubmit={() => { setMode('search'); setActivePage(1); setOffset(0); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsCount === 0} mode={mode} offset={offset} limit={limit} />
+
+      {(testsCount || mode == 'normal') && (
+        <Charts animate={animateChart} mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
+      )}
+      {(testsCount || mode == 'normal') && (
       <Table  color={mode === 'search' ? 'blue' : null} sortable={testsData.length > 0} celled compact striped>
 
         <Table.Header>
@@ -213,6 +220,8 @@ export default function Tests(){
           {tableRows}
         </Table.Body>
       </Table>
+      )}
+
 
       {chartData.length > 0 && (
         <Segment style={{paddingRight: 0}} basic clearing>
