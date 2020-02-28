@@ -78,7 +78,6 @@ export default function Tests(){
   function receiveTestsCount(event, data){
 
     setTestsCount(data[0].count);
-
     setTotalPages(Math.ceil(data[0].count / limit));
 
   }

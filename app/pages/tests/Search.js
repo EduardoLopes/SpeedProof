@@ -26,8 +26,6 @@ export default function Search(props){
     sortColumn: props.sortColumn
   });
 
-  console.log(searchByTag, storage.getItem('searchByTag'));
-
   function updateLocalStorage(){
 
     storage.setItem('searchKeyword', searchKeyword);
@@ -65,7 +63,7 @@ export default function Search(props){
 
   function handleOnSubmit(event){
 
-    if( event.type === "keydown" && event.key !== 'Enter' || event.type !== "keydown" && event.type !== 'click') return;
+    if( event.type === "keydown" && event.key !== 'Enter' || event.type !== "keydown" && event.type !== 'click' || _lang.isEqual(getSearchConfig(), lastSearch)) return;
 
     if(props.onSubmit){
       props.onSubmit();
@@ -148,7 +146,7 @@ export default function Search(props){
   useEffect(() => {
 
     if(props.mode === 'search'){
-      requestSearchData();
+      electron.ipcRenderer.send('request-test-search-data', lastSearch);
     }
 
   }, []);
