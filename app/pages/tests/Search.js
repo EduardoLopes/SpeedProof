@@ -5,14 +5,15 @@ import Calendar from './Calendar.js';
 import NoResultSearch from './NoResultSearch.js';
 
 const electron = window.require("electron");
+const storage = window.localStorage;
 
 export default function Search(props){
 
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchByTag, setSearchByTag] = useState(true);
-  const [searchByISP, setSearchByISP] = useState(true);
-  const [searchByServerName, setSearchByServerName] = useState(true);
-  const [searchDates, setSearchDates] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState(storage.getItem('searchKeyword') || '');
+  const [searchByTag, setSearchByTag] = useState(JSON.parse(storage.getItem('searchByTag')) || true);
+  const [searchByISP, setSearchByISP] = useState(JSON.parse(storage.getItem('searchByISP')) || true);
+  const [searchByServerName, setSearchByServerName] = useState(JSON.parse(storage.getItem('searchByServerName')) || true);
+  const [searchDates, setSearchDates] = useState(JSON.parse(storage.getItem('searchDates')) || []);
   const [lastSearch, setLastSearch] = useState({
     keyword: '',
     byTag: true,
@@ -21,6 +22,15 @@ export default function Search(props){
     dates: []
   });
 
+  function updateLocalStorage(){
+
+    storage.setItem('searchKeyword', searchKeyword);
+    storage.setItem('searchByTag', searchByTag);
+    storage.setItem('searchByISP', searchByISP);
+    storage.setItem('searchByServerName', searchByServerName);
+    storage.setItem('searchDates', JSON.stringify(searchDates));
+
+  }
 
   function resetSearch(){
 
@@ -36,6 +46,8 @@ export default function Search(props){
       byServerName: true,
       dates: []
     });
+
+    updateLocalStorage();
 
     electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: props.limit, sortDirection: 'DESC', sortColumn: 'id'});
 
@@ -57,7 +69,7 @@ export default function Search(props){
 
   function getSearchConfig(){
 
-    return {
+    const config = {
       keyword: searchKeyword,
       byTag: searchByTag,
       byISP: searchByISP,
@@ -68,6 +80,10 @@ export default function Search(props){
       sortDirection: props.sortDirection,
       sortColumn: props.sortColumn
     };
+
+    updateLocalStorage();
+
+    return config;
 
   }
 
@@ -116,7 +132,15 @@ export default function Search(props){
       requestSearchData();
     }
 
-  }, [props.limit, props.offset, props.sortDirection, props.sortColumn])
+  }, [props.limit, props.offset, props.sortDirection, props.sortColumn]);
+
+  useEffect(() => {
+
+    if(props.mode === 'search'){
+      requestSearchData();
+    }
+
+  }, []);
 
   return(
     <div>
