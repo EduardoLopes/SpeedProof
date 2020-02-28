@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Picker from 'rc-calendar/lib/Picker';
 import RangeCalendar from 'rc-calendar/lib/RangeCalendar';
 import 'rc-calendar/assets/index.css';
@@ -36,6 +36,14 @@ export default function Calendar(props) {
     setCalendarValue([]);
 
   }
+
+  useEffect(() => {
+
+    if(props.searchDates.length === 0){
+      setCalendarValue([]);
+    }
+
+  }, [props.searchDates]);
 
   const calendar = (
     <RangeCalendar

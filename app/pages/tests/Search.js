@@ -151,6 +151,22 @@ export default function Search(props){
 
   }, []);
 
+  function handleClearButtonDisabled(){
+
+    return _lang.isEqual(getSearchConfig(), {
+      keyword: '',
+      byTag: true,
+      byISP: true,
+      byServerName: true,
+      dates: [],
+      offset: 0,
+      limit: props.limit,
+      sortDirection: 'DESC',
+      sortColumn: 'id'
+    });
+
+  }
+
   return(
     <div>
       <Segment color={props.mode === 'search' ? 'blue' : null}>
@@ -159,11 +175,11 @@ export default function Search(props){
             <Input onKeyDown={handleOnSubmit} onChange={handleSearchOnChange} value={searchKeyword} style={{width: '100%'}} type='text' placeholder='Search...' action>
               <input />
               <Button color='blue' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} onClick={handleOnSubmit}>Search</Button>
-              <Button color='blue' basic as='div' icon="delete" onClick={resetSearch}></Button>
+              <Button color='blue' disabled={handleClearButtonDisabled()} basic as='div' icon="delete" onClick={resetSearch}></Button>
             </Input>
           </Grid.Column>
           <Grid.Column width={16} textAlign="right">
-            <Calendar onChange={handleCalendarChange}/>
+            <Calendar onChange={handleCalendarChange} searchDates searchDates={searchDates}/>
             <Button.Group size={'tiny'}>
               <Button color={searchByTag ? 'green' : 'grey'} onClick={()=>{
 
