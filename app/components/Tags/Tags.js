@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from "react";
 const electron = window.require("electron");
-import { Segment, Label, Divider, Grid, Form} from 'semantic-ui-react'
+import { Segment, Label, Divider, Grid, Form, Message, Icon} from 'semantic-ui-react'
 import styles from "./Tags.scss";
+
+const storage = window.localStorage;
 
 export default function Tags(props){
 
   const [tags, setTags] = useState([]);
   const [tagsOnDB, setTagsOnDB] = useState([]);
   const [tagsInputValue, setTagsInputValue] = useState('');
+  const [messageVisible, setMessageVisible] = useState(JSON.parse(storage.getItem('messageVisible')) === false ? false : true);
+
 
   function tagColor(tag){
 
@@ -73,6 +77,13 @@ export default function Tags(props){
 
   }
 
+  function handleCloseMessage(){
+
+    setMessageVisible(false);
+    storage.setItem('messageVisible', false);
+
+  }
+
    useEffect(() => {
 
     electron.ipcRenderer.send('request-tags-data', props.id);
@@ -102,12 +113,30 @@ export default function Tags(props){
               </Grid.Column>
             </Grid>
         </Form>
+
         {tags.length !== 0 || tagsOnDB.length !== 0 ? (<Divider/>) : ""}
         {allTags.map((tag, index) => {
           return (<Label color={tagColor(tag)} className={ styles.tagsLable } key={index}> {tag} </Label>)
         })}
 
-      </Segment>)}
+        {messageVisible && (
+          <div>
+            <Divider/>
+            <Message icon onDismiss={handleCloseMessage}>
+              <Icon name='help' />
+              <Message.Content>
+                <Message.Header>Tags should be separated by comma ( , )</Message.Header>
+                <Message.List>
+                  <Message.Item>Example: <b>Tag, this is a tag, this is another tag</b></Message.Item>
+                  <Message.Item>To update or delete a tag just edit the text inside the input and press Update Tags or Enter</Message.Item>
+                </Message.List>
+              </Message.Content>
+            </Message>
+          </div>
+        )}
+
+      </Segment>
+      )}
     </div>
 
   );
