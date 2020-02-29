@@ -132,6 +132,17 @@ export default function Tests(){
     electron.ipcRenderer.on('tests-data-chart', receiveChartData);
     electron.ipcRenderer.on('tests-search-data-chart', receiveChartData);
 
+     const scrollTimeout = setTimeout(() => {
+
+      window.scroll({
+        top: parseInt(storage.getItem('scrollY')),
+        behavior: 'auto'
+      });
+
+      storage.setItem('scrollY', 0);
+
+     }, 120);
+
     return () => {
 
       electron.ipcRenderer.removeListener('tests-data', receiveData);
@@ -140,6 +151,13 @@ export default function Tests(){
       electron.ipcRenderer.removeListener('tests-search-data-count', receiveTestsCount);
       electron.ipcRenderer.removeListener('tests-data-chart', receiveChartData);
       electron.ipcRenderer.removeListener('tests-search-data-chart', receiveChartData);
+
+      window.scroll({
+        top: 0,
+        behavior: 'auto'
+      });
+
+      clearTimeout(scrollTimeout);
 
     }
 
@@ -176,7 +194,7 @@ export default function Tests(){
           <Table.Cell>{test.server_name}</Table.Cell>
           <Table.Cell singleLine>{moment(test.timestamp, moment.ISO_8601).fromNow()}</Table.Cell>
           <Table.Cell selectable>
-            <NavLink exact to={`/info/${test.id}`}>
+            <NavLink exact to={`/info/${test.id}`} onClick={() => { storage.setItem('scrollY', document.body.scrollTop || document.documentElement.scrollTop) }}>
               <Icon name='arrow right' fitted size="small" />
             </NavLink>
           </Table.Cell>

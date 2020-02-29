@@ -9,6 +9,8 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import Navbar from "../../components/Navbar/Navbar.js";
 
+const storage = window.localStorage;
+
 export default function Info(){
 
   let { id } = useParams();
@@ -28,18 +30,23 @@ export default function Info(){
     electron.ipcRenderer.send('request-test-data', id);
     electron.ipcRenderer.on('test-data', receiveData);
 
+    window.scroll({
+      top: 0,
+      behavior: 'auto'
+    });
+
     return () => {
 
       electron.ipcRenderer.removeListener('test-data', receiveData);
 
+      window.scroll({
+        top: parseInt(storage.getItem('scrollY')),
+        behavior: 'auto'
+      });
+
     }
 
   }, []);
-
-  useEffect(() => {
-
-
-  }, [testData]);
 
   return (
     <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
