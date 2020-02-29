@@ -25,8 +25,8 @@ export default function Charts(props){
               <XAxis dataKey="name" hide={true} />
               <Tooltip />
               <Legend />
-              <Area isAnimationActive={props.animate} type="monotone" dataKey="download" stroke="#6435c9" fillOpacity={1} fill="url(#colorDownload)" />
-              <Area isAnimationActive={props.animate} type="monotone" dataKey="upload" stroke="#00b5ad" fillOpacity={1} fill="url(#colorUpload)" />
+              <Area animationEasing="ease-out" type="monotone" dataKey="download" stroke="#6435c9" fillOpacity={1} fill="url(#colorDownload)" />
+              <Area animationEasing="ease-out" type="monotone" dataKey="upload" stroke="#00b5ad" fillOpacity={1} fill="url(#colorUpload)" />
             </AreaChart>
           </ResponsiveContainer>
           <ResponsiveContainer width={"100%"} height={100}>
@@ -41,7 +41,7 @@ export default function Charts(props){
               <XAxis dataKey="name" hide={true} />
               <Tooltip />
               <Legend />
-              <Area isAnimationActive={props.animate} type="monotone" dataKey="ping" stroke="#2185d0" fillOpacity={1} fill="url(#colorPing)" />
+              <Area animationEasing="ease-out" type="monotone" dataKey="ping" stroke="#2185d0" fillOpacity={1} fill="url(#colorPing)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>

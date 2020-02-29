@@ -18,7 +18,6 @@ export default function Tests(){
   const [testsData, setTestsData] = useState([]);
   const [testsDataChart, setTestsDataChart] = useState([]);
   const [chartData, setChartData] = useState([]);
-  const [animateChart, setAnimateChart] = useState(false);
   const [maxValueDownloadUpload, setMaxValueDownloadUpload] = useState(10);
   const [maxPing, setMaxPing] = useState(10);
   const [totalPages, setTotalPages] = useState(10);
@@ -56,8 +55,6 @@ export default function Tests(){
   }
 
   function handleSort(clickedColumn){
-
-    setAnimateChart(true);
 
     if(sorted.column !== clickedColumn){
 
@@ -199,7 +196,7 @@ export default function Tests(){
       <Search onSubmit={() => { setMode('search'); setActivePage(1); setOffset(0); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsCount === 0} mode={mode} offset={offset} limit={limit} />
 
       {(testsCount || mode == 'normal') && (
-        <Charts animate={animateChart} mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
+        <Charts mode={mode} data={chartData} maxValueDownloadUpload={maxValueDownloadUpload} maxPing={maxPing} />
       )}
       {(testsCount || mode == 'normal') && (
       <Table  color={mode === 'search' ? 'blue' : null} sortable={testsData.length > 0} celled compact striped>
