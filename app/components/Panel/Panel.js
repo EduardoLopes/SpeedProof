@@ -148,55 +148,53 @@ export default function Panel(props){
     }, [props.pingData, props.pingJitterData]);
 
   return (
-    <Grid columns='equal' padded="vertically">
-      <Grid.Row>
-        <Grid.Column>
-          <Segment.Group>
-            <Segment size="massive" textAlign="center">
+    <Grid columns={3} padded="vertically">
+      <Grid.Column>
+        <Segment.Group>
+          <Segment size="massive" textAlign="center">
 
-              <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='sync'/> {t('ping')}
-              </Label>
-              {formatPing(ping.latency)}
-            </Segment>
-            <Segment style={{padding: 0}}>
-              {pingProgress > 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
-              {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" color2="#fbbd08" dataKey="latency" dataKey2="jitter"/>)}
-            </Segment>
-          </Segment.Group>
-        </Grid.Column>
-        <Grid.Column>
-          <Segment.Group>
+            <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
+            <Icon name='sync'/> {t('ping')}
+            </Label>
+            {formatPing(ping.latency)}
+          </Segment>
+          <Segment style={{padding: 0}}>
+            {pingProgress > 0 && (<Progress percent={pingProgress} attached='bottom' indicating />)}
+            {pingData.length > 1 && (<Chart data={pingData} color="#2185d0" color2="#fbbd08" dataKey="latency" dataKey2="jitter"/>)}
+          </Segment>
+        </Segment.Group>
+      </Grid.Column>
+      <Grid.Column>
+        <Segment.Group>
 
-            <Segment size="massive" textAlign="center">
-              <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='download'/> {t('download')}
-              </Label>
-              {formatSpeed(downloadSpeed)}
-            </Segment>
+          <Segment size="massive" textAlign="center">
+            <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
+            <Icon name='download'/> {t('download')}
+            </Label>
+            {formatSpeed(downloadSpeed)}
+          </Segment>
 
-            <Segment style={{padding: 0}}>
-              {downloadProgress > 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
-              {downloadData.length > 1 && (<Chart data={downloadData} color="#6435c9" dataKey="download"/>)}
-            </Segment>
+          <Segment style={{padding: 0}}>
+            {downloadProgress > 0 && (<Progress percent={downloadProgress} attached='bottom' indicating />)}
+            {downloadData.length > 1 && (<Chart data={downloadData} color="#6435c9" dataKey="download"/>)}
+          </Segment>
 
-          </Segment.Group>
-        </Grid.Column>
-        <Grid.Column>
-          <Segment.Group>
-            <Segment size="massive" textAlign="center">
-              <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='upload'/> {t('upload')}
-              </Label>
-              {formatSpeed(uploadSpeed)}
-            </Segment>
-            <Segment style={{padding: 0}}>
-              {uploadProgress > 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
-              {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload" domain={[0, maxDownload]}/>)}
-            </Segment>
-          </Segment.Group>
-        </Grid.Column>
-      </Grid.Row>
+        </Segment.Group>
+      </Grid.Column>
+      <Grid.Column>
+        <Segment.Group>
+          <Segment size="massive" textAlign="center">
+            <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
+            <Icon name='upload'/> {t('upload')}
+            </Label>
+            {formatSpeed(uploadSpeed)}
+          </Segment>
+          <Segment style={{padding: 0}}>
+            {uploadProgress > 0 && (<Progress percent={uploadProgress} attached='bottom' indicating />)}
+            {uploadData.length > 1 && (<Chart data={uploadData} color="#00b5ad" dataKey="upload" domain={[0, maxDownload]}/>)}
+          </Segment>
+        </Segment.Group>
+      </Grid.Column>
     </Grid>
   );
 

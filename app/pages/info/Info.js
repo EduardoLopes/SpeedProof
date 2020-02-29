@@ -46,16 +46,26 @@ export default function Info(){
       <Navbar />
       { testData && (
       <div>
-        <Button
-          as={NavLink}
-          exact
-          to='/tests'
-          content={t('Back')}
-          icon='arrow left'
-        />
-        <Label size="large">
-          <Icon name='time' /> {moment(testData.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a")}
-        </Label>
+        <Grid verticalAlign='middle'>
+          <Grid.Column width="4">
+            <Button
+              as={NavLink}
+              exact
+              to='/tests'
+              content={t('Back')}
+              icon='arrow left'
+              floated="left"
+              size="mini"
+            />
+          </Grid.Column>
+          <Grid.Column width="12" textAlign="right">
+
+            <Label size="large">
+              <Icon name='time' /> {moment(testData.timestamp, moment.ISO_8601).format("dddd, MMMM Do YYYY, h:mm:ss a")}
+            </Label>
+
+          </Grid.Column>
+        </Grid>
         <Panel
           pingData={testData ? testData.ping_variation : null}
           pingJitterData={testData ? testData.ping_jitter_variation : null}
