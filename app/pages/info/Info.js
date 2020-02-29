@@ -7,6 +7,7 @@ import moment from "moment";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import Navbar from "../../components/Navbar/Navbar.js";
 
 export default function Info(){
 
@@ -41,9 +42,10 @@ export default function Info(){
   }, [testData]);
 
   return (
-    <div>
+    <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+      <Navbar />
       { testData && (
-      <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+      <div>
         <Button
           as={NavLink}
           exact
@@ -157,9 +159,9 @@ export default function Info(){
         <Segment>
           <Button style={{width: '100%'}} onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
         </Segment>
-      </Container>
+      </div>
     )}
-    </div>
+    </Container>
   );
 
 }
