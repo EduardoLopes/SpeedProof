@@ -8,7 +8,7 @@ export default function Navbar(props){
   const { t } = useTranslation();
 
   return (
-    <Menu inverted pointing size='huge'>
+    <Menu inverted pointing>
       <Menu.Item
         as={NavLink}
         exact
