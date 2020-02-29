@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar.js";
 import { Container, Form, Select, Grid, Segment} from 'semantic-ui-react'
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 const storage = window.localStorage;
 
 
@@ -20,6 +21,7 @@ export default function Config(){
 
     i18n.changeLanguage(value);
     storage.setItem('language', value);
+    moment.locale(value.toLowerCase());
 
   }
 

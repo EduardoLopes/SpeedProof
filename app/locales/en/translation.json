@@ -40,5 +40,9 @@
   "Update tags": "Update tags",
   "Tags should be separated by comma ( , )": "Tags should be separated by comma ( , )",
   "tags": {"example": "Example: Tag, this is a tag, this is another tag"},
-  "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "To update or delete a tag just edit the text inside the input and press Update Tags or Enter"
+  "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "To update or delete a tag just edit the text inside the input and press Update Tags or Enter",
+  "Start": "Start",
+  "End": "End",
+  "Select the dates": "Select the dates..."
+
 }

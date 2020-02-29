@@ -40,5 +40,9 @@
   "Update tags": "Atualizar tags",
   "Tags should be separated by comma ( , )": "Tags devem ser separadas por virgula ( , )",
   "tags": {"example": "Exemplo: Tag, essa é uma tag, essa é outra tag"},
-  "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "Para atualizar ou deleta uma tag, basta editar o texto dentro do campo e apertar o botão 'Atualizar tags' ou pressionar Enter"
+  "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "Para atualizar ou deleta uma tag, basta editar o texto dentro do campo e apertar o botão 'Atualizar tags' ou pressionar Enter",
+  "Start": "Começo",
+  "End": "Fim",
+  "Select the dates": "Selecione as datas..."
+
 }
