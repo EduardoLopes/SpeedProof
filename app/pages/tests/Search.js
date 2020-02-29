@@ -68,6 +68,11 @@ export default function Search(props){
 
     if( event.type === "keydown" && event.key !== 'Enter' || event.type !== "keydown" && event.type !== 'click' || _lang.isEqual(getSearchConfig(), lastSearch)) return;
 
+    if(searchKeyword.length === 0 && searchDates.length === 0){
+      resetSearch();
+      return null;
+    }
+
     if(props.onSubmit){
       props.onSubmit();
     }
@@ -75,9 +80,7 @@ export default function Search(props){
     requestSearchData();
     updateLocalStorage();
 
-    if(searchKeyword.length === 0 && searchDates.length === 0){
-      electron.ipcRenderer.send('request-tests-data', {offset: 0, limit: 15, sortDirection: 'DESC', sortColumn: 'id'});
-    }
+
 
   }
 
