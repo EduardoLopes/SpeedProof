@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Label, Icon, Statistic, Progress, Grid} from 'semantic-ui-react'
 import Chart from './Chart.js';
+import { useTranslation } from 'react-i18next';
 import styles from "./Panel.scss";
 
 export default function Panel(props){
@@ -9,6 +10,7 @@ export default function Panel(props){
   const [downloadData, setDownloadData] = useState([]);
   const [uploadData, setUploadData] = useState([]);
   const [maxDownload, setMaxDownload] = useState(0);
+  const { t, i18n } = useTranslation();
 
   function formatSpeed(speed){
 
@@ -153,7 +155,7 @@ export default function Panel(props){
             <Segment size="massive" textAlign="center">
 
               <Label color='blue' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='sync'/> Ping
+              <Icon name='sync'/> {t('ping')}
               </Label>
               {formatPing(ping.latency)}
             </Segment>
@@ -168,7 +170,7 @@ export default function Panel(props){
 
             <Segment size="massive" textAlign="center">
               <Label color='violet' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='download'/> Download
+              <Icon name='download'/> {t('download')}
               </Label>
               {formatSpeed(downloadSpeed)}
             </Segment>
@@ -184,7 +186,7 @@ export default function Panel(props){
           <Segment.Group>
             <Segment size="massive" textAlign="center">
               <Label color='teal' size="large" attached='top' style={{textAlign: "left"}}>
-              <Icon name='upload'/> Upload
+              <Icon name='upload'/> {t('upload')}
               </Label>
               {formatSpeed(uploadSpeed)}
             </Segment>

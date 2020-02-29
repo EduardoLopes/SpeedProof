@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, {Suspense, useEffect } from "react";
 import {
     HashRouter as Router,
     Switch,
     Route
   } from "react-router-dom";
+
+  import { Dimmer, Loader} from 'semantic-ui-react';
 
 const electron = window.require("electron");
 
@@ -23,14 +25,17 @@ function App() {
 
   }, []);
 
+
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/tests" component={Tests} />
-        <Route exact path="/info/:id" component={Info} />
-      </Switch>
-    </Router>
+    <Suspense fallback={<Dimmer inverted active><Loader /></Dimmer>}>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/tests" component={Tests} />
+          <Route exact path="/info/:id" component={Info} />
+        </Switch>
+      </Router>
+    </Suspense>
   );
 
 }

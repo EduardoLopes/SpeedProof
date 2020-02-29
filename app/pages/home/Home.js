@@ -4,15 +4,18 @@ import { Container, Button, Segment, Label, Icon, Message, Divider} from 'semant
 import Navbar from "../../components/Navbar/Navbar.js";
 import Tags from "../../components/Tags/Tags.js";
 import Panel from "../../components/Panel/Panel.js";
+import { useTranslation } from 'react-i18next';
 const electron = window.require("electron");
 
 
 export default function Home(){
 
+  const { t, i18n } = useTranslation();
+
   const [startButton, setStartButton] = useState({
     disabled: false,
     color: "green",
-    content: "Start Test"
+    content: t('startTest')
   });
 
   const [pingProgress, setPingProgress] = useState(0);
@@ -29,7 +32,6 @@ export default function Home(){
   const [errorMessage, setErrorMessage] = useState(null);
   const [lastID, setLastID] = useState(null);
 
-
   function requestData(){
 
     electron.ipcRenderer.send('request-data', "date");
@@ -37,7 +39,7 @@ export default function Home(){
     setStartButton({
       disabled: true,
       loading: true,
-      content: "Loading..."
+      content: t('loading')
     });
 
     setPingProgress(0);
@@ -59,7 +61,7 @@ export default function Home(){
 
     setStartButton({
       disabled: true,
-      content: "Please wait"
+      content: t('pleaseWait')
     });
 
     setTimeout(() => {
@@ -68,7 +70,7 @@ export default function Home(){
         disabled: false,
         color: "green",
         loading: false,
-        content: "Start Test"
+        content: t('startTest')
       });
 
      }, 1000);
@@ -110,7 +112,7 @@ export default function Home(){
 
     setStartButton({
       disabled: true,
-      content: "Please wait"
+      content: t('pleaseWait')
     });
 
   }
@@ -127,7 +129,7 @@ export default function Home(){
         disabled: false,
         color: "green",
         loading: false,
-        content: "Start Test"
+        content: t('startTest')
       });
 
      }, 1000);
@@ -151,6 +153,8 @@ export default function Home(){
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
     electron.ipcRenderer.on('last-id', receiveLastID);
+
+    i18n.changeLanguage('pt-BR');
 
     return () => {
 
@@ -192,14 +196,14 @@ export default function Home(){
 
       <Segment size="big">
         <Label size="large" color="orange" ribbon>
-          <Icon name='computer'/> Client
+          <Icon name='computer'/> {t('client')}
         </Label>
 
         {testServer !== null ? testServer.isp : ""  }
         <Divider horizontal><Icon name='sync'/></Divider>
 
         <Label size="large" color="orange" ribbon>
-          <Icon name='server'/> Server
+          <Icon name='server'/> {t('server')}
         </Label>
 
         {testServer !== null ? `${testServer.server.name} ` : "" }

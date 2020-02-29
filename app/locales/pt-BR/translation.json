@@ -1,0 +1,14 @@
+{
+  "navbar": {
+    "speedtest": "SpeedTest",
+    "tests": "Testes"
+  },
+  "download": "Download",
+  "upload": "Upload",
+  "ping": "Ping",
+  "startTest": "Começar Teste",
+  "pleaseWait": "Só um momento...",
+  "loading": "Carregando...",
+  "client": "Cliente",
+  "server": "Servidor"
+}
