@@ -8,6 +8,7 @@ import en_US from 'rc-calendar/lib/locale/en_US';
 import pt_BR from 'rc-calendar/lib/locale/pt_BR';
 
 import moment from 'moment';
+const storage = window.localStorage;
 
 const now = moment();
 
@@ -22,7 +23,10 @@ function isValidRange(v) {
 
 export default function Calendar(props) {
 
-  const [calendarValue, setCalendarValue] = useState([]);
+
+  const storageDates = JSON.parse(storage.getItem('searchDates'));
+  const [calendarValue, setCalendarValue] = useState(storageDates ? [moment(storageDates[0]), moment(storageDates[1])] : []);
+
   const { t, i18n } = useTranslation();
 
   function onChange(value) {
