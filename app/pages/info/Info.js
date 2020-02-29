@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import Navbar from "../../components/Navbar/Navbar.js";
+import Footer from "../../components/Footer/Footer.js";
 
 const storage = window.localStorage;
 
@@ -49,7 +50,7 @@ export default function Info(){
   }, []);
 
   return (
-    <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+    <Container style={{ marginTop: "1rem", marginBottom: "1rem" }}>
       <Navbar />
       { testData && (
       <div>
@@ -172,13 +173,21 @@ export default function Info(){
         </Grid.Row>
       </Grid>
 
-        <Tags id={testData.id}/>
-        <Segment>
-          <Button style={{width: '100%'}} onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
-        </Segment>
       </div>
     )}
+
+    { testData && (<Tags id={testData.id}/>)}
+
+    { testData && (
+      <Segment>
+        <Button style={{width: '100%'}} onClick={(event) => electron.shell.openItem(testData.speedtest_url)} secondary>{testData.speedtest_url}</Button>
+      </Segment>
+    )}
+
+      <Footer />
+
     </Container>
+
   );
 
 }

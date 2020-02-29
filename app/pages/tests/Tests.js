@@ -11,6 +11,8 @@ import Search from './Search.js';
 import Charts from './Charts.js';
 import TableDataPlacehold from './TableDataPlacehold.js';
 import { useTranslation } from 'react-i18next';
+import Footer from "../../components/Footer/Footer.js";
+
 const storage = window.localStorage;
 
 export default function Tests(){
@@ -208,7 +210,7 @@ export default function Tests(){
   }, [testsData]);
 
   return (
-    <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+    <Container style={{ marginTop: "1rem", marginBottom: "1rem" }}>
 
       <Navbar />
       <Search onSubmit={() => { setMode('search'); setActivePage(1); setOffset(0); setSorted({ column: 'id', direction: 'DESC' }) }} sortDirection={sorted.direction} sortColumn={sorted.column} noResult={testsCount === 0} mode={mode} offset={offset} limit={limit} />
@@ -243,6 +245,8 @@ export default function Tests(){
           <Pagination color={mode === 'search' ? 'blue' : null} floated="right" inverted onPageChange={handlePageChange} activePage={activePage} totalPages={totalPages} />
         </Segment>
       )}
+
+      <Footer />
 
     </Container>
   );

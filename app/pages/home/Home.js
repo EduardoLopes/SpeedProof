@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
-import styles from "./Home.scss";
 import { Container, Button, Segment, Label, Icon, Message, Divider} from 'semantic-ui-react'
 import Navbar from "../../components/Navbar/Navbar.js";
 import Tags from "../../components/Tags/Tags.js";
 import Panel from "../../components/Panel/Panel.js";
+import Footer from "../../components/Footer/Footer.js";
 import { useTranslation } from 'react-i18next';
 const electron = window.require("electron");
 const storage = window.localStorage;
@@ -175,7 +175,7 @@ export default function Home(){
   }, []);
 
   return (
-    <Container style={{ marginTop: "3em",  marginBottom: "3em" }}>
+    <Container style={{ marginTop: "1rem", marginBottom: "1rem" }}>
       <Navbar testsItemDisabled={startButton.disabled}/>
       <Segment style={{marginBottom: 0, paddingRight: "0", paddingLeft: "0"}} basic>
         <Button {...startButton} icon size="huge" fluid={true} onClick={requestData} />
@@ -212,6 +212,8 @@ export default function Home(){
       </Segment>
 
       <Tags id={lastID} />
+
+      <Footer />
 
     </Container>
   );
