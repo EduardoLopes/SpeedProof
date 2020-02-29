@@ -3,6 +3,7 @@ import { Grid, Form, Button, Segment, Input} from 'semantic-ui-react';
 import _lang from 'lodash/lang';
 import Calendar from './Calendar.js';
 import NoResultSearch from './NoResultSearch.js';
+import { useTranslation } from 'react-i18next';
 
 const electron = window.require("electron");
 const storage = window.localStorage;
@@ -25,6 +26,8 @@ export default function Search(props){
     sortDirection: props.sortDirection,
     sortColumn: props.sortColumn
   });
+
+  const { t } = useTranslation();
 
   function updateLocalStorage(){
 
@@ -172,9 +175,9 @@ export default function Search(props){
       <Segment color={props.mode === 'search' ? 'blue' : null}>
         <Grid>
           <Grid.Column style={{paddingBottom: 0}} width={16}>
-            <Input onKeyDown={handleOnSubmit} onChange={handleSearchOnChange} value={searchKeyword} style={{width: '100%'}} type='text' placeholder='Search...' action>
+            <Input onKeyDown={handleOnSubmit} onChange={handleSearchOnChange} value={searchKeyword} style={{width: '100%'}} type='text' placeholder={`${t('Search')}...`} action>
               <input />
-              <Button color='blue' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} onClick={handleOnSubmit}>Search</Button>
+              <Button color='blue' disabled={_lang.isEqual(getSearchConfig(), lastSearch)} onClick={handleOnSubmit}>{t('Search')}</Button>
               <Button color='blue' disabled={handleClearButtonDisabled()} basic as='div' icon="delete" onClick={resetSearch}></Button>
             </Input>
           </Grid.Column>
@@ -185,17 +188,17 @@ export default function Search(props){
 
                 setSearchByTag(!searchByTag);
 
-                }}>By Tags</Button>
+                }}>{t('By Tags')}</Button>
               <Button color={searchByISP ? 'green' : 'grey'} onClick={()=>{
 
                 setSearchByISP(!searchByISP);
 
-                }}>By ISP</Button>
+                }}>{t('By ISP')}</Button>
               <Button color={searchByServerName ? 'green' : 'grey'} onClick={()=>{
 
                 setSearchByServerName(!searchByServerName);
 
-                }}>By Server Name</Button>
+                }}>{t('By Server Name')}</Button>
             </Button.Group>
 
           </Grid.Column>

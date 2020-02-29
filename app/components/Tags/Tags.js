@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 const electron = window.require("electron");
 import { Segment, Label, Divider, Grid, Form, Message, Icon} from 'semantic-ui-react'
 import styles from "./Tags.scss";
+import { useTranslation } from 'react-i18next';
 
 const storage = window.localStorage;
 
@@ -11,7 +12,7 @@ export default function Tags(props){
   const [tagsOnDB, setTagsOnDB] = useState([]);
   const [tagsInputValue, setTagsInputValue] = useState('');
   const [messageVisible, setMessageVisible] = useState(JSON.parse(storage.getItem('messageVisible')) === false ? false : true);
-
+  const { t, i18n } = useTranslation();
 
   function tagColor(tag){
 
@@ -109,7 +110,7 @@ export default function Tags(props){
                 <Form.Input placeholder='Tags' name='name' value={tagsInputValue} onChange={handleOnChange} />
               </Grid.Column>
               <Grid.Column width={4}>
-                <Form.Button style={{width: '100%'}} color="green" content={tagsOnDB.length === 0 ? 'Add tags' : 'Update tags'} />
+                <Form.Button style={{width: '100%'}} color="green" content={tagsOnDB.length === 0 ? t('Add tags') : t('Update tags')} />
               </Grid.Column>
             </Grid>
         </Form>
@@ -125,10 +126,10 @@ export default function Tags(props){
             <Message icon onDismiss={handleCloseMessage}>
               <Icon name='help' />
               <Message.Content>
-                <Message.Header>Tags should be separated by comma ( , )</Message.Header>
+                <Message.Header>{t('Tags should be separated by comma ( , )')}</Message.Header>
                 <Message.List>
-                  <Message.Item>Example: <b>Tag, this is a tag, this is another tag</b></Message.Item>
-                  <Message.Item>To update or delete a tag just edit the text inside the input and press Update Tags or Enter</Message.Item>
+                  <Message.Item>{t('tags.example')}</Message.Item>
+                  <Message.Item>{t('To update or delete a tag just edit the text inside the input and press Update Tags or Enter')}</Message.Item>
                 </Message.List>
               </Message.Content>
             </Message>
