@@ -10,7 +10,7 @@ export default function Panel(props){
   const [downloadData, setDownloadData] = useState([]);
   const [uploadData, setUploadData] = useState([]);
   const [maxDownload, setMaxDownload] = useState(0);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   function formatSpeed(speed){
 

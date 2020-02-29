@@ -6,7 +6,7 @@ import Tags from "../../components/Tags/Tags.js";
 import Panel from "../../components/Panel/Panel.js";
 import { useTranslation } from 'react-i18next';
 const electron = window.require("electron");
-
+const storage = window.localStorage;
 
 export default function Home(){
 
@@ -145,6 +145,8 @@ export default function Home(){
 
   useEffect(() => {
 
+    i18n.changeLanguage(storage.getItem('language') || i18n.language);
+
     electron.ipcRenderer.on('ping', receivePing);
     electron.ipcRenderer.on('download', receiveDownload);
     electron.ipcRenderer.on('upload', receiveUpload);
@@ -153,8 +155,6 @@ export default function Home(){
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
     electron.ipcRenderer.on('last-id', receiveLastID);
-
-    i18n.changeLanguage('pt-BR');
 
     return () => {
 

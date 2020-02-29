@@ -1,7 +1,8 @@
 {
   "navbar": {
     "speedtest": "SpeedTest",
-    "tests": "Testes"
+    "tests": "Testes",
+    "config": "Config"
   },
   "download": "Download",
   "upload": "Upload",
@@ -10,5 +11,7 @@
   "pleaseWait": "Só um momento...",
   "loading": "Carregando...",
   "client": "Cliente",
-  "server": "Servidor"
+  "server": "Servidor",
+  "language": "Linguagem",
+  "Select your language": "Escolha sua linguagem"
 }

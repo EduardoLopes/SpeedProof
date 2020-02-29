@@ -28,6 +28,16 @@ export default function Navbar(props){
         <Icon name='line graph' />
         {t('navbar.tests')}
       </Menu.Item>)}
+      <Menu.Item
+        as={NavLink}
+        exact
+        to="/config"
+        name={t('navbar.config')}
+        position={'right'}
+      >
+        <Icon name='cog' />
+        {t('navbar.config')}
+      </Menu.Item>
     </Menu>
   );
 
