@@ -1,13 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Picker from 'rc-calendar/lib/Picker';
 import RangeCalendar from 'rc-calendar/lib/RangeCalendar';
 import 'rc-calendar/assets/index.css';
 import { Input } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
-import en_US from 'rc-calendar/lib/locale/en_US';
-import pt_BR from 'rc-calendar/lib/locale/pt_BR';
-
+import enUS from 'rc-calendar/lib/locale/en_US';
+import ptBR from 'rc-calendar/lib/locale/pt_BR';
+import PropTypes from 'prop-types';
 import moment from 'moment';
+
 const storage = window.localStorage;
 
 const now = moment();
@@ -22,48 +23,37 @@ function isValidRange(v) {
 }
 
 export default function Calendar(props) {
-
-
   const storageDates = JSON.parse(storage.getItem('searchDates'));
-  const [calendarValue, setCalendarValue] = useState(storageDates ? [moment(storageDates[0]), moment(storageDates[1])] : []);
-
+  const [calendarValue, setCalendarValue] = useState(
+    storageDates ? [moment(storageDates[0]), moment(storageDates[1])] : [],
+  );
   const { t, i18n } = useTranslation();
-
-  function onChange(value) {
-
-    if(props.onChange){
-      props.onChange(value);
+  const { searchDates, onChange } = props;
+  function handleOnChange(value) {
+    if (onChange) {
+      onChange(value);
     }
 
     setCalendarValue(value);
-
   }
 
-  function onClear(){
+  function defineLocale() {
+    if (i18n.language === 'en') {
+      return enUS;
+    }
 
-    setCalendarValue([]);
+    if (i18n.language === 'pt-BR') {
+      return ptBR;
+    }
 
+    return enUS;
   }
-
-  function defineLocale(){
-
-    if(i18n.language === 'en'){
-      return en_US;
-    }
-
-    if(i18n.language === 'pt-BR'){
-      return pt_BR;
-    }
-
-  };
 
   useEffect(() => {
-
-    if(props.searchDates.length === 0){
+    if (searchDates.length === 0) {
       setCalendarValue([]);
     }
-
-  }, [props.searchDates]);
+  }, [searchDates]);
 
   const calendar = (
     <RangeCalendar
@@ -77,26 +67,39 @@ export default function Calendar(props) {
   return (
     <Picker
       value={calendarValue}
-      onChange={onChange}
+      onChange={handleOnChange}
       animation="slide-up"
       calendar={calendar}
     >
-      {
-        ({ value }) => {
-          return (<span>
-              <Input
-                size='mini'
-                icon='calendar alternate outline' iconPosition='left'
-                placeholder={t('Select the dates')}
-                style={{ width: 170, marginRight: 10 }}
-                readOnly
-                className="ant-calendar-picker-input ant-input"
-                value={isValidRange(value) && `${format(value[0])} | ${format(value[1])}` || ''}
-              />
-              </span>);
-        }
-      }
+      {({ value }) => (
+        <span>
+          <Input
+            size="mini"
+            icon="calendar alternate outline"
+            iconPosition="left"
+            placeholder={t('Select the dates')}
+            style={{ width: 170, marginRight: 10 }}
+            readOnly
+            className="ant-calendar-picker-input ant-input"
+            value={
+                (isValidRange(value)
+                  && `${format(value[0])} | ${format(value[1])}`)
+                || ''
+              }
+          />
+        </span>
+      )}
     </Picker>
   );
-
 }
+
+
+Calendar.propTypes = {
+  onChange: PropTypes.func,
+  searchDates: PropTypes.arrayOf(PropTypes.instanceOf(moment)),
+};
+
+Calendar.defaultProps = {
+  onChange: null,
+  searchDates: [null, null],
+};

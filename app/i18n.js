@@ -17,14 +17,14 @@ i18n
   .init({
     backend: {
       // path where resources get loaded from
-      loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
+      loadPath: `${__dirname}/locales/{{lng}}/{{ns}}.json`,
 
       // path to post missing resources
-      addPath: __dirname +  '/locales/{{lng}}/{{ns}}.missing.json',
+      addPath: `${__dirname}/locales/{{lng}}/{{ns}}.missing.json`,
 
       // jsonIndent to use when storing json files
-      jsonIndent: 2
-      },
+      jsonIndent: 2,
+    },
     fallbackLng: 'en',
     debug: false,
 

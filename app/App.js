@@ -1,34 +1,30 @@
-import React, {Suspense, useEffect } from "react";
-import {
-    HashRouter as Router,
-    Switch,
-    Route
-  } from "react-router-dom";
+import React, { Suspense, useEffect } from 'react';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
-  import { Dimmer, Loader} from 'semantic-ui-react';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
-const electron = window.require("electron");
+import Home from './pages/home/Home';
+import Tests from './pages/tests/Tests';
+import Info from './pages/info/Info';
+import Config from './pages/config/Config';
 
-import Home from "./pages/home/Home.js";
-import Tests from "./pages/tests/Tests.js";
-import Info from "./pages/info/Info.js";
-import Config from "./pages/config/Config.js"
+const electron = window.require('electron');
 
 function App() {
-
   useEffect(() => {
-
-    window.addEventListener('beforeunload', evt => {
-
-      electron.ipcRenderer.send('before-unload', "data");
-
+    window.addEventListener('beforeunload', () => {
+      electron.ipcRenderer.send('before-unload', 'data');
     });
-
   }, []);
 
-
   return (
-    <Suspense fallback={<Dimmer inverted active><Loader /></Dimmer>}>
+    <Suspense
+      fallback={(
+        <Dimmer inverted active>
+          <Loader />
+        </Dimmer>
+      )}
+    >
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
@@ -39,7 +35,6 @@ function App() {
       </Router>
     </Suspense>
   );
-
 }
 
 export default App;

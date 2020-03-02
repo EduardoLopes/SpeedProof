@@ -1,9 +1,8 @@
-const {ipcMain} = require('electron');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./tests.db');
+const sqlite3 = require('sqlite3').verbose();
 
-db.serialize(function() {
+const db = new sqlite3.Database('./tests.db');
 
+db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS tests (
     id INTEGER PRIMARY KEY,
     timestamp TEXT NOT NULL,
@@ -41,14 +40,12 @@ db.serialize(function() {
   // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
   //     console.log(row.id + ": " + row.info);
   // });
-
 });
 
-function insertTest(mainWindow, values){
-
-  db.serialize(function() {
-
-    var stmt = db.run(`
+function insertTest(mainWindow, values) {
+  db.serialize(() => {
+    db.run(
+      `
     INSERT INTO
       tests
     VALUES (
@@ -83,144 +80,134 @@ function insertTest(mainWindow, values){
       $speedtest_id,
       $speedtest_url,
       $tags
-    )`, values, function(error, result){
-
-      mainWindow.webContents.send('last-id', `${this.lastID}`);
-
-    });
-
+    )`,
+      values,
+      // TODO: handle error
+      () => {
+        mainWindow.webContents.send('last-id', `${this.lastID}`);
+      },
+    );
   });
-
 }
 
-function getTests(mainWindow, offset, limit, sortDirection, sortColumn){
+function getTests(mainWindow, offset, limit, sortDirection, sortColumn) {
+  db.serialize(() => {
+    db.all(
+      `SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`,
+      (err, row) => {
+        mainWindow.webContents.send('tests-data', row);
+      },
+    );
 
-  db.serialize(function() {
+    db.all(
+      `SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`,
+      (err, row) => {
+        mainWindow.webContents.send('tests-data-chart', row);
+      },
+    );
 
-    db.all(`SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`, function(err, row) {
-
-      mainWindow.webContents.send('tests-data', row);
-
-    });
-
-    db.all(`SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`, function(err, row) {
-
-      mainWindow.webContents.send('tests-data-chart', row);
-
-    });
-
-    db.all(`SELECT COUNT(*) as count FROM tests`, function(err, row) {
-
+    db.all('SELECT COUNT(*) as count FROM tests', (err, row) => {
       mainWindow.webContents.send('tests-count', row);
-
     });
-
   });
-
 }
 
-function getTestsSearch(mainWindow, keyword, dates, byTag, byISP, byServerName, offset, limit, sortDirection, sortColumn){
-
+function getTestsSearch(
+  mainWindow,
+  keyword,
+  dates,
+  byTag,
+  byISP,
+  byServerName,
+  offset,
+  limit,
+  sortDirection,
+  sortColumn,
+) {
   const queries = [];
   let byDate = '';
 
-  if(dates.length > 0){
+  if (dates.length > 0) {
     byDate = ` AND timestamp_milliseconds BETWEEN ${dates[0]} AND ${dates[1]}`;
   }
 
-  if(byTag === true){
+  if (byTag === true) {
     queries.push(`SELECT * FROM tests WHERE tags LIKE '%${keyword}%'${byDate}`);
   }
 
-  if(byISP === true){
+  if (byISP === true) {
     queries.push(`SELECT * FROM tests WHERE isp LIKE '%${keyword}%'${byDate}`);
   }
 
-  if(byServerName === true){
-    queries.push(`SELECT * FROM tests WHERE server_name LIKE '%${keyword}%'${byDate}`);
+  if (byServerName === true) {
+    queries.push(
+      `SELECT * FROM tests WHERE server_name LIKE '%${keyword}%'${byDate}`,
+    );
   }
 
-  if(queries.length === 0 && dates.length > 0){
-    queries.push(`SELECT * FROM tests WHERE timestamp_milliseconds BETWEEN ${dates[0]} AND ${dates[1]}`);
+  if (queries.length === 0 && dates.length > 0) {
+    queries.push(
+      `SELECT * FROM tests WHERE timestamp_milliseconds BETWEEN ${dates[0]} AND ${dates[1]}`,
+    );
   }
 
-  if(queries.length !== 0){
-
+  if (queries.length !== 0) {
     let query = '';
 
     queries.forEach((item, index) => {
-
-      const union = (index === queries.length -1) ? '' : ' UNION ';
+      const union = index === queries.length - 1 ? '' : ' UNION ';
       query += `SELECT * FROM (${item})${union}`;
-
     });
 
-    db.serialize(function() {
+    db.serialize(() => {
+      db.all(
+        `${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`,
+        (err, row) => {
+          mainWindow.webContents.send('tests-search-data', row);
+        },
+      );
 
-      db.all(`${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT ${offset}, ${limit}`, function(err, row) {
+      db.all(
+        `SELECT COUNT(*) as count FROM (${query} ORDER BY ${sortColumn} ${sortDirection})`,
+        (err, row) => {
+          mainWindow.webContents.send('tests-search-data-count', row);
+        },
+      );
 
-        mainWindow.webContents.send('tests-search-data', row);
-
-      });
-
-      db.all(`SELECT COUNT(*) as count FROM (${query} ORDER BY ${sortColumn} ${sortDirection})`, function(err, row) {
-
-        mainWindow.webContents.send('tests-search-data-count', row);
-
-      });
-
-      db.all(`${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`, function(err, row) {
-
-        mainWindow.webContents.send('tests-search-data-chart', row);
-
-      });
-
+      db.all(
+        `${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`,
+        (err, row) => {
+          mainWindow.webContents.send('tests-search-data-chart', row);
+        },
+      );
     });
-
   }
-
 }
 
-function getTest(mainWindow, id){
-
-  db.serialize(function() {
-
-    db.each(`SELECT * FROM tests WHERE id = ${id}`, function(err, row) {
-
+function getTest(mainWindow, id) {
+  db.serialize(() => {
+    db.each(`SELECT * FROM tests WHERE id = ${id}`, (err, row) => {
       mainWindow.webContents.send('test-data', row);
-
     });
-
   });
-
 }
 
-function getTags(mainWindow, id){
-
-  db.serialize(function() {
-
-    db.each(`SELECT tags FROM tests WHERE id = ${id}`, function(err, row) {
-
+function getTags(mainWindow, id) {
+  db.serialize(() => {
+    db.each(`SELECT tags FROM tests WHERE id = ${id}`, (err, row) => {
       mainWindow.webContents.send('tags-data', row);
-
     });
-
   });
-
 }
 
-function updateTags(id, tags){
-
-  db.serialize(function() {
-
-    var stmt = db.run(`
+function updateTags(id, tags) {
+  db.serialize(() => {
+    db.run(`
     UPDATE
       tests
     SET tags = '${tags}'
     WHERE id = ${id}`);
-
   });
-
 }
 
 exports.insertTest = insertTest;
@@ -230,4 +217,6 @@ exports.getTest = getTest;
 exports.getTags = getTags;
 exports.updateTags = updateTags;
 
-exports.close = function (){ db.close() };
+exports.close = () => {
+  db.close();
+};
