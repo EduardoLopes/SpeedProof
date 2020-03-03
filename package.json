@@ -1,7 +1,7 @@
 {
-  "name": "ping",
+  "name": "speedcheck",
   "version": "0.0.0",
-  "description": "Test the internet speed",
+  "description": "Check the internet speed",
   "main": "app/electron.js",
   "author": "Eduardo Lopes",
   "license": "MIT",
@@ -17,7 +17,7 @@
   },
   "lint-staged": {
     "app/**/*.{js,jsx}": [
-      "yarn run eslint app/ --fix"
+      "yarn run eslint --fix"
     ]
   },
   "husky": {
