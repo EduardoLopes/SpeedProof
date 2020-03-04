@@ -12,6 +12,7 @@ import _lang from 'lodash/lang';
 import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -112,7 +113,7 @@ export default function Config() {
   );
 
   return (
-    <Container style={{ marginTop: '3em', marginBottom: '3em' }}>
+    <Container style={{ marginTop: '1rem' }}>
       <Navbar />
       <Segment loading={loading}>
         {!loading && (
@@ -147,6 +148,7 @@ export default function Config() {
           style={{ display: 'none' }}
         />
       </Segment>
+      <Footer />
     </Container>
   );
 }

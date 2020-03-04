@@ -321,7 +321,7 @@ export default function Tests() {
       )}
 
       {chartData.length > 0 && (
-        <Segment style={{ paddingRight: 0 }} basic clearing>
+        <Segment style={{ padding: 0 }} basic clearing>
           <Pagination
             color={mode === 'search' ? 'blue' : null}
             floated="right"

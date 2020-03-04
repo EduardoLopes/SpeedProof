@@ -54,7 +54,7 @@ export default function Info() {
   }, []);
 
   return (
-    <Container style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+    <Container style={{ marginTop: '1rem' }}>
       <Navbar />
       { testData && (
       <div>

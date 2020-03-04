@@ -157,7 +157,7 @@ export default function Home() {
   }, []);
 
   return (
-    <Container style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+    <Container style={{ marginTop: '1rem' }}>
 
       <Navbar testsItemDisabled={startButton.disabled} />
       <Segment
