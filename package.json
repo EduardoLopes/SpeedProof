@@ -40,6 +40,7 @@
     "files": [
       "app/electron.js",
       "app/DB.js",
+      "app/DBConfig.js",
       "app/preload.js",
       "build/**/*"
     ]
