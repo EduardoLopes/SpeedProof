@@ -209,15 +209,18 @@ function createWindow() {
     },
   });
 
+  // eslint-disable-next-line no-unused-expressions
+  !isDev && mainWindow.setMenu(null);
+  // eslint-disable-next-line no-unused-expressions
+  isDev && mainWindow.webContents.openDevTools();
+
+
   // and load the index.html of the app.
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`,
   );
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
