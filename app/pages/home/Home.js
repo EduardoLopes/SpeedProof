@@ -34,7 +34,7 @@ export default function Home() {
   const [lastID, setLastID] = useState(null);
 
   function requestData() {
-    electron.ipcRenderer.send('request-data', 'date');
+    electron.ipcRenderer.send('request-config-data');
 
     setStartButton({
       disabled: true,
@@ -120,6 +120,10 @@ export default function Home() {
     setLastID(data);
   }
 
+  function receiveConfigData(event, data) {
+    electron.ipcRenderer.send('request-data', data.speedtest_path);
+  }
+
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
@@ -131,6 +135,7 @@ export default function Home() {
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
     electron.ipcRenderer.on('last-id', receiveLastID);
+    electron.ipcRenderer.on('config-data', receiveConfigData);
 
     return () => {
       electron.ipcRenderer.removeListener('ping', receivePing);
@@ -139,6 +144,7 @@ export default function Home() {
       electron.ipcRenderer.removeListener('testStart', receiveTestStart);
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
+      electron.ipcRenderer.removeListener('config-data', receiveConfigData);
       electron.ipcRenderer.removeListener(
         'speedtest-error',
         handleSpeedtestError,
@@ -152,6 +158,7 @@ export default function Home() {
 
   return (
     <Container style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+
       <Navbar testsItemDisabled={startButton.disabled} />
       <Segment
         style={{ marginBottom: 0, paddingRight: '0', paddingLeft: '0' }}
@@ -187,7 +194,6 @@ export default function Home() {
       <Segment size="big">
         <Label size="large" color="orange" ribbon>
           <Icon name="computer" />
-          {' '}
           {t('client')}
         </Label>
 
@@ -198,7 +204,6 @@ export default function Home() {
 
         <Label size="large" color="orange" ribbon>
           <Icon name="server" />
-          {' '}
           {t('server')}
         </Label>
 
@@ -213,7 +218,7 @@ export default function Home() {
         )}
       </Segment>
 
-      <Tags id={lastID} />
+      {lastID && (<Tags id={lastID} />)}
 
       <Footer />
     </Container>

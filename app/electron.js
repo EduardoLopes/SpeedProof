@@ -2,17 +2,21 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
-const { rootPath } = require('electron-root-path');
 const moment = require('moment');
 const { spawn } = require('child_process');
+const download = require('download');
+const sha256File = require('sha256-file');
+const fs = require('fs');
 const DB = require('./DB.js');
+// eslint-disable-next-line no-unused-vars
+const DBConfig = require('./DBConfig.js');
 
 let mainWindow;
 let speedtest;
 let requestRunning = false;
 
 // eslint-disable-next-line consistent-return
-ipcMain.on('request-data', () => {
+ipcMain.on('request-data', (event, speedtestPath) => {
   if (requestRunning === true) {
     mainWindow.webContents.send('last-request-running', 'wait');
 
@@ -20,10 +24,6 @@ ipcMain.on('request-data', () => {
   }
 
   requestRunning = true;
-
-  const speedtestPath = isDev
-    ? path.join(__dirname, '/ookla-speedtest-1.0.0-win64/speedtest.exe')
-    : path.join(rootPath, '/resources/bin/speedtest.exe');
 
   speedtest = spawn(speedtestPath, ['--format', 'jsonl']);
 
@@ -81,7 +81,10 @@ ipcMain.on('request-data', () => {
           DB.insertTest(mainWindow, {
             $id: null,
             $timestamp: json.timestamp,
-            $timestamp_milliseconds: parseInt(moment(json.timestamp, moment.ISO_8601).format('x'), 10),
+            $timestamp_milliseconds: parseInt(
+              moment(json.timestamp, moment.ISO_8601).format('x'),
+              10,
+            ),
             $ping_jitter: json.ping.jitter,
             $ping_jitter_variation: pingJitterVariation.toString(),
             $ping_latency: json.ping.latency,
@@ -164,6 +167,31 @@ ipcMain.on('before-unload', () => {
     speedtest.stdin.pause();
     speedtest.kill();
   }
+});
+
+ipcMain.on('check-speedtest', (event, sppedtestPath) => {
+  const fileExists = fs.existsSync(sppedtestPath);
+  const shaCheck = sha256File(sppedtestPath) === 'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
+
+  mainWindow.webContents.send('speedtest-ok', {
+    exists: fileExists,
+    sha: shaCheck,
+  });
+
+  if (fileExists === true && shaCheck === true) {
+    DBConfig.setSpeedtestPath(sppedtestPath);
+  }
+});
+
+ipcMain.on('request-speedtest-cli-download', () => {
+  download(
+    'https://bintray.com/ookla/download/download_file?file_path=ookla-speedtest-1.0.0-win64.zip',
+    __dirname,
+    { extract: true },
+  ).then(() => {
+    DBConfig.setSpeedtestPath(path.join(__dirname, '/speedtest.exe'));
+    mainWindow.webContents.send('speedtest-downloaded', 'done');
+  });
 });
 
 // Keep a global reference of the window object, if you don't, the window will

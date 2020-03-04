@@ -36,10 +36,6 @@ db.serialize(() => {
     speedtest_url TEXT NOT NULL,
     tags TEXT
   )`);
-
-  // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-  //     console.log(row.id + ": " + row.info);
-  // });
 });
 
 function insertTest(mainWindow, values) {
@@ -216,7 +212,7 @@ exports.getTestsSearch = getTestsSearch;
 exports.getTest = getTest;
 exports.getTags = getTags;
 exports.updateTags = updateTags;
-
+exports.db = db;
 exports.close = () => {
   db.close();
 };

@@ -1,5 +1,9 @@
 @import 'semantic-ui-css/semantic.min.css';
 
+html, body, #root{
+  height: 100%;
+}
+
 .ui.ribbon.label:after{
   display: none;
 }
