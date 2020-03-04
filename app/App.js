@@ -6,7 +6,7 @@ import Home from './pages/home/Home';
 import Tests from './pages/tests/Tests';
 import Info from './pages/info/Info';
 import Config from './pages/config/Config';
-import Download from './pages/download/Download';
+import Check from './pages/check/Check';
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -63,14 +63,13 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            {speedtestBinExists ? <Home /> : <Download />}
+            {speedtestBinExists ? <Home /> : <Check />}
           </Route>
           <Route exact path="/tests" component={Tests} />
           <Route exact path="/info/:id" component={Info} />
           <Route exact path="/config">
-            {speedtestBinExists ? <Config /> : <Download />}
+            {speedtestBinExists ? <Config /> : <Check />}
           </Route>
-          <Route exact path="/download" component={Download} />
         </Switch>
       </Router>
     </Suspense>

@@ -12,7 +12,7 @@ import _lang from 'lodash/lang';
 
 const electron = window.require('electron');
 
-export default function Download() {
+export default function Check() {
   const [loading, setLoading] = useState(false);
   const [willDownload, setWillDownload] = useState(true);
   const [filePath, setFilePath] = useState(null);
@@ -45,7 +45,7 @@ export default function Download() {
   const DownloadButtons = () => (
     <div>
       <h3>Would you like to download it?</h3>
-      <Button.Group size="large" fluid>
+      <Button.Group size="large">
         <Button onClick={handleYes} positive>
           YES
         </Button>
@@ -70,7 +70,17 @@ export default function Download() {
           </Label>
         </Button>
       ) : (
-        <Button size="large" color="blue" icon="paperclip" onClick={handleFileClick} content="Directory" />
+        <Button.Group>
+          <Button
+            content="Download"
+            icon="arrow left"
+            size="mini"
+            basic
+            color="blue"
+            onClick={() => setWillDownload(true)}
+          />
+          <Button size="large" color="blue" icon="paperclip" onClick={handleFileClick} content="Directory" />
+        </Button.Group>
       )}
       <input
         onChange={handleFileChange}
