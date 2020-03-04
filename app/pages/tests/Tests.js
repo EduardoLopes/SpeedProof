@@ -37,7 +37,7 @@ export default function Tests() {
   );
   // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = useState(15);
-  const [offset, setOffset] = useState(storage.getItem('offset') || 0);
+  const [offset, setOffset] = useState(parseInt(storage.getItem('offset'), 10) || 0);
   const [mode, setMode] = useState(storage.getItem('mode') || 'normal'); // or search
   const [testsCount, setTestsCount] = useState(null);
 

@@ -131,5 +131,5 @@ export default function Tags(props) {
 }
 
 Tags.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
 };
