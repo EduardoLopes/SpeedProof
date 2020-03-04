@@ -26,7 +26,6 @@ DB.serialize(() => {
   });
 });
 
-
 const setSpeedtestPath = (path) => {
   DB.serialize(() => {
     DB.run(`UPDATE config SET speedtest_path = '${path}' WHERE id = '1'`);

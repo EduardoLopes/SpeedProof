@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('./tests.db');
+const lang = require('lodash/lang');
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS tests (
@@ -95,12 +96,17 @@ function getTests(mainWindow, offset, limit, sortDirection, sortColumn) {
       },
     );
 
-    db.all(
-      `SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`,
-      (err, row) => {
-        mainWindow.webContents.send('tests-data-chart', row);
-      },
-    );
+    db.get('SELECT tests_chart_limit FROM config WHERE id = 1', (configError, config) => {
+      if (!lang.isUndefined(config)) {
+        db.all(
+          `SELECT * FROM tests ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, ${config.tests_chart_limit}`,
+          (err, row) => {
+            mainWindow.webContents.send('tests-data-chart', row);
+          },
+        );
+      }
+    });
+
 
     db.all('SELECT COUNT(*) as count FROM tests', (err, row) => {
       mainWindow.webContents.send('tests-count', row);
@@ -170,12 +176,16 @@ function getTestsSearch(
         },
       );
 
-      db.all(
-        `${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, 200`,
-        (err, row) => {
-          mainWindow.webContents.send('tests-search-data-chart', row);
-        },
-      );
+      db.get('SELECT tests_chart_limit FROM config WHERE id = 1', (err, config) => {
+        if (!lang.isUndefined(config)) {
+          db.all(
+            `${query} ORDER BY ${sortColumn} ${sortDirection} LIMIT 0, ${config.tests_chart_limit}`,
+            (_err, row) => {
+              mainWindow.webContents.send('tests-search-data-chart', row);
+            },
+          );
+        }
+      });
     });
   }
 }

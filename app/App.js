@@ -12,7 +12,7 @@ const electron = window.require('electron');
 const storage = window.localStorage;
 
 function App() {
-  const [speedtestBinExists, setSpeedtestBinExists] = useState(JSON.parse(storage.getItem('speedtest-exists-last-result')) !== false);
+  const [speedtestBinExists, setSpeedtestBinExists] = useState(!!JSON.parse(storage.getItem('speedtest-exists-last-result')));
 
   function speedtestDownload() {
     electron.ipcRenderer.send('request-config-data');
@@ -67,7 +67,9 @@ function App() {
           </Route>
           <Route exact path="/tests" component={Tests} />
           <Route exact path="/info/:id" component={Info} />
-          <Route exact path="/config" component={Config} />
+          <Route exact path="/config">
+            {speedtestBinExists ? <Config /> : <Download />}
+          </Route>
           <Route exact path="/download" component={Download} />
         </Switch>
       </Router>
