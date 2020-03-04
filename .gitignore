@@ -4,9 +4,8 @@
 
 dist/
 build/
-app/ookla-speedtest-1.0.0-win64/
-app/speedtest.exe
-app/speedtest.md
+**/speedtest.exe
+**/speedtest.md
 
 ### Node ###
 # Logs
