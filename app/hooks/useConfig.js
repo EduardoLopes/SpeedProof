@@ -4,16 +4,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 const electron = window.require('electron');
 
 export default function useConfig() {
-  const [loading, setLoading] = useState(false);
-  const [config, setConfig] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [language, setLanguage] = useState(null);
+  const [speedtestPath, setSpeedtestPath] = useState(null);
+  const [testChartLimit, setTestChartLimit] = useState(null);
+  const [lastSave, setLastSave] = useState(null);
 
   function receiveConfig(event, data) {
-    setConfig({
-      language: data.language,
-      speedtestPath: data.speedtest_path,
-      testChartLimit: data.tests_chart_limit,
-      lastSave: data.last_save_timestamp,
-    });
+    setLanguage(data.language);
+    setSpeedtestPath(data.speedtest_path);
+    setTestChartLimit(data.tests_chart_limit);
+    setLastSave(data.last_save_timestamp);
     setLoading(false);
   }
 
@@ -31,5 +32,11 @@ export default function useConfig() {
     };
   }, []);
 
-  return [config, loading];
+  return {
+    loading,
+    language,
+    speedtestPath,
+    testChartLimit,
+    lastSave,
+  };
 }

@@ -28,12 +28,12 @@ const languages = [
 export default function Config() {
   const { t, i18n } = useTranslation();
   const [updateConfig, setUpdateConfig] = useState(true);
-  const [language, setLanguage] = useState(undefined);
-  const [speedtestPath, setSpeedtestPath] = useState(undefined);
+  const [language, setLanguage] = useState(null);
+  const [speedtestPath, setSpeedtestPath] = useState(null);
   const [testChartLimit, setTestChartLimit] = useState(200);
   const [lastSave, setLastSave] = useState(null);
   const fileInput = useRef(null);
-  const [config, loading] = useConfig();
+  const config = useConfig();
 
   function handleLanguageChange(event, { value }) {
     event.persist();
@@ -57,7 +57,7 @@ export default function Config() {
   }
 
   useEffect(() => {
-    if (!_lang.isNull(config)) {
+    if (config.loading === false) {
       if (updateConfig === true) {
         setLanguage(config.language);
         setSpeedtestPath(config.speedtestPath);
@@ -70,19 +70,19 @@ export default function Config() {
   }, [config]);
 
   useEffect(() => {
-    if (!_lang.isNull(config) && speedtestPath !== config.speedtestPath) {
+    if (!_lang.isNull(config.speedtestPath) && speedtestPath !== config.speedtestPath) {
       electron.ipcRenderer.send('config-set-speedtest-path', speedtestPath);
     }
   }, [speedtestPath]);
 
   useEffect(() => {
-    if (!_lang.isNull(config) && language !== config.language) {
+    if (!_lang.isNull(config.language) && language !== config.language) {
       electron.ipcRenderer.send('config-set-language', language);
     }
   }, [language]);
 
   useEffect(() => {
-    if (!_lang.isNull(config) && testChartLimit !== config.testChartLimit) {
+    if (!_lang.isNull(config.testChartLimit) && testChartLimit !== config.testChartLimit) {
       electron.ipcRenderer.send('config-set-tests-chart-limit', testChartLimit);
     }
   }, [testChartLimit]);
@@ -112,10 +112,11 @@ export default function Config() {
     </div>
   );
 
+
   return (
     <Container style={{ marginTop: '1rem' }}>
       <Navbar />
-      <Segment clearing>
+      <Segment loading={_lang.isNull(speedtestPath)} clearing>
         <Form>
           <Form.Field
             inline
@@ -147,7 +148,7 @@ export default function Config() {
         />
         <Segment compact floated="right" size="tiny" style={{ padding: 0, color: 'rgba(0,0,0,.4)' }} basic textAlign="right">
           {'Last save: '}
-          {loading && (<Dimmer inverted active><Loader size="tiny" active inline /></Dimmer>)}
+          {config.loading && (<Dimmer inverted active><Loader size="tiny" active inline /></Dimmer>)}
           {lastSave && moment(lastSave).fromNow()}
         </Segment>
       </Segment>

@@ -7,17 +7,17 @@ const electron = window.require('electron');
 
 export default function useSpeedtestCheck() {
   const [isValid, setIsValid] = useState(true);
-  const [config] = useConfig();
+  const { speedtestPath } = useConfig();
 
   function speedtestCheck(event, check) {
     setIsValid(check.exists === true && check.sha === true);
   }
 
   useEffect(() => {
-    if (!_lang.isNull(config)) {
-      electron.ipcRenderer.send('check-speedtest', config.speedtestPath);
+    if (!_lang.isNull(speedtestPath)) {
+      electron.ipcRenderer.send('check-speedtest', speedtestPath);
     }
-  }, [config]);
+  }, [speedtestPath]);
 
   useEffect(() => {
     electron.ipcRenderer.on('speedtest-check-result', speedtestCheck);
