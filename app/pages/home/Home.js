@@ -146,6 +146,13 @@ export default function Home() {
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
     electron.ipcRenderer.on('last-id', receiveLastID);
 
+    window.scroll({
+      top: 0,
+      behavior: 'auto',
+    });
+
+    storage.setItem('scrollY', 0);
+
     return () => {
       electron.ipcRenderer.removeListener('ping', receivePing);
       electron.ipcRenderer.removeListener('download', receiveDownload);
