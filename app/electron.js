@@ -171,16 +171,14 @@ ipcMain.on('before-unload', () => {
 });
 
 ipcMain.on('check-speedtest', (event, sppedtestPath) => {
-  const fileExists = fs.existsSync(sppedtestPath);
-  const shaCheck = sha256File(sppedtestPath) === 'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
+  if (path !== sppedtestPath) {
+    const fileExists = fs.existsSync(sppedtestPath);
+    const shaCheck = sha256File(sppedtestPath) === 'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
 
-  mainWindow.webContents.send('speedtest-ok', {
-    exists: fileExists,
-    sha: shaCheck,
-  });
-
-  if (fileExists === true && shaCheck === true) {
-    DBConfig.setSpeedtestPath(sppedtestPath);
+    mainWindow.webContents.send('speedtest-ok', {
+      exists: fileExists,
+      sha: shaCheck,
+    });
   }
 });
 

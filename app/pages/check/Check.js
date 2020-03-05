@@ -38,7 +38,7 @@ export default function Check() {
 
   useEffect(() => {
     if (!_lang.isNull(filePath)) {
-      electron.ipcRenderer.send('check-speedtest', filePath);
+      electron.ipcRenderer.send('config-set-speedtest-path', filePath);
     }
   }, [filePath]);
 

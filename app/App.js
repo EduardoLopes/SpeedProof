@@ -7,12 +7,13 @@ import Tests from './pages/tests/Tests';
 import Info from './pages/info/Info';
 import Config from './pages/config/Config';
 import Check from './pages/check/Check';
+import useConfig from './hooks/useConfig';
 
 const electron = window.require('electron');
-const storage = window.localStorage;
 
 function App() {
-  const [speedtestBinExists, setSpeedtestBinExists] = useState(!!JSON.parse(storage.getItem('speedtest-exists-last-result')));
+  const [speedtestBinExists, setSpeedtestBinExists] = useState(true);
+  const [config] = useConfig();
 
   function speedtestDownload() {
     electron.ipcRenderer.send('request-config-data');
@@ -22,42 +23,32 @@ function App() {
     setSpeedtestBinExists(check.exists === true && check.sha === true);
   }
 
-  function receiveConfigData(event, data) {
-    if (!_lang.isNull(data) && !_lang.isNull(data.speedtest_path)) {
-      electron.ipcRenderer.send('check-speedtest', data.speedtest_path);
-    } else {
-      setSpeedtestBinExists(false);
-    }
-  }
-
   useEffect(() => {
-    storage.setItem('speedtest-exists-last-result', speedtestBinExists);
-  }, [speedtestBinExists]);
+    if (!_lang.isNull(config)) {
+      electron.ipcRenderer.send('check-speedtest', config.speedtestPath);
+    }
+  }, [config]);
 
   useEffect(() => {
     window.addEventListener('beforeunload', () => {
       electron.ipcRenderer.send('before-unload', 'data');
     });
 
-    electron.ipcRenderer.send('request-config-data');
-
     electron.ipcRenderer.on('speedtest-downloaded', speedtestDownload);
     electron.ipcRenderer.on('speedtest-ok', speedtestCheck);
-    electron.ipcRenderer.on('config-data', receiveConfigData);
 
     return () => {
       electron.ipcRenderer.removeListener('speedtest-downloaded', speedtestDownload);
       electron.ipcRenderer.removeListener('speedtest-ok', speedtestCheck);
-      electron.ipcRenderer.removeListener('config-data', receiveConfigData);
     };
   }, []);
+
+  const Overlay = () => <Dimmer page inverted active><Loader /></Dimmer>;
 
   return (
     <Suspense
       fallback={(
-        <Dimmer inverted active>
-          <Loader />
-        </Dimmer>
+        <Overlay />
       )}
     >
       <Router>

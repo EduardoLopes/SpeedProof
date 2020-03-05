@@ -7,12 +7,15 @@ import {
   Button,
   Icon,
   Label,
+  Loader,
+  Dimmer,
 } from 'semantic-ui-react';
+import moment from 'moment';
 import _lang from 'lodash/lang';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import useConfig from '../../hooks/useConfig';
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -24,11 +27,13 @@ const languages = [
 
 export default function Config() {
   const { t, i18n } = useTranslation();
-  const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState(null);
-  const [speedtestPath, setSpeedtestPath] = useState(null);
+  const [updateConfig, setUpdateConfig] = useState(true);
+  const [language, setLanguage] = useState(undefined);
+  const [speedtestPath, setSpeedtestPath] = useState(undefined);
   const [testChartLimit, setTestChartLimit] = useState(200);
+  const [lastSave, setLastSave] = useState(null);
   const fileInput = useRef(null);
+  const [config, loading] = useConfig();
 
   function handleLanguageChange(event, { value }) {
     event.persist();
@@ -38,18 +43,9 @@ export default function Config() {
     moment.locale(value.toLowerCase());
   }
 
-  function receiveConfigData(event, data) {
-    setLanguage(data.language);
-    setSpeedtestPath(data.speedtest_path);
-    setTestChartLimit(data.tests_chart_limit);
-    setLoading(false);
-  }
-
   function handleFileClick(event) {
     event.persist();
-    if (event.type === 'click') {
-      fileInput.current.click();
-    }
+    fileInput.current.click();
   }
 
   function handleFileChange() {
@@ -61,20 +57,32 @@ export default function Config() {
   }
 
   useEffect(() => {
-    if (!_lang.isNull(speedtestPath)) {
+    if (!_lang.isNull(config)) {
+      if (updateConfig === true) {
+        setLanguage(config.language);
+        setSpeedtestPath(config.speedtestPath);
+        setTestChartLimit(config.testChartLimit);
+        setLastSave(config.lastSave);
+      }
+      setLastSave(config.lastSave);
+      setUpdateConfig(false);
+    }
+  }, [config]);
+
+  useEffect(() => {
+    if (!_lang.isNull(config) && speedtestPath !== config.speedtestPath) {
       electron.ipcRenderer.send('config-set-speedtest-path', speedtestPath);
-      electron.ipcRenderer.send('check-speedtest', speedtestPath);
     }
   }, [speedtestPath]);
 
   useEffect(() => {
-    if (!_lang.isNull(language)) {
+    if (!_lang.isNull(config) && language !== config.language) {
       electron.ipcRenderer.send('config-set-language', language);
     }
   }, [language]);
 
   useEffect(() => {
-    if (!_lang.isNull(testChartLimit) && loading === false) {
+    if (!_lang.isNull(config) && testChartLimit !== config.testChartLimit) {
       electron.ipcRenderer.send('config-set-tests-chart-limit', testChartLimit);
     }
   }, [testChartLimit]);
@@ -83,14 +91,6 @@ export default function Config() {
     window.addEventListener('beforeunload', () => {
       electron.ipcRenderer.send('before-unload', 'data');
     });
-
-    electron.ipcRenderer.send('request-config-data');
-    setLoading(true);
-    electron.ipcRenderer.on('config-data', receiveConfigData);
-
-    return () => {
-      electron.ipcRenderer.removeListener('config-data', receiveConfigData);
-    };
   }, []);
 
   const pathButton = () => (
@@ -115,38 +115,41 @@ export default function Config() {
   return (
     <Container style={{ marginTop: '1rem' }}>
       <Navbar />
-      <Segment loading={loading}>
-        {!loading && (
-          <Form>
-            <Form.Field
-              inline
-              value={language}
-              onChange={handleLanguageChange}
-              control={Select}
-              label={t('language')}
-              options={languages}
-              placeholder={t('Select your language')}
-            />
-            <Form.Input
-              inline
-              label="Tests Page Chart Limit"
-              type="number"
-              onChange={handleLimitChange}
-              value={testChartLimit}
-            />
-            <Form.Field
-              inline
-              label="speedtest-cli path"
-              control={pathButton}
-            />
-          </Form>
-        )}
+      <Segment clearing>
+        <Form>
+          <Form.Field
+            inline
+            value={language}
+            onChange={handleLanguageChange}
+            control={Select}
+            label={t('language')}
+            options={languages}
+            placeholder={t('Select your language')}
+          />
+          <Form.Input
+            inline
+            label="Tests Page Chart Limit"
+            type="number"
+            onChange={handleLimitChange}
+            value={testChartLimit}
+          />
+          <Form.Field
+            inline
+            label="speedtest-cli path"
+            control={pathButton}
+          />
+        </Form>
         <input
           onChange={handleFileChange}
           ref={fileInput}
           type="file"
           style={{ display: 'none' }}
         />
+        <Segment compact floated="right" size="tiny" style={{ padding: 0, color: 'rgba(0,0,0,.4)' }} basic textAlign="right">
+          {'Last save: '}
+          {loading && (<Dimmer inverted active><Loader size="tiny" active inline /></Dimmer>)}
+          {lastSave && moment(lastSave).fromNow()}
+        </Segment>
       </Segment>
       <Footer />
     </Container>
