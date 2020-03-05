@@ -10,22 +10,23 @@ export default function useConfig() {
   const [testChartLimit, setTestChartLimit] = useState(null);
   const [lastSave, setLastSave] = useState(null);
 
-  function receiveConfig(event, data) {
+  const receiveConfig = useCallback((event, data) => {
     setLanguage(data.language);
     setSpeedtestPath(data.speedtest_path);
     setTestChartLimit(data.tests_chart_limit);
     setLastSave(data.last_save_timestamp);
     setLoading(false);
-  }
+  }, []);
 
-  function requestingConfig() {
+  const requestingConfig = useCallback(() => {
     setLoading(true);
-  }
+  }, []);
 
   useEffect(() => {
     electron.ipcRenderer.send('request-config-data');
     electron.ipcRenderer.on('config-data', receiveConfig);
     electron.ipcRenderer.on('requesting-config-data', requestingConfig);
+
     return () => {
       electron.ipcRenderer.removeListener('config-data', receiveConfig);
       electron.ipcRenderer.removeListener('requesting-config-data', requestingConfig);

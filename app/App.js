@@ -11,7 +11,7 @@ import useSpeedtestCheck from './hooks/useSpeedtestCheck';
 const electron = window.require('electron');
 
 function App() {
-  const [speedtestIsValid] = useSpeedtestCheck();
+  const speedtestIsValid = useSpeedtestCheck();
 
   useEffect(() => {
     window.addEventListener('beforeunload', () => {

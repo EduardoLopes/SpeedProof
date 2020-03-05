@@ -87,12 +87,6 @@ export default function Config() {
     }
   }, [testChartLimit]);
 
-  useEffect(() => {
-    window.addEventListener('beforeunload', () => {
-      electron.ipcRenderer.send('before-unload', 'data');
-    });
-  }, []);
-
   const pathButton = () => (
     <div>
       <Button

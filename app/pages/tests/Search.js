@@ -78,8 +78,6 @@ export default function Search(props) {
       sortColumn: 'id',
     });
 
-    updateLocalStorage();
-
     electron.ipcRenderer.send('request-tests-data', {
       offset: 0,
       limit,
@@ -153,6 +151,10 @@ export default function Search(props) {
       ]);
     }
   }
+
+  useEffect(() => {
+    updateLocalStorage();
+  }, [searchKeyword, searchByTag, searchByISP, searchByServerName, searchDates]);
 
   useEffect(() => {
     if (mode === 'search') {

@@ -26,5 +26,5 @@ export default function useSpeedtestCheck() {
     };
   }, []);
 
-  return [isValid];
+  return isValid;
 }
