@@ -36,11 +36,21 @@ export default function Check() {
     setFilePath(fileInput.current.files[0].path);
   }
 
+  function speedtestDownload(event, path) {
+    electron.ipcRenderer.send('config-set-speedtest-path', path);
+  }
+
   useEffect(() => {
     if (!_lang.isNull(filePath)) {
       electron.ipcRenderer.send('config-set-speedtest-path', filePath);
     }
   }, [filePath]);
+
+
+  useEffect(() => {
+    electron.ipcRenderer.on('speedtest-downloaded', speedtestDownload);
+    return () => electron.ipcRenderer.removeListener('speedtest-downloaded', speedtestDownload);
+  }, []);
 
   const DownloadButtons = () => (
     <div>

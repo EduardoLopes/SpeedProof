@@ -76,8 +76,3 @@ ipcMain.on('config-set-tests-chart-limit', (event, limit) => {
 ipcMain.on('request-config-data', (event) => {
   getConfig(event);
 });
-
-exports.setSpeedtestPath = setSpeedtestPath;
-exports.setLanguage = setLanguage;
-exports.setChartLimit = setChartLimit;
-exports.getConfig = getConfig;

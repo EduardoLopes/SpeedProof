@@ -117,7 +117,7 @@ export default function Home() {
   }
 
   function receiveLastID(event, data) {
-    setLastID(data);
+    setLastID(parseInt(data, 10));
   }
 
   function receiveConfigData(event, data) {

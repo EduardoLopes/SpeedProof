@@ -175,7 +175,7 @@ ipcMain.on('check-speedtest', (event, sppedtestPath) => {
     const fileExists = fs.existsSync(sppedtestPath);
     const shaCheck = sha256File(sppedtestPath) === 'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
 
-    mainWindow.webContents.send('speedtest-ok', {
+    mainWindow.webContents.send('speedtest-check-result', {
       exists: fileExists,
       sha: shaCheck,
     });
@@ -188,8 +188,7 @@ ipcMain.on('request-speedtest-cli-download', () => {
     rootPath,
     { extract: true },
   ).then(() => {
-    DBConfig.setSpeedtestPath(path.join(rootPath, '/speedtest.exe'));
-    mainWindow.webContents.send('speedtest-downloaded', 'done');
+    mainWindow.webContents.send('speedtest-downloaded', path.join(rootPath, '/speedtest.exe'));
   });
 });
 
