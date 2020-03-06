@@ -9,6 +9,7 @@ import Tags from '../../components/Tags/Tags';
 import Panel from '../../components/Panel/Panel';
 import Footer from '../../components/Footer/Footer';
 import useConfig from '../../hooks/useConfig';
+import usePingData from '../../hooks/usePingData';
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -22,13 +23,12 @@ export default function Home() {
     content: t('pleaseWait'),
   });
 
-  const [pingProgress, setPingProgress] = useState(0);
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [testServer, setTestServer] = useState(null);
   const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
-  const [ping, setPing] = useState({
+  const { ping, pingProgress, resetPing } = usePingData({
     latency: 0,
     jitter: 0,
   });
@@ -45,16 +45,12 @@ export default function Home() {
       content: t('loading'),
     });
 
-    setPingProgress(0);
     setDownloadProgress(0);
     setUploadProgress(0);
     setTestServer(null);
     setDownloadSpeed(0);
     setUploadSpeed(0);
-    setPing({
-      latency: 0,
-      jitter: 0,
-    });
+    resetPing();
     setErrorMessage(null);
     setLastID(null);
   }
@@ -84,14 +80,6 @@ export default function Home() {
         content: t('startTest'),
       });
     }, 1000);
-  }
-
-  function receivePing(event, data) {
-    setPing({
-      latency: data.ping.latency,
-      jitter: data.ping.jitter,
-    });
-    setPingProgress(data.ping.progress * 100);
   }
 
   function receiveDownload(event, data) {
@@ -137,7 +125,6 @@ export default function Home() {
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
-    electron.ipcRenderer.on('ping', receivePing);
     electron.ipcRenderer.on('download', receiveDownload);
     electron.ipcRenderer.on('upload', receiveUpload);
     electron.ipcRenderer.on('testStart', receiveTestStart);
@@ -154,7 +141,6 @@ export default function Home() {
     storage.setItem('scrollY', 0);
 
     return () => {
-      electron.ipcRenderer.removeListener('ping', receivePing);
       electron.ipcRenderer.removeListener('download', receiveDownload);
       electron.ipcRenderer.removeListener('upload', receiveUpload);
       electron.ipcRenderer.removeListener('testStart', receiveTestStart);

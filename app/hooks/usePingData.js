@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const electron = require('electron');
+const electron = window.require('electron');
 
 export default function usePing(initialState) {
   const [ping, setPing] = useState(initialState);
