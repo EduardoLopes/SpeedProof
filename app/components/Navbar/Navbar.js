@@ -31,16 +31,25 @@ export default function Navbar(props) {
         {t('navbar.tests')}
       </Menu.Item>
       )}
-      <Menu.Item
-        as={NavLink}
-        exact
-        to="/config"
-        name={t('navbar.config')}
-        position="right"
-      >
-        <Icon name="cog" />
-        {t('navbar.config')}
-      </Menu.Item>
+      <Menu.Menu position="right">
+        <Menu.Item
+          as={NavLink}
+          exact
+          to="/config"
+          name={t('navbar.config')}
+        >
+          <Icon name="cog" />
+          {t('navbar.config')}
+        </Menu.Item>
+        <Menu.Item
+          as={NavLink}
+          exact
+          to="/about"
+          name={t('navbar.about')}
+        >
+          <Icon name="question" />
+        </Menu.Item>
+      </Menu.Menu>
     </Menu>
   );
 }

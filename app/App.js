@@ -6,6 +6,7 @@ import Tests from './pages/tests/Tests';
 import Info from './pages/info/Info';
 import Config from './pages/config/Config';
 import Check from './pages/check/Check';
+import About from './pages/about/About';
 import useSpeedtestCheck from './hooks/useSpeedtestCheck';
 
 const electron = window.require('electron');
@@ -37,6 +38,7 @@ function App() {
           <Route exact path="/config">
             {speedtestIsValid ? <Config /> : <Check />}
           </Route>
+          <Route exact path="/about" component={About} />
         </Switch>
       </Router>
     </Suspense>
