@@ -8,6 +8,7 @@ export default function useConfig() {
   const [language, setLanguage] = useState(null);
   const [speedtestPath, setSpeedtestPath] = useState(null);
   const [testChartLimit, setTestChartLimit] = useState(null);
+  const [speedtestLicense, setSpeedtestLicense] = useState(true);
   const [lastSave, setLastSave] = useState(null);
 
   const receiveConfig = useCallback((event, data) => {
@@ -15,6 +16,7 @@ export default function useConfig() {
     setSpeedtestPath(data.speedtest_path);
     setTestChartLimit(data.tests_chart_limit);
     setLastSave(data.last_save_timestamp);
+    setSpeedtestLicense(data.accept_speedtest_license === 1);
     setLoading(false);
   }, []);
 
@@ -39,5 +41,6 @@ export default function useConfig() {
     speedtestPath,
     testChartLimit,
     lastSave,
+    speedtestLicense,
   };
 }

@@ -9,6 +9,8 @@ import {
   Label,
 } from 'semantic-ui-react';
 import _lang from 'lodash/lang';
+import Terms from './Terms';
+import useSpeedtestCheck from '../../hooks/useSpeedtestCheck';
 
 const electron = window.require('electron');
 
@@ -17,6 +19,8 @@ export default function Check() {
   const [willDownload, setWillDownload] = useState(true);
   const [filePath, setFilePath] = useState(null);
   const fileInput = useRef(null);
+  const speedtestIsValid = useSpeedtestCheck();
+
 
   function handleYes() {
     setLoading(true);
@@ -101,6 +105,29 @@ export default function Check() {
     </div>
   );
 
+  const NotFound = () => (
+    <div>
+      <h1>speedtest-cli NOT FOUND</h1>
+      <p>
+        Speedcheck app only works with
+        <a
+          href="#"
+          onClick={() => electron.shell.openItem('https://www.speedtest.net/')}
+        >
+          {' Speedtest® '}
+        </a>
+        cli tool developed by
+        <a
+          href="#"
+          onClick={() => electron.shell.openItem('https://www.ookla.com/')}
+        >
+          {' Ookla®'}
+        </a>
+      </p>
+      {willDownload ? (<DownloadButtons />) : (<UploadButton />)}
+    </div>
+  );
+
   return (
     <Container>
       <Grid
@@ -110,24 +137,8 @@ export default function Check() {
       >
         <Grid.Column style={{ maxWidth: '90%' }}>
           <Segment color="red" loading={loading}>
-            <h1>speedtest-cli NOT FOUND</h1>
-            <p>
-              Speedcheck app only works with
-              <a
-                href="#"
-                onClick={() => electron.shell.openItem('https://www.speedtest.net/')}
-              >
-                {' Speedtest® '}
-              </a>
-              cli tool developed by
-              <a
-                href="#"
-                onClick={() => electron.shell.openItem('https://www.ookla.com/')}
-              >
-                {' Ookla®'}
-              </a>
-            </p>
-            {willDownload ? <DownloadButtons /> : <UploadButton />}
+            {speedtestIsValid === false && (<NotFound />)}
+            {speedtestIsValid && (<Terms />)}
           </Segment>
         </Grid.Column>
       </Grid>

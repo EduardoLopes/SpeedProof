@@ -8,11 +8,13 @@ import Config from './pages/config/Config';
 import Check from './pages/check/Check';
 import About from './pages/about/About';
 import useSpeedtestCheck from './hooks/useSpeedtestCheck';
+import useConfig from './hooks/useConfig';
 
 const electron = window.require('electron');
 
 function App() {
   const speedtestIsValid = useSpeedtestCheck();
+  const { speedtestLicense } = useConfig();
 
   useEffect(() => {
     window.addEventListener('beforeunload', () => {
@@ -20,23 +22,23 @@ function App() {
     });
   }, []);
 
-  const Overlay = () => <Dimmer page inverted active><Loader /></Dimmer>;
+  const Overlay = () => (
+    <Dimmer page inverted active>
+      <Loader />
+    </Dimmer>
+  );
 
   return (
-    <Suspense
-      fallback={(
-        <Overlay />
-      )}
-    >
+    <Suspense fallback={<Overlay />}>
       <Router>
         <Switch>
           <Route exact path="/">
-            {speedtestIsValid ? <Home /> : <Check />}
+            {speedtestIsValid && speedtestLicense ? <Home /> : <Check />}
           </Route>
           <Route exact path="/tests" component={Tests} />
           <Route exact path="/info/:id" component={Info} />
           <Route exact path="/config">
-            {speedtestIsValid ? <Config /> : <Check />}
+            {speedtestIsValid && speedtestLicense ? <Config /> : <Check />}
           </Route>
           <Route exact path="/about" component={About} />
         </Switch>

@@ -4,11 +4,12 @@ const DB = require('./DB.js').db;
 
 DB.serialize(() => {
   DB.run(`CREATE TABLE IF NOT EXISTS config (
-    id INTEGER PRIMARY KEY,
-    language TEXT NOT NULL,
-    speedtest_path TEXT,
-    tests_chart_limit INTEGER NOT NULL,
-    last_save_timestamp INTEGER
+    id                       INTEGER PRIMARY KEY,
+    language                 TEXT NOT NULL,
+    speedtest_path           TEXT,
+    tests_chart_limit        INTEGER NOT NULL,
+    last_save_timestamp      INTEGER NOT NULL,
+    accept_speedtest_license BOOLEAN NOT NULL
   )`);
 
   DB.get('SELECT * FROM config WHERE id = 1', (err, row) => {
@@ -16,10 +17,15 @@ DB.serialize(() => {
       DB.run(
         `
           INSERT INTO
-            config (language, tests_chart_limit)
+            config (
+              language,
+              tests_chart_limit,
+              accept_speedtest_license
+            )
           VALUES (
             'en',
-            200
+            200,
+            0
           )
         `,
       );
@@ -42,6 +48,12 @@ const setLanguage = (language) => {
 const setChartLimit = (limit) => {
   DB.serialize(() => {
     DB.run(`UPDATE config SET tests_chart_limit = '${limit}', last_save_timestamp = ${Date.now()} WHERE id = '1'`);
+  });
+};
+
+const setAcceptLicense = (acceptance) => {
+  DB.serialize(() => {
+    DB.run(`UPDATE config SET accept_speedtest_license = '${acceptance}', last_save_timestamp = ${Date.now()} WHERE id = '1'`);
   });
 };
 
@@ -70,6 +82,11 @@ ipcMain.on('config-set-language', (event, language) => {
 
 ipcMain.on('config-set-tests-chart-limit', (event, limit) => {
   setChartLimit(limit);
+  getConfig(event);
+});
+
+ipcMain.on('config-set-accept-speedtest-license', (event, acceptance) => {
+  setAcceptLicense(acceptance);
   getConfig(event);
 });
 

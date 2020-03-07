@@ -26,7 +26,7 @@ ipcMain.on('request-data', (event, speedtestPath) => {
 
   requestRunning = true;
 
-  speedtest = spawn(speedtestPath, ['--format', 'jsonl']);
+  speedtest = spawn(speedtestPath, ['--format', 'jsonl', '--accept-license', '--accept-gdpr']);
 
   const pingVariation = [];
   const pingJitterVariation = [];

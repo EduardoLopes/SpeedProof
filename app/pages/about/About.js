@@ -16,8 +16,7 @@ export default function About() {
         </Header>
         <Container text>
           <p>
-            SpeedCheck was made thinking about internet service providers,
-            but it is usefull for anyone who needs to keep track of the velocity
+            SpeedCheck is usefull for anyone who needs to keep track of the velocity
             of your internet service.
           </p>
           <p>
