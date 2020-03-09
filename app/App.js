@@ -33,12 +33,12 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            {speedtestIsValid && speedtestLicense ? <Home /> : <Check />}
+            {(speedtestIsValid && speedtestLicense) ? <Home /> : <Check />}
           </Route>
           <Route exact path="/tests" component={Tests} />
           <Route exact path="/info/:id" component={Info} />
           <Route exact path="/config">
-            {speedtestIsValid && speedtestLicense ? <Config /> : <Check />}
+            {(speedtestIsValid && speedtestLicense) ? <Config /> : <Check />}
           </Route>
           <Route exact path="/about" component={About} />
         </Switch>

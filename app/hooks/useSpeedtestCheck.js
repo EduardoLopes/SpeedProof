@@ -21,9 +21,7 @@ export default function useSpeedtestCheck() {
 
   useEffect(() => {
     electron.ipcRenderer.on('speedtest-check-result', speedtestCheck);
-    return () => {
-      electron.ipcRenderer.removeListener('speedtest-check-result', speedtestCheck);
-    };
+    return () => electron.ipcRenderer.removeListener('speedtest-check-result', speedtestCheck);
   }, []);
 
   return isValid;

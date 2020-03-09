@@ -41,7 +41,8 @@ export default function Check() {
   }
 
   function speedtestDownload(event, path) {
-    electron.ipcRenderer.send('config-set-speedtest-path', path);
+    setFilePath(path);
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -137,8 +138,7 @@ export default function Check() {
       >
         <Grid.Column style={{ maxWidth: '90%' }}>
           <Segment color="red" loading={loading}>
-            {speedtestIsValid === false && (<NotFound />)}
-            {speedtestIsValid && (<Terms />)}
+            {speedtestIsValid === false ? (<NotFound />) : (<Terms />)}
           </Segment>
         </Grid.Column>
       </Grid>
