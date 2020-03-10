@@ -48,7 +48,6 @@
   "dependencies": {
     "download": "^7.1.0",
     "electron-is-dev": "^1.1.0",
-    "electron-root-path": "^1.0.16",
     "i18next": "^19.3.2",
     "i18next-browser-languagedetector": "^4.0.2",
     "i18next-xhr-backend": "^3.2.2",

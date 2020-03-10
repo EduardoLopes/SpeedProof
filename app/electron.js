@@ -7,7 +7,6 @@ const { spawn } = require('child_process');
 const download = require('download');
 const sha256File = require('sha256-file');
 const fs = require('fs');
-const { rootPath } = require('electron-root-path');
 const DB = require('./DB.js');
 // eslint-disable-next-line no-unused-vars
 const DBConfig = require('./DBConfig.js');
@@ -185,10 +184,10 @@ ipcMain.on('check-speedtest', (event, sppedtestPath) => {
 ipcMain.on('request-speedtest-cli-download', () => {
   download(
     'https://bintray.com/ookla/download/download_file?file_path=ookla-speedtest-1.0.0-win64.zip',
-    rootPath,
+    app.getPath('userData'),
     { extract: true },
   ).then(() => {
-    mainWindow.webContents.send('speedtest-downloaded', path.join(rootPath, '/speedtest.exe'));
+    mainWindow.webContents.send('speedtest-downloaded', path.join(app.getPath('userData'), '/speedtest.exe'));
   });
 });
 
