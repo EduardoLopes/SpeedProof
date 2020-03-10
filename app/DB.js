@@ -2,8 +2,11 @@ const sqlite3 = require('sqlite3').verbose();
 const { app } = require('electron');
 const path = require('path');
 const lang = require('lodash/lang');
+const isDev = require('electron-is-dev');
 
-const db = new sqlite3.Database(path.join(app.getPath('userData'), '/tests.db'));
+const dbPath = isDev ? './tests.db' : path.join(app.getPath('userData'), '/tests.db');
+
+const db = new sqlite3.Database(dbPath);
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS tests (
