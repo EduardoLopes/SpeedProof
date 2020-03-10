@@ -21,6 +21,7 @@ export default function Check() {
   const [filePath, setFilePath] = useState(null);
   const fileInput = useRef(null);
   const speedtestIsValid = useSpeedtestCheck();
+
   const { t } = useTranslation();
 
   function handleYes() {

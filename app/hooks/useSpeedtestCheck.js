@@ -6,7 +6,7 @@ import useConfig from './useConfig';
 const electron = window.require('electron');
 
 export default function useSpeedtestCheck() {
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(false);
   const { speedtestPath } = useConfig();
 
   function speedtestCheck(event, check) {
@@ -16,6 +16,8 @@ export default function useSpeedtestCheck() {
   useEffect(() => {
     if (!_lang.isNull(speedtestPath)) {
       electron.ipcRenderer.send('check-speedtest', speedtestPath);
+    } else {
+      setIsValid(false);
     }
   }, [speedtestPath]);
 
