@@ -62,6 +62,7 @@
   "speedtest cli NOT FOUND": "speedtest-cli NÃO FOI ENCONTRADO",
   "Speedcheck app only works with": "Speedcheck depende da ferramenta de linha de comando do",
   "cli tool developed by": "desenvolvida por",
+  "This app uses the": "Este app usa a ferramenta de linha de comando do",
   "Would you like to download it?": "Gostaria de fazer o download?",
   "Please show where speedtest exe version 1 0 0 win64 is placed": "Porfavor, inique onde speedtest.exe versão 1.0.0-win64 se encontra!"
 }

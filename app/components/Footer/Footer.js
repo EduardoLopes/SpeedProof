@@ -10,9 +10,16 @@ export default function Footer() {
 
   return (
     <div>
-      <Segment textAlign="center" basic style={{ color: 'rgba(0,0,0,.4)' }}>
+      <Segment textAlign="center" basic style={{ opacity: '.8' }}>
         {t('Developed by')}
         <a href="#" onClick={() => electron.shell.openItem('https://github.com/EduardoLopes')}>{' Eduardo Lopes '}</a>
+        <br />
+        <div style={{ opacity: '.6' }}>
+          {t('This app uses the')}
+          <a href="#" onClick={() => electron.shell.openItem('https://www.speedtest.net/')}>{' Speedtest® '}</a>
+          {t('cli tool developed by')}
+          <a href="#" onClick={() => electron.shell.openItem('https://www.ookla.com/')}>{' Ookla® '}</a>
+        </div>
       </Segment>
     </div>
   );
