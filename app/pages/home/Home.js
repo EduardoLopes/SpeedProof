@@ -104,7 +104,7 @@ export default function Home() {
   }
 
   function handleSpeedtestError(event, data) {
-    electron.ipcRenderer.send('before-unload', 'data');
+    electron.ipcRenderer.send('kill-speedtest', 'data');
 
     setErrorMessage(data);
 
@@ -153,7 +153,7 @@ export default function Home() {
       electron.ipcRenderer.removeListener('last-id', receiveLastID);
 
       // kill speedtest process if it is running and the page is changed
-      electron.ipcRenderer.send('before-unload', 'data');
+      electron.ipcRenderer.send('kill-speedtest', 'data');
     };
   }, []);
 

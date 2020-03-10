@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     window.addEventListener('beforeunload', () => {
-      electron.ipcRenderer.send('before-unload', 'data');
+      electron.ipcRenderer.send('kill-speedtest', 'data');
     });
   }, []);
 

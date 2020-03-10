@@ -162,7 +162,7 @@ ipcMain.on('update-tags', (event, arg) => {
   DB.updateTags(arg.id, arg.tags);
 });
 
-ipcMain.on('before-unload', () => {
+ipcMain.on('kill-speedtest', () => {
   if (speedtest) {
     speedtest.stdin.pause();
     speedtest.kill();
