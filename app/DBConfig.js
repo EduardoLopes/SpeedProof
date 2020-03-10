@@ -5,11 +5,11 @@ const DB = require('./DB.js').db;
 DB.serialize(() => {
   DB.run(`CREATE TABLE IF NOT EXISTS config (
     id                       INTEGER PRIMARY KEY,
-    language                 TEXT NOT NULL,
+    language                 TEXT NOT NULL DEFAULT en,
     speedtest_path           TEXT,
-    tests_chart_limit        INTEGER NOT NULL,
-    last_save_timestamp      INTEGER NOT NULL,
-    accept_speedtest_license BOOLEAN NOT NULL
+    tests_chart_limit        INTEGER NOT NULL DEFAULT 200,
+    last_save_timestamp      INTEGER,
+    accept_speedtest_license BOOLEAN NOT NULL DEFAULT 0
   )`);
 
   DB.get('SELECT * FROM config WHERE id = 1', (err, row) => {
