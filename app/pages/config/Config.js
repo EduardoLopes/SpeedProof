@@ -97,7 +97,7 @@ export default function Config() {
       >
         <Button color="blue" icon type="button">
           <Icon name="paperclip" />
-          {' Path'}
+          {t('path')}
         </Button>
         <Label color="blue" as="a" basic pointing="left">
           {speedtestPath}
@@ -123,14 +123,14 @@ export default function Config() {
           />
           <Form.Input
             inline
-            label="Tests Page Chart Limit"
+            label={t('config Tests Page Chart Limit')}
             type="number"
             onChange={handleLimitChange}
             value={testChartLimit}
           />
           <Form.Field
             inline
-            label="speedtest-cli path"
+            label={t('speedtest-cli path')}
             control={pathButton}
           />
         </Form>
@@ -141,7 +141,7 @@ export default function Config() {
           style={{ display: 'none' }}
         />
         <Segment compact floated="right" size="tiny" style={{ padding: 0, color: 'rgba(0,0,0,.4)' }} basic textAlign="right">
-          {'Last save: '}
+          {`${t('Last save')}: `}
           {config.loading && (<Dimmer inverted active><Loader size="tiny" active inline /></Dimmer>)}
           {lastSave && moment(lastSave).fromNow()}
         </Segment>

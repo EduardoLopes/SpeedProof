@@ -8,6 +8,7 @@ import {
   Icon,
   Label,
 } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 import _lang from 'lodash/lang';
 import Terms from './Terms';
 import useSpeedtestCheck from '../../hooks/useSpeedtestCheck';
@@ -20,7 +21,7 @@ export default function Check() {
   const [filePath, setFilePath] = useState(null);
   const fileInput = useRef(null);
   const speedtestIsValid = useSpeedtestCheck();
-
+  const { t } = useTranslation();
 
   function handleYes() {
     setLoading(true);
@@ -59,13 +60,13 @@ export default function Check() {
 
   const DownloadButtons = () => (
     <div>
-      <h3>Would you like to download it?</h3>
+      <h3>{t('Would you like to download it?')}</h3>
       <Button.Group size="large">
         <Button onClick={handleYes} positive>
-          YES
+          {t('Yes')}
         </Button>
         <Button onClick={handleNo} negative>
-          NO
+          {t('No')}
         </Button>
       </Button.Group>
     </div>
@@ -73,7 +74,7 @@ export default function Check() {
 
   const UploadButton = () => (
     <div>
-      <h3>Please, show where speedtest.exe version 1.0.0-win64 is placed!</h3>
+      <h3>{t('Please show where speedtest exe version 1 0 0 win64 is placed')}</h3>
       {filePath ? (
         <Button size="large" onClick={handleFileClick} as="div" labelPosition="right">
           <Button color="blue" icon>
@@ -94,7 +95,7 @@ export default function Check() {
             color="blue"
             onClick={() => setWillDownload(true)}
           />
-          <Button size="large" color="blue" icon="paperclip" onClick={handleFileClick} content="Directory" />
+          <Button size="large" color="blue" icon="paperclip" onClick={handleFileClick} content={t('path')} />
         </Button.Group>
       )}
       <input
@@ -108,16 +109,16 @@ export default function Check() {
 
   const NotFound = () => (
     <div>
-      <h1>speedtest-cli NOT FOUND</h1>
+      <h1>{t('speedtest cli NOT FOUND')}</h1>
       <p>
-        Speedcheck app only works with
+        {t('Speedcheck app only works with')}
         <a
           href="#"
           onClick={() => electron.shell.openItem('https://www.speedtest.net/')}
         >
           {' Speedtest® '}
         </a>
-        cli tool developed by
+        {t('cli tool developed by')}
         <a
           href="#"
           onClick={() => electron.shell.openItem('https://www.ookla.com/')}

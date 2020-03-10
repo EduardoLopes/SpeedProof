@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import {
   Segment, Button, Header,
 } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 
 const electron = window.require('electron');
 
 export default function Terms() {
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   function handleYesClick() {
     electron.ipcRenderer.send('config-set-accept-speedtest-license', 1);
@@ -19,11 +21,7 @@ export default function Terms() {
       <Segment loading={loading} basic textAlign="left" clearing>
         <Header as="h1" textAlign="center">Speedtest-cli Terms</Header>
         <p>
-          You may only use the Speedtest software and information generated
-          from it for personal, non-commercial use, through a command line
-          interface on a personal computer. Your use of this software is subject
-          to the End User License Agreement, Terms of Use and Privacy Policy at
-          these URLs:
+          {t('speedtest-cli Terms text')}
         </p>
         <a
           href="#"
@@ -46,7 +44,7 @@ export default function Terms() {
           {' https://www.speedtest.net/about/privacy '}
         </a>
         <Segment basic style={{ paddingBottom: 0, paddingRight: 0, margin: 0 }} textAlign="right">
-          <Button onClick={handleYesClick} color="green" type="button">I ACCEPT THE LICENSE!</Button>
+          <Button onClick={handleYesClick} color="green" type="button">{t('accept license')}</Button>
         </Segment>
       </Segment>
     </div>

@@ -1,38 +1,38 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Container, Segment, Header } from 'semantic-ui-react';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 
 const electron = window.require('electron');
 
 export default function About() {
+  const { t } = useTranslation();
+
   return (
     <Container style={{ marginTop: '1rem' }}>
       <Navbar />
       <Segment>
         <Header>
-          About
+          {t('About')}
         </Header>
         <Container text>
           <p>
-            SpeedCheck is usefull for anyone who needs to keep track of the velocity
-            of your internet service.
+            {t('about p1')}
           </p>
           <p>
-            This app uses the command line tool mabe by
+            {t('about p2 1')}
             <a href="#" onClick={() => electron.shell.openItem('https://www.ookla.com/')}>{' Ookla® '}</a>
-            , check out the
+            {t('about p2 2')}
             <a href="#" onClick={() => electron.shell.openItem('https://www.speedtest.net/')}>{' Speedtest® '}</a>
-            website to know more.
+            {t('about p2 3')}
           </p>
           <p>
-            All this app do is collect the data returned by the command line tool
-            and put in a database. Then it can be searched, soreted and organized by tags.
+            {t('about p3')}
           </p>
           <p>
-            It is still in development (alpha), theres a lot of room for improvement and
-            new features. To checkout the roadmap, go to the github page!
+            {t('about p4')}
           </p>
         </Container>
       </Segment>

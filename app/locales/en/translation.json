@@ -43,6 +43,26 @@
   "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "To update or delete a tag just edit the text inside the input and press Update Tags or Enter",
   "Start": "Start",
   "End": "End",
-  "Select the dates": "Select the dates..."
+  "Select the dates": "Select the dates...",
+  "About": "About",
+  "about p1": "SpeedCheck is usefull for anyone who needs to keep track of the velocity of your internet service.",
+  "about p2 1": "This app uses the command line tool mabe by",
+  "about p2 2": ", check out the",
+  "about p2 3": "website to know more.",
+  "about p3": "All this app do is collect the data returned by the command line tool and put in a database. Then it can be searched, sorted and organized by tags.",
+  "about p4": "It is still in development (alpha), theres a lot of room for improvement and new features. To checkout the roadmap, go to the github page!",
+  "config Tests Page Chart Limit": "Tests Page Chart Limit",
+  "speedtest-cli path": "speedtest-cli.exe path",
+  "path": " Path",
+  "Last save": "Last Save",
+  "Developed by": "Developed by",
+  "speedtest-cli Terms": "Speedtest-cli Terms",
+  "speedtest-cli Terms text": "You may only use the Speedtest software and information generated from it for personal, non-commercial use, through a command line interface on a personal computer. Your use of this software is subject to the End User License Agreement, Terms of Use and Privacy Policy at these URLs:",
+  "accept license": "I ACCEPT THE LICENSE!",
+  "speedtest cli NOT FOUND": "speedtest-cli NOT FOUND",
+  "Speedcheck app only works with": "Speedcheck app only works with",
+  "cli tool developed by": "cil tool developed by",
+  "Would you like to download it?": "Would you like to download it?",
+  "Please show where speedtest exe version 1 0 0 win64 is placed": "Please, show where speedtest.exe version 1.0.0-win64 is placed!"
 
 }

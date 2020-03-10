@@ -43,6 +43,25 @@
   "To update or delete a tag just edit the text inside the input and press Update Tags or Enter": "Para atualizar ou deleta uma tag, basta editar o texto dentro do campo e apertar o botão 'Atualizar tags' ou pressionar Enter",
   "Start": "Começo",
   "End": "Fim",
-  "Select the dates": "Selecione as datas..."
-
+  "Select the dates": "Selecione as datas...",
+  "About": "Sobre",
+  "about p1": "SpeedCheck é util para qualquer pessoa que precisa acompanhar a velocidade da sua internet!",
+  "about p2 1": "Esse app utiliza a ferramenta de linha de comando desenvolvida por",
+  "about p2 2": ", confira o site",
+  "about p2 3": "para saber mais.",
+  "about p3": "Tudo o que esse app faz, é coletar as informção recebidas da ferramenta de linha de comando e colocar em um banco e dados. É possivel pesquisar or tests, ordernar em um tabela e classificar por tags",
+  "about p4": "Esse app ainda esta em edsenvolvimento (alpha), tem muito o que ser melhorado e adicionado! Confira o roadmap no github",
+  "config Tests Page Chart Limit": "Limite do grafico da pagina de testes",
+  "speedtest-cli path": "Caminho para speedtest.exe",
+  "path": " Caminho",
+  "Last save": "Ultima Modificação",
+  "Developed by": "Desenvolvido por",
+  "speedtest-cli Terms": "Termos do speedtest-cli",
+  "speedtest-cli Terms text": "Você só pode usar o software Speedtest e as informações geradas dele para uso pessoal e não comercial, por meio de uma linha de comando interface em um computador pessoal. O uso deste software está sujeito a Contrato de Licença do Usuário Final, Termos de Uso e Política de Privacidade nestas URLs:",
+  "accept license": "EU ACEITO A LICENÇA!",
+  "speedtest cli NOT FOUND": "speedtest-cli NÃO FOI ENCONTRADO",
+  "Speedcheck app only works with": "Speedcheck depende da ferramenta de linha de comando do",
+  "cli tool developed by": "desenvolvida por",
+  "Would you like to download it?": "Gostaria de fazer o download?",
+  "Please show where speedtest exe version 1 0 0 win64 is placed": "Porfavor, inique onde speedtest.exe versão 1.0.0-win64 se encontra!"
 }
