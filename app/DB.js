@@ -85,7 +85,7 @@ function insertTest(mainWindow, values) {
     )`,
       values,
       // TODO: handle error
-      () => {
+      function callback() {
         mainWindow.webContents.send('last-id', `${this.lastID}`);
       },
     );
