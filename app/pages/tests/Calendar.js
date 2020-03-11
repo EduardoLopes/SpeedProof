@@ -13,7 +13,7 @@ const storage = window.localStorage;
 
 const now = moment();
 
-const formatStr = 'YYYY-MM-DD';
+const formatStr = 'L';
 function format(v) {
   return v ? v.format(formatStr) : '';
 }
@@ -23,7 +23,7 @@ function isValidRange(v) {
 }
 
 export default function Calendar(props) {
-  const storageDates = JSON.parse(storage.getItem('searchDates'));
+  const storageDates = JSON.parse([storage.getItem('searchDates')]);
   const [calendarValue, setCalendarValue] = useState(
     storageDates ? [moment(storageDates[0]), moment(storageDates[1])] : [],
   );
@@ -96,7 +96,7 @@ export default function Calendar(props) {
 
 Calendar.propTypes = {
   onChange: PropTypes.func,
-  searchDates: PropTypes.arrayOf(PropTypes.instanceOf(moment)),
+  searchDates: PropTypes.arrayOf(PropTypes.number),
 };
 
 Calendar.defaultProps = {
