@@ -6,6 +6,7 @@ dist/
 build/
 **/speedtest.exe
 **/speedtest.md
+README.html
 
 ### Node ###
 # Logs
