@@ -67,18 +67,11 @@ export default function Home() {
 
   function receiveData() {
     setStartButton({
-      disabled: true,
-      content: t('pleaseWait'),
+      disabled: false,
+      color: 'green',
+      loading: false,
+      content: t('startTest'),
     });
-
-    setTimeout(() => {
-      setStartButton({
-        disabled: false,
-        color: 'green',
-        loading: false,
-        content: t('startTest'),
-      });
-    }, 1000);
   }
 
   function receiveWait() {
