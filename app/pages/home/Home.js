@@ -14,6 +14,7 @@ import useDownloadData from '../../hooks/useDownloadData';
 import useUploadData from '../../hooks/useUploadData';
 import useTestStartData from '../../hooks/useTestStartData';
 import useLastIDtData from '../../hooks/useLastIDData';
+import useErrorMessageData from '../../hooks/useErrorMessageData';
 
 
 const electron = window.require('electron');
@@ -36,7 +37,7 @@ export default function Home() {
   const { upload, uploadProgress, resetUpload } = useUploadData(0);
   const { testStart, resetTestStart } = useTestStartData();
   const { lastID } = useLastIDtData();
-  const [errorMessage, setErrorMessage] = useState(null);
+  const { errorMessage, resetErrorMessage } = useErrorMessageData();
   const { speedtestPath } = useConfig();
 
   function requestData() {
@@ -52,7 +53,7 @@ export default function Home() {
     resetUpload();
     resetPing();
     resetTestStart();
-    setErrorMessage(null);
+    resetErrorMessage();
   }
 
   useEffect(() => {
@@ -82,27 +83,24 @@ export default function Home() {
     });
   }
 
-  function handleSpeedtestError(event, data) {
-    electron.ipcRenderer.send('kill-speedtest', 'data');
+  useEffect(() => {
+    if (!_lang.isNull(errorMessage)) {
+      electron.ipcRenderer.send('kill-speedtest', 'data');
 
-    setErrorMessage(data);
-
-    setTimeout(() => {
       setStartButton({
         disabled: false,
         color: 'green',
         loading: false,
         content: t('startTest'),
       });
-    }, 1000);
-  }
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
     electron.ipcRenderer.on('result', receiveData);
     electron.ipcRenderer.on('last-request-running', receiveWait);
-    electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
 
     window.scroll({
       top: 0,
@@ -114,10 +112,6 @@ export default function Home() {
     return () => {
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
-      electron.ipcRenderer.removeListener(
-        'speedtest-error',
-        handleSpeedtestError,
-      );
 
       // kill speedtest process if it is running and the page is changed
       electron.ipcRenderer.send('kill-speedtest', 'data');
