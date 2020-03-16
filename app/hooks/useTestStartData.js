@@ -9,13 +9,13 @@ export default function useTestStart() {
     setTestStart(null);
   }
 
-  function receive(event, data) {
+  function receiver(event, data) {
     setTestStart(data);
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('testStart', receive);
-    return () => electron.ipcRenderer.removeListener('testStart', receive);
+    electron.ipcRenderer.on('testStart', receiver);
+    return () => electron.ipcRenderer.removeListener('testStart', receiver);
   }, []);
 
   return { testStart, resetTestStart };

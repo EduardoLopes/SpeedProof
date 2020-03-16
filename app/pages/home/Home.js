@@ -13,6 +13,8 @@ import usePingData from '../../hooks/usePingData';
 import useDownloadData from '../../hooks/useDownloadData';
 import useUploadData from '../../hooks/useUploadData';
 import useTestStartData from '../../hooks/useTestStartData';
+import useLastIDtData from '../../hooks/useLastIDData';
+
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -33,8 +35,8 @@ export default function Home() {
   const { download, downloadProgress, resetDownload } = useDownloadData(0);
   const { upload, uploadProgress, resetUpload } = useUploadData(0);
   const { testStart, resetTestStart } = useTestStartData();
+  const { lastID } = useLastIDtData();
   const [errorMessage, setErrorMessage] = useState(null);
-  const [lastID, setLastID] = useState(null);
   const { speedtestPath } = useConfig();
 
   function requestData() {
@@ -51,7 +53,6 @@ export default function Home() {
     resetPing();
     resetTestStart();
     setErrorMessage(null);
-    setLastID(null);
   }
 
   useEffect(() => {
@@ -96,17 +97,12 @@ export default function Home() {
     }, 1000);
   }
 
-  function receiveLastID(event, data) {
-    setLastID(parseInt(data, 10));
-  }
-
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
     electron.ipcRenderer.on('result', receiveData);
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
-    electron.ipcRenderer.on('last-id', receiveLastID);
 
     window.scroll({
       top: 0,
@@ -122,7 +118,6 @@ export default function Home() {
         'speedtest-error',
         handleSpeedtestError,
       );
-      electron.ipcRenderer.removeListener('last-id', receiveLastID);
 
       // kill speedtest process if it is running and the page is changed
       electron.ipcRenderer.send('kill-speedtest', 'data');
