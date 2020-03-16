@@ -10,6 +10,8 @@ import Panel from '../../components/Panel/Panel';
 import Footer from '../../components/Footer/Footer';
 import useConfig from '../../hooks/useConfig';
 import usePingData from '../../hooks/usePingData';
+import useDownloadData from '../../hooks/useDownloadData';
+
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -23,15 +25,14 @@ export default function Home() {
     content: t('pleaseWait'),
   });
 
-  const [downloadProgress, setDownloadProgress] = useState(0);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [testServer, setTestServer] = useState(null);
-  const [downloadSpeed, setDownloadSpeed] = useState(0);
   const [uploadSpeed, setUploadSpeed] = useState(0);
   const { ping, pingProgress, resetPing } = usePingData({
     latency: 0,
     jitter: 0,
   });
+  const { download, downloadProgress, resetDownload } = useDownloadData(0);
   const [errorMessage, setErrorMessage] = useState(null);
   const [lastID, setLastID] = useState(null);
   const { speedtestPath } = useConfig();
@@ -45,10 +46,9 @@ export default function Home() {
       content: t('loading'),
     });
 
-    setDownloadProgress(0);
+    resetDownload();
     setUploadProgress(0);
     setTestServer(null);
-    setDownloadSpeed(0);
     setUploadSpeed(0);
     resetPing();
     setErrorMessage(null);
@@ -80,11 +80,6 @@ export default function Home() {
         content: t('startTest'),
       });
     }, 1000);
-  }
-
-  function receiveDownload(event, data) {
-    setDownloadSpeed(data.download.bandwidth);
-    setDownloadProgress(data.download.progress * 100);
   }
 
   function receiveUpload(event, data) {
@@ -125,7 +120,6 @@ export default function Home() {
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
-    electron.ipcRenderer.on('download', receiveDownload);
     electron.ipcRenderer.on('upload', receiveUpload);
     electron.ipcRenderer.on('testStart', receiveTestStart);
     electron.ipcRenderer.on('result', receiveData);
@@ -141,7 +135,6 @@ export default function Home() {
     storage.setItem('scrollY', 0);
 
     return () => {
-      electron.ipcRenderer.removeListener('download', receiveDownload);
       electron.ipcRenderer.removeListener('upload', receiveUpload);
       electron.ipcRenderer.removeListener('testStart', receiveTestStart);
       electron.ipcRenderer.removeListener('result', receiveData);
@@ -187,7 +180,7 @@ export default function Home() {
         pingProgress={pingProgress}
         downloadProgress={downloadProgress}
         uploadProgress={uploadProgress}
-        downloadSpeed={downloadSpeed}
+        downloadSpeed={download}
         uploadSpeed={uploadSpeed}
         ping={ping}
       />
