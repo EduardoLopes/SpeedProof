@@ -9,12 +9,12 @@ import Tags from '../../components/Tags/Tags';
 import Panel from '../../components/Panel/Panel';
 import Footer from '../../components/Footer/Footer';
 import useConfig from '../../hooks/useConfig';
-import usePingData from '../../hooks/usePingData';
-import useDownloadData from '../../hooks/useDownloadData';
-import useUploadData from '../../hooks/useUploadData';
-import useTestStartData from '../../hooks/useTestStartData';
-import useLastIDtData from '../../hooks/useLastIDData';
-import useErrorMessageData from '../../hooks/useErrorMessageData';
+import usePingListener from '../../hooks/usePingListener';
+import useDownloadListener from '../../hooks/useDownloadListener';
+import useUploadListener from '../../hooks/useUploadListener';
+import useTestStartListener from '../../hooks/useTestStartListener';
+import useLastIDListener from '../../hooks/useLastIDListener';
+import useErrorMessageListener from '../../hooks/useErrorMessageListener';
 
 
 const electron = window.require('electron');
@@ -29,15 +29,15 @@ export default function Home() {
     content: t('pleaseWait'),
   });
 
-  const { ping, pingProgress, resetPing } = usePingData({
+  const { ping, pingProgress, resetPing } = usePingListener({
     latency: 0,
     jitter: 0,
   });
-  const { download, downloadProgress, resetDownload } = useDownloadData(0);
-  const { upload, uploadProgress, resetUpload } = useUploadData(0);
-  const { testStart, resetTestStart } = useTestStartData();
-  const { lastID } = useLastIDtData();
-  const { errorMessage, resetErrorMessage } = useErrorMessageData();
+  const { download, downloadProgress, resetDownload } = useDownloadListener(0);
+  const { upload, uploadProgress, resetUpload } = useUploadListener(0);
+  const { testStart, resetTestStart } = useTestStartListener();
+  const { lastID } = useLastIDListener();
+  const { errorMessage, resetErrorMessage } = useErrorMessageListener();
   const { speedtestPath } = useConfig();
 
   function requestData() {
