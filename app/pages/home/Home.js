@@ -12,7 +12,7 @@ import useConfig from '../../hooks/useConfig';
 import usePingData from '../../hooks/usePingData';
 import useDownloadData from '../../hooks/useDownloadData';
 import useUploadData from '../../hooks/useUploadData';
-
+import useTestStartData from '../../hooks/useTestStartData';
 
 const electron = window.require('electron');
 const storage = window.localStorage;
@@ -26,14 +26,13 @@ export default function Home() {
     content: t('pleaseWait'),
   });
 
-  const [testServer, setTestServer] = useState(null);
   const { ping, pingProgress, resetPing } = usePingData({
     latency: 0,
     jitter: 0,
   });
   const { download, downloadProgress, resetDownload } = useDownloadData(0);
   const { upload, uploadProgress, resetUpload } = useUploadData(0);
-
+  const { testStart, resetTestStart } = useTestStartData();
   const [errorMessage, setErrorMessage] = useState(null);
   const [lastID, setLastID] = useState(null);
   const { speedtestPath } = useConfig();
@@ -49,8 +48,8 @@ export default function Home() {
 
     resetDownload();
     resetUpload();
-    setTestServer(null);
     resetPing();
+    resetTestStart();
     setErrorMessage(null);
     setLastID(null);
   }
@@ -82,10 +81,6 @@ export default function Home() {
     }, 1000);
   }
 
-  function receiveTestStart(event, data) {
-    setTestServer(data);
-  }
-
   function receiveWait() {
     setStartButton({
       disabled: true,
@@ -115,7 +110,6 @@ export default function Home() {
   useEffect(() => {
     i18n.changeLanguage(storage.getItem('language') || i18n.language);
 
-    electron.ipcRenderer.on('testStart', receiveTestStart);
     electron.ipcRenderer.on('result', receiveData);
     electron.ipcRenderer.on('last-request-running', receiveWait);
     electron.ipcRenderer.on('speedtest-error', handleSpeedtestError);
@@ -129,7 +123,6 @@ export default function Home() {
     storage.setItem('scrollY', 0);
 
     return () => {
-      electron.ipcRenderer.removeListener('testStart', receiveTestStart);
       electron.ipcRenderer.removeListener('result', receiveData);
       electron.ipcRenderer.removeListener('last-request-running', receiveWait);
       electron.ipcRenderer.removeListener(
@@ -184,7 +177,7 @@ export default function Home() {
           {t('client')}
         </Label>
 
-        {testServer !== null ? testServer.isp : ''}
+        {testStart !== null ? testStart.isp : ''}
         <Divider horizontal>
           <Icon name="sync" />
         </Divider>
@@ -194,11 +187,11 @@ export default function Home() {
           {t('server')}
         </Label>
 
-        {testServer !== null ? `${testServer.server.name} ` : ''}
-        {testServer !== null ? (
+        {testStart !== null ? `${testStart.server.name} ` : ''}
+        {testStart !== null ? (
           <Label size="large">
             <Icon name="point" />
-            {testServer.server.location}
+            {testStart.server.location}
           </Label>
         ) : (
           ''
