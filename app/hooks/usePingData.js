@@ -8,6 +8,7 @@ export default function usePing(initialState) {
 
   function resetPing() {
     setPing(initialState);
+    setPingProgress(0);
   }
 
   function receivePing(event, data) {
