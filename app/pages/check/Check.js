@@ -112,7 +112,7 @@ export default function Check() {
     <div>
       <h1>{t('speedtest cli NOT FOUND')}</h1>
       <p>
-        {t('Speedcheck app only works with')}
+        {t('SpeedProof app only works with')}
         <a
           href="#"
           onClick={() => electron.shell.openItem('https://www.speedtest.net/')}

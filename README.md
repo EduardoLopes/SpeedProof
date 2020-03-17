@@ -1,8 +1,12 @@
-# SpeedCheck
+# SpeedProof
 
-SpeedCheck is usefull for anyone who needs to keep track of the velocity of your internet service. With this app you will be able to search, sort, tag tests and see the data in charts!
+SpeedProof is usefull for anyone who needs to keep track of the velocity of your internet service. With this app you will be able to search, sort, tag tests and see the data in charts!
 
 > This app depends on [Speedtest®](https://www.speedtest.net/) command line tool developed by [Ookla®](https://www.ookla.com/).
+
+<div align="center">
+  <a href="https://imgur.com/3KAo4NM"><img src="https://i.imgur.com/3KAo4NM.gif" title="speed up gif" /></a>
+</div>
 
 ## Alpha
 

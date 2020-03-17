@@ -1,8 +1,12 @@
-# SpeedCheck
+# SpeedProof
 
-O SpeedCheck é útil para quem precisa acompanhar a velocidade do seu serviço de Internet. Com esse app, você poderá pesquisar, ordenar, marcar testes e ver os dados em gráficos!
+O SpeedProof é útil para quem precisa acompanhar a velocidade do seu serviço de Internet. Com esse app, você poderá pesquisar, ordenar, marcar testes e ver os dados em gráficos!
 
 > Este aplicativo depende da ferramenta de linha de comando [Speedtest®] (https://www.speedtest.net/) desenvolvida por [Ookla®] (https://www.ookla.com/).
+
+<div align="center">
+  <a href="https://imgur.com/3KAo4NM"><img src="https://i.imgur.com/3KAo4NM.gif" title="speed up gif" /></a>
+</div>
 
 ## Alpha
 

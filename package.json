@@ -1,7 +1,7 @@
 {
-  "name": "speedcheck",
+  "name": "speedproof",
   "version": "0.0.0",
-  "description": "Check the internet speed",
+  "description": "SpeedProof is usefull for anyone who needs to keep track of the velocity of your internet service. With this app you will be able to search, sort, tag speedtest tests and see the data in charts!",
   "main": "app/electron.js",
   "author": "Eduardo Lopes",
   "license": "MIT",
@@ -26,7 +26,7 @@
     }
   },
   "build": {
-    "appId": "com.speedcheck",
+    "appId": "com.speedproof",
     "win": {
       "target": [
         {
