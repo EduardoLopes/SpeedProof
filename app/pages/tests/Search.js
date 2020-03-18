@@ -249,7 +249,7 @@ export default function Search(props) {
         </Grid>
       </Segment>
 
-      {noResult && lastSearch.keyword.length !== 0 && (
+      {noResult && (
         <NoResultSearch onClear={resetSearch} />
       )}
     </div>
