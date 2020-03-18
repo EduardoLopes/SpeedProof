@@ -23,7 +23,7 @@ function isValidRange(v) {
 }
 
 export default function Calendar(props) {
-  const storageDates = JSON.parse([storage.getItem('searchDates')]);
+  const storageDates = JSON.parse(storage.getItem('searchDates'));
   const [calendarValue, setCalendarValue] = useState(
     storageDates ? [moment(storageDates[0]), moment(storageDates[1])] : [],
   );
