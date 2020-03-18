@@ -20,3 +20,11 @@ Contribuições são bem-vinda, mas o código ainda não foi comentado (foi mal)
 ## [Roadmap] (https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk)
 
 [Esta lista] (https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk) é onde eu listo as próximas funções e melhorias.
+
+## License
+
+MIT License
+
+Copyright (c) 2020 Eduardo Lopes
+
+> Este aplicativo NÃO redistribui a ferramenta speedtest-cli. O usuário deve fazer o download! O speedtest-cli possui sua própria licença e termos, consulte o site [speedtest] (https://www.speedtest.net/apps/cli) para obter mais informações!

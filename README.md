@@ -21,3 +21,10 @@ Contribution are wellcome, but the code is not commented yet (sorry).
 
 [This list](https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk), is where i keep track of the next features and improvments.
 
+## License
+
+MIT License
+
+Copyright (c) 2020 Eduardo Lopes
+
+> This app DOES NOT re-distribute speedtest-cli tool. The user must download it! speedtest-cli have it's own license and terms, check out the [speedtest](https://www.speedtest.net/apps/cli) website for more information!
