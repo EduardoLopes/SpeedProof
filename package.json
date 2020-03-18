@@ -1,6 +1,6 @@
 {
   "name": "speedproof",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "SpeedProof is usefull for anyone who needs to keep track of the velocity of your internet service. With this app you will be able to search, sort, tag speedtest tests and see the data in charts!",
   "main": "app/electron.js",
   "author": "Eduardo Lopes",
