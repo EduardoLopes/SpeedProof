@@ -84,5 +84,9 @@
     "prettier": "^2.0.5",
     "sass": "^1.26.10",
     "wait-on": "^5.2.0"
+  },
+  "resolutions": {
+    "elliptic": "6.5.3",
+    "jquery": "3.5.0"
   }
 }
