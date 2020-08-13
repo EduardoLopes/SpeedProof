@@ -1,10 +1,8 @@
  {
   "modules": true,
-  "plugins": {
+   "plugins": {
     "postcss-modules": {
-      "globalModulePaths": [
-        "global.css"
-      ]
+      "generateScopedName": "_[name]__[local]"
     }
   }
 }

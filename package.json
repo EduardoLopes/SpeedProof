@@ -7,9 +7,9 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "yarn run electron-builder install-app-deps",
-    "parcel-server": "yarn run parcel -p 3000 ./app/index.html --out-dir build/ --no-autoinstall",
-    "parcel-build": "yarn run parcel build ./app/index.html --out-dir build/ --public-url ./",
-    "wait-server": "wait-on http://localhost:3000",
+    "parcel-server": "yarn run parcel serve ./app/index.html --dist-dir build/",
+    "parcel-build": "yarn run parcel build ./app/index.html --dist-dir build/ --public-url ./",
+    "wait-server": "wait-on http://localhost:1234",
     "clean-build": "yarn run del build/ .cache dist/",
     "build": "yarn run clean-build && yarn run parcel-build && yarn run electron-builder --dir",
     "pack": "yarn run electron-builder --win",
@@ -66,10 +66,6 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.0",
     "del-cli": "^3.0.0",
@@ -83,7 +79,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",
-    "parcel-bundler": "^1.12.4",
+    "parcel": "^2.0.0-beta.1",
     "postcss-modules": "^1.5.0",
     "prettier": "^1.19.1",
     "sass": "^1.25.0",
