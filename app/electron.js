@@ -1,5 +1,7 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron');
+const {
+  app, BrowserWindow, ipcMain,
+} = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const moment = require('moment');
@@ -14,6 +16,8 @@ const DBConfig = require('./DBConfig.js');
 let mainWindow;
 let speedtest;
 let requestRunning = false;
+
+// app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 
 // eslint-disable-next-line consistent-return
 ipcMain.on('request-data', (event, speedtestPath) => {
@@ -200,7 +204,6 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
