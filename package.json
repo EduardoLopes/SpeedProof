@@ -16,7 +16,7 @@
     "dev": "yarn run concurrently \"yarn run parcel-server\" \"yarn run wait-server && cross-env NODE_ENV=development electron .\""
   },
   "lint-staged": {
-    "app/**/*.{js,jsx}": [
+    "app/**/*.{aaaaaaaaa}": [
       "yarn run eslint --fix"
     ]
   },
@@ -54,6 +54,7 @@
     "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
+    "purecss": "^2.0.3",
     "rc-calendar": "^9.15.11",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

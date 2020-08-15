@@ -1,16 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {
-  Container,
-  Table,
-  Icon,
-  Segment,
-  Pagination,
-} from 'semantic-ui-react';
+import { Container, Table, Icon, Segment, Pagination } from 'semantic-ui-react';
 import moment from 'moment';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './Tests.scss';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import Search from './Search';
 import Charts from './Charts';
 import TableDataPlacehold from './TableDataPlacehold';
@@ -37,7 +31,9 @@ export default function Tests() {
   );
   // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = useState(15);
-  const [offset, setOffset] = useState(parseInt(storage.getItem('offset'), 10) || 0);
+  const [offset, setOffset] = useState(
+    parseInt(storage.getItem('offset'), 10) || 0,
+  );
   const [mode, setMode] = useState(storage.getItem('mode') || 'normal'); // or search
   const [testsCount, setTestsCount] = useState(null);
 
@@ -172,18 +168,15 @@ export default function Tests() {
         <Table.Row key={test.id}>
           <Table.Cell>{test.id}</Table.Cell>
           <Table.Cell singleLine>
-            {Math.floor(test.ping_latency)}
-            {' '}
+            {Math.floor(test.ping_latency)}{' '}
             <span className={styles.headerCellSecondaryText}>ms</span>
           </Table.Cell>
           <Table.Cell singleLine>
-            {(test.download_bandwidth / 125000).toFixed(2)}
-            {' '}
+            {(test.download_bandwidth / 125000).toFixed(2)}{' '}
             <span className={styles.headerCellSecondaryText}>Mbps</span>
           </Table.Cell>
           <Table.Cell singleLine>
-            {(test.upload_bandwidth / 125000).toFixed(2)}
-            {' '}
+            {(test.upload_bandwidth / 125000).toFixed(2)}{' '}
             <span className={styles.headerCellSecondaryText}>Mbps</span>
           </Table.Cell>
           <Table.Cell>{test.isp}</Table.Cell>
@@ -249,7 +242,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('id'))}
+                onClick={() => handleSort('id')}
               >
                 #
               </Table.HeaderCell>
@@ -259,7 +252,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('ping_latency'))}
+                onClick={() => handleSort('ping_latency')}
               >
                 {t('ping')}
               </Table.HeaderCell>
@@ -269,7 +262,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('download_bandwidth'))}
+                onClick={() => handleSort('download_bandwidth')}
               >
                 {t('download')}
               </Table.HeaderCell>
@@ -279,7 +272,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('upload_bandwidth'))}
+                onClick={() => handleSort('upload_bandwidth')}
               >
                 {t('upload')}
               </Table.HeaderCell>
@@ -289,7 +282,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('isp'))}
+                onClick={() => handleSort('isp')}
               >
                 {t('ISP')}
               </Table.HeaderCell>
@@ -299,7 +292,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('server_name'))}
+                onClick={() => handleSort('server_name')}
               >
                 {t('server')}
               </Table.HeaderCell>
@@ -309,7 +302,7 @@ export default function Tests() {
                     ? getSortDirection(sorted.direction)
                     : null
                 }
-                onClick={() => (handleSort('timestamp_milliseconds'))}
+                onClick={() => handleSort('timestamp_milliseconds')}
               >
                 {t('when')}
               </Table.HeaderCell>

@@ -1,7 +1,5 @@
 // Modules to control application life and create native browser window
-const {
-  app, BrowserWindow, ipcMain,
-} = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 const moment = require('moment');
@@ -29,7 +27,12 @@ ipcMain.on('request-data', (event, speedtestPath) => {
 
   requestRunning = true;
 
-  speedtest = spawn(speedtestPath, ['--format', 'jsonl', '--accept-license', '--accept-gdpr']);
+  speedtest = spawn(speedtestPath, [
+    '--format',
+    'jsonl',
+    '--accept-license',
+    '--accept-gdpr',
+  ]);
 
   const pingVariation = [];
   const pingJitterVariation = [];
@@ -176,7 +179,9 @@ ipcMain.on('kill-speedtest', () => {
 ipcMain.on('check-speedtest', (event, sppedtestPath) => {
   if (path !== sppedtestPath) {
     const fileExists = fs.existsSync(sppedtestPath);
-    const shaCheck = sha256File(sppedtestPath) === 'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
+    const shaCheck =
+      sha256File(sppedtestPath) ===
+      'dffc17b4b0f9c841d94802e2c9578758dbb52ca1ab967a506992c26aabecc43a';
 
     mainWindow.webContents.send('speedtest-check-result', {
       exists: fileExists,
@@ -191,7 +196,10 @@ ipcMain.on('request-speedtest-cli-download', () => {
     app.getPath('userData'),
     { extract: true },
   ).then(() => {
-    mainWindow.webContents.send('speedtest-downloaded', path.join(app.getPath('userData'), '/speedtest.exe'));
+    mainWindow.webContents.send(
+      'speedtest-downloaded',
+      path.join(app.getPath('userData'), '/speedtest.exe'),
+    );
   });
 });
 
@@ -200,8 +208,8 @@ ipcMain.on('request-speedtest-cli-download', () => {
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 960,
+    height: 540,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -212,7 +220,6 @@ function createWindow() {
   !isDev && mainWindow.setMenu(null);
   // eslint-disable-next-line no-unused-expressions
   isDev && mainWindow.webContents.openDevTools();
-
 
   // and load the index.html of the app.
   mainWindow.loadURL(

@@ -53,10 +53,13 @@ export default function Check() {
     }
   }, [filePath]);
 
-
   useEffect(() => {
     electron.ipcRenderer.on('speedtest-downloaded', speedtestDownload);
-    return () => electron.ipcRenderer.removeListener('speedtest-downloaded', speedtestDownload);
+    return () =>
+      electron.ipcRenderer.removeListener(
+        'speedtest-downloaded',
+        speedtestDownload,
+      );
   }, []);
 
   const DownloadButtons = () => (
@@ -75,9 +78,16 @@ export default function Check() {
 
   const UploadButton = () => (
     <div>
-      <h3>{t('Please show where speedtest exe version 1 0 0 win64 is placed')}</h3>
+      <h3>
+        {t('Please show where speedtest exe version 1 0 0 win64 is placed')}
+      </h3>
       {filePath ? (
-        <Button size="large" onClick={handleFileClick} as="div" labelPosition="right">
+        <Button
+          size="large"
+          onClick={handleFileClick}
+          as="div"
+          labelPosition="right"
+        >
           <Button color="blue" icon>
             <Icon name="paperclip" />
             {' Directory'}
@@ -96,7 +106,13 @@ export default function Check() {
             color="blue"
             onClick={() => setWillDownload(true)}
           />
-          <Button size="large" color="blue" icon="paperclip" onClick={handleFileClick} content={t('path')} />
+          <Button
+            size="large"
+            color="blue"
+            icon="paperclip"
+            onClick={handleFileClick}
+            content={t('path')}
+          />
         </Button.Group>
       )}
       <input
@@ -127,7 +143,7 @@ export default function Check() {
           {' Ookla®'}
         </a>
       </p>
-      {willDownload ? (<DownloadButtons />) : (<UploadButton />)}
+      {willDownload ? <DownloadButtons /> : <UploadButton />}
     </div>
   );
 
@@ -140,7 +156,7 @@ export default function Check() {
       >
         <Grid.Column style={{ maxWidth: '90%' }}>
           <Segment color="red" loading={loading}>
-            {speedtestIsValid === false ? (<NotFound />) : (<Terms />)}
+            {speedtestIsValid === false ? <NotFound /> : <Terms />}
           </Segment>
         </Grid.Column>
       </Grid>

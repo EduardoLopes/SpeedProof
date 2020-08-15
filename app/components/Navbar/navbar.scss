@@ -1,0 +1,25 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  background: var(--gray-6);
+
+  .item {
+    width: 64px;
+    height: 64px;
+  }
+
+  .logo {
+    text-align: center;
+    line-height: 64px;
+    border-bottom: solid 1px var(--smooth-border);
+  }
+
+  .settings {
+    margin-top: auto;
+    border-top: solid 1px var(--smooth-border);
+  }
+
+  a {
+    display: inline-block;
+  }
+}

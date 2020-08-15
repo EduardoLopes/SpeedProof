@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 import _lang from 'lodash/lang';
 import { useTranslation } from 'react-i18next';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer/Footer';
 import useConfig from '../../hooks/useConfig';
 
@@ -70,7 +70,10 @@ export default function Config() {
   }, [config]);
 
   useEffect(() => {
-    if (!_lang.isNull(config.speedtestPath) && speedtestPath !== config.speedtestPath) {
+    if (
+      !_lang.isNull(config.speedtestPath) &&
+      speedtestPath !== config.speedtestPath
+    ) {
       electron.ipcRenderer.send('config-set-speedtest-path', speedtestPath);
     }
   }, [speedtestPath]);
@@ -82,7 +85,10 @@ export default function Config() {
   }, [language]);
 
   useEffect(() => {
-    if (!_lang.isNull(config.testChartLimit) && testChartLimit !== config.testChartLimit) {
+    if (
+      !_lang.isNull(config.testChartLimit) &&
+      testChartLimit !== config.testChartLimit
+    ) {
       electron.ipcRenderer.send('config-set-tests-chart-limit', testChartLimit);
     }
   }, [testChartLimit]);
@@ -105,7 +111,6 @@ export default function Config() {
       </Button>
     </div>
   );
-
 
   return (
     <Container style={{ marginTop: '1rem' }}>
@@ -140,9 +145,20 @@ export default function Config() {
           type="file"
           style={{ display: 'none' }}
         />
-        <Segment compact floated="right" size="tiny" style={{ padding: 0, color: 'rgba(0,0,0,.4)' }} basic textAlign="right">
+        <Segment
+          compact
+          floated="right"
+          size="tiny"
+          style={{ padding: 0, color: 'rgba(0,0,0,.4)' }}
+          basic
+          textAlign="right"
+        >
           {`${t('Last save')}: `}
-          {config.loading && (<Dimmer inverted active><Loader size="tiny" active inline /></Dimmer>)}
+          {config.loading && (
+            <Dimmer inverted active>
+              <Loader size="tiny" active inline />
+            </Dimmer>
+          )}
           {lastSave && moment(lastSave).fromNow()}
         </Segment>
       </Segment>

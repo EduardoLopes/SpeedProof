@@ -2,7 +2,7 @@
 import React from 'react';
 import { Container, Segment, Header } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer/Footer';
 
 const electron = window.require('electron');
@@ -14,26 +14,30 @@ export default function About() {
     <Container style={{ marginTop: '1rem' }}>
       <Navbar />
       <Segment>
-        <Header>
-          {t('About')}
-        </Header>
+        <Header>{t('About')}</Header>
         <Container text>
-          <p>
-            {t('about p1')}
-          </p>
+          <p>{t('about p1')}</p>
           <p>
             {t('about p2 1')}
-            <a href="#" onClick={() => electron.shell.openItem('https://www.ookla.com/')}>{' Ookla® '}</a>
+            <a
+              href="#"
+              onClick={() => electron.shell.openItem('https://www.ookla.com/')}
+            >
+              {' Ookla® '}
+            </a>
             {t('about p2 2')}
-            <a href="#" onClick={() => electron.shell.openItem('https://www.speedtest.net/')}>{' Speedtest® '}</a>
+            <a
+              href="#"
+              onClick={() =>
+                electron.shell.openItem('https://www.speedtest.net/')
+              }
+            >
+              {' Speedtest® '}
+            </a>
             {t('about p2 3')}
           </p>
-          <p>
-            {t('about p3')}
-          </p>
-          <p>
-            {t('about p4')}
-          </p>
+          <p>{t('about p3')}</p>
+          <p>{t('about p4')}</p>
         </Container>
       </Segment>
       <Footer />

@@ -1,0 +1,5 @@
+.top {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr minmax(auto, 128px);
+}
