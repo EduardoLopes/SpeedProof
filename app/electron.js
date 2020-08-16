@@ -224,7 +224,7 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadURL(
     isDev
-      ? 'http://localhost:1234'
+      ? 'http://localhost:3000'
       : `file://${path.join(__dirname, '../build/index.html')}`,
   );
 

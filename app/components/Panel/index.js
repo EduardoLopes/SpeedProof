@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Panel.scss';
+import styles from './Panel.module.scss';
 // import {
 //   Segment,
 //   Label,

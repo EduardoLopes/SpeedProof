@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Picker from 'rc-calendar/lib/Picker';
 import RangeCalendar from 'rc-calendar/lib/RangeCalendar';
-import 'rc-calendar/assets/index.css';
+// import 'rc-calendar/assets/index.css';
 import { Input } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
 import enUS from 'rc-calendar/lib/locale/en_US';
@@ -82,17 +82,16 @@ export default function Calendar(props) {
             readOnly
             className="ant-calendar-picker-input ant-input"
             value={
-                (isValidRange(value)
-                  && `${format(value[0])} | ${format(value[1])}`)
-                || ''
-              }
+              (isValidRange(value) &&
+                `${format(value[0])} | ${format(value[1])}`) ||
+              ''
+            }
           />
         </span>
       )}
     </Picker>
   );
 }
-
 
 Calendar.propTypes = {
   onChange: PropTypes.func,

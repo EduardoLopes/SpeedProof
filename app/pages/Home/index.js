@@ -12,7 +12,7 @@ import Panel from '../../components/Panel';
 // import useTestStartListener from '../../hooks/useTestStartListener';
 // import useLastIDListener from '../../hooks/useLastIDListener';
 // import useErrorMessageListener from '../../hooks/useErrorMessageListener';
-import styles from './Home.scss';
+import styles from './Home.module.scss';
 
 // const electron = window.require('electron');
 // const storage = window.localStorage;

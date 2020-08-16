@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  align-self: center;
+  justify-items: center;
+
+  .play {
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    background: var(--primary-color-1);
+  }
+}
