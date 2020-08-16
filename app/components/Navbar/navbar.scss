@@ -3,6 +3,19 @@
   flex-direction: column;
   background: var(--gray-6);
 
+  a {
+    color: var(--text-color-1);
+  }
+
+  a:hover,
+  a:focus {
+    color: var(--text-color-2);
+  }
+
+  a:active {
+    color: var(--text-color-3);
+  }
+
   .item {
     width: 64px;
     height: 64px;
@@ -10,13 +23,41 @@
 
   .logo {
     text-align: center;
-    line-height: 64px;
     border-bottom: solid 1px var(--smooth-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover,
+    &:focus {
+      svg path {
+        fill: var(--text-color-2);
+      }
+    }
+
+    &:active {
+      svg path {
+        fill: var(--text-color-3);
+      }
+    }
+
+    svg {
+      width: 32px;
+      height: 32px;
+
+      path {
+        fill: var(--text-color-1);
+      }
+    }
   }
 
   .settings {
     margin-top: auto;
     border-top: solid 1px var(--smooth-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
   }
 
   a {

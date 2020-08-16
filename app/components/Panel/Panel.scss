@@ -4,6 +4,18 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
+  .ping {
+    border-bottom: 4px solid #e6b31e;
+  }
+
+  .download {
+    border-bottom: 4px solid #27ae60;
+  }
+
+  .upload {
+    border-bottom: 4px solid #2f80ed;
+  }
+
   > div {
     border-right: 1px solid var(--smooth-border);
     padding: var(--unit);
