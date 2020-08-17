@@ -20,9 +20,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'app/index.html'),
       filename: 'index.html',
-    }),
-    new webpack.HotModuleReplacementPlugin({
-      // Options...
+      inject: false,
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
@@ -82,10 +80,11 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: require.resolve('babel-loader'),
           options: {
             // ... other options
             // DO NOT apply the Babel plugin in production mode!
+            presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
               isDevelopment && require.resolve('react-refresh/babel'),
             ].filter(Boolean),
