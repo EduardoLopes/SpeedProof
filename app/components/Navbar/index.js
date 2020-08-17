@@ -18,8 +18,7 @@ export default function Navbar() {
         </svg>
       </a>
       <a className={`${styles.item} ${styles.settings}`} href="/settings">
-        {/* <i className="material-icons">settings</i> */}
-        <i className="material-icons">arrow_back_ios</i>
+        <i className="material-icons">settings</i>
         <span className="sr-only">settings</span>
       </a>
     </nav>

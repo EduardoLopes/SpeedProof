@@ -45,6 +45,7 @@
     ]
   },
   "dependencies": {
+    "argila": "../argila/argila",
     "download": "^8.0.0",
     "electron-is-dev": "^1.2.0",
     "file-loader": "^6.0.0",
@@ -53,7 +54,10 @@
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.20",
     "material-icons": "^0.3.1",
+    "matter-js": "^0.14.2",
     "moment": "^2.27.0",
+    "pixi.js": "^5.3.3",
+    "poly-decomp": "^0.3.0",
     "prop-types": "^15.7.2",
     "purecss": "^2.0.3",
     "rc-calendar": "^9.15.11",
@@ -62,6 +66,7 @@
     "react-i18next": "^11.7.0",
     "react-router-dom": "^5.2.0",
     "recharts": "^2.0.0-beta.1",
+    "sat": "^0.8.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.0",
     "sha256-file": "^1.0.0",
