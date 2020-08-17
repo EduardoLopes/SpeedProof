@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 // import _lang from 'lodash/lang';
 import Navbar from '../../components/Navbar';
 // import Tags from '../../components/Tags/Tags';
 import Panel from '../../components/Panel';
+import CanvasAnimation from '../../components/CanvasAnimation';
 // import Footer from '../../components/Footer/Footer';
 // import useConfig from '../../hooks/useConfig';
 // import usePingListener from '../../hooks/usePingListener';
@@ -115,12 +116,33 @@ export default function Home() {
   //   };
   // }, []);
 
+  const [animationState, setAnimationState] = useState('idle');
+
+  function handlePlayClick() {
+    if (animationState === 'idle') {
+      setAnimationState('download');
+    }
+
+    if (animationState === 'download') {
+      setAnimationState('upload');
+    }
+
+    if (animationState === 'upload') {
+      setAnimationState('idle');
+    }
+  }
+
   return (
     <div className="layout">
       <Navbar />
       <div className="content">
         <div className={styles.top}>
-          <div className="metter" />
+          <div className="metter">
+            <CanvasAnimation
+              state={animationState}
+              onPlayClick={handlePlayClick}
+            />
+          </div>
           <Panel />
         </div>
       </div>

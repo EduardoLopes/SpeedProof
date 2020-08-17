@@ -52,7 +52,7 @@
     "i18next-browser-languagedetector": "^6.0.0",
     "i18next-xhr-backend": "^3.2.2",
     "lodash": "^4.17.20",
-    "material-design-icons": "^3.0.1",
+    "material-icons": "^0.3.1",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "purecss": "^2.0.3",

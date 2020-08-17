@@ -1,5 +1,6 @@
 // @import 'semantic-ui-css/semantic.min.css';
-@import 'material-design-icons/iconfont/material-icons.css';
+$material-icons-font-path: '~material-icons/iconfont/';
+@import '~material-icons/iconfont/material-icons.scss';
 @import 'purecss/build/base-min.css';
 
 * {
@@ -33,6 +34,10 @@ body,
   --primary-color-2: rgba(248, 67, 111, 0.6);
   --primary-color-3: rgba(248, 67, 111, 0.38);
 
+  --secondary-color-1: rgba(250, 84, 80, 0.87);
+  --secondary-color-2: rgba(250, 84, 80, 0.6);
+  --secondary-color-3: rgba(250, 84, 80, 0.38);
+
   --unit: 16px;
 }
 
@@ -58,9 +63,9 @@ body,
   grid-auto-rows: minmax(100vh, auto);
 }
 
-.content {
-  // background: #eee;
-}
+// .content {
+// background: #eee;
+// }
 
 // screen reader
 /*
