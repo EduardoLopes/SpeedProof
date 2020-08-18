@@ -40,17 +40,26 @@ export default function CanvasAnimation(props) {
     });
 
     const quant = 60;
+    let index = 0;
+    const quant2 = quant / 6;
 
     for (let i = 0; i < quant; i++) {
 
-      const p = i / quant;
+      if(i % 6 === 0){
+        index += 1;
+      }
+
+      const p = index / 6;
+      const h = (((i % 6) + 1) / 6)
+      console.log(p);
+
       const entity = new Ball({
         pos: new Vector2(demo.canvas.width / 2, demo.canvas.height / 2),
         radius: 2,
-        angle: 3 + (20 * p),
-        rotateSpeed: 3, //3 + (3 * p),
-        orbit: 3 + (10 * p),
-        speed: 0.0001 + (0.001 * (p % 2))
+        angle: (Math.PI * 2) + ((Math.PI * 2) * h) + index, // (Math.PI * 2) * ,
+        rotateSpeed: 1, // 3 + (3 * p),
+        orbit: 3 + (3 * p),
+        speed: 0.002 + (0.002 * p)
       });
 
       demo.add(entity);
