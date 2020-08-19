@@ -51,7 +51,6 @@ export default function CanvasAnimation(props) {
 
       const p = index / 6;
       const h = (((i % 6) + 1) / 6)
-      console.log(p);
 
       const entity = new Ball({
         pos: new Vector2(demo.canvas.width / 2, demo.canvas.height / 2),
@@ -72,7 +71,7 @@ export default function CanvasAnimation(props) {
 
       demo.entities.forEach((entity) =>{
         entity.update(demo.canvas.width / 2, demo.canvas.height / 2);
-      })
+      });
 
       demo.canvas.ctx.fillStyle = 'rgba(248, 67, 111, 1)';
       demo.canvas.ctx.fillRect(
@@ -113,6 +112,14 @@ export default function CanvasAnimation(props) {
       }
     };
   }, []);
+
+  useEffect(() => {
+
+    demo.entities.forEach((entity) =>{
+      entity.setState(state);
+    });
+
+  }, [state])
 
   return (
     <div className={styles.container}>

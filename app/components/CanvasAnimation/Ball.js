@@ -15,19 +15,48 @@ export default class Ball extends Circle {
 		this.rotateSpeed = options.rotateSpeed; // random(6, 10);
 		this.orbit = options.orbit; //random(3, 6);
 		this.speed = options.speed;
+		this.state = "idle";
 
 	}
 
-	update(middleX, middleY){
-		// console.log(this.pos)
+	setState(state){
+		this.state = state;
+	}
 
+	idle(x, y){
 		this.pos.x += Math.sin(this.angle * this.rotateSpeed) * this.orbit;
 		this.pos.y += Math.cos(this.angle * this.rotateSpeed) * this.orbit;
 
-		this.pos.x += ((middleX) - this.pos.x) * 0.05;
-		this.pos.y += ((middleY) - this.pos.y) * 0.05;
+		this.pos.x += ((x) - this.pos.x) * 0.05;
+		this.pos.y += ((y) - this.pos.y) * 0.05;
 
 		this.angle += this.speed;
+	}
+
+	download(x, y){
+		this.pos.x += Math.sin(this.angle * this.rotateSpeed) * (this.orbit + 4);
+		this.pos.y += Math.cos(this.angle * this.rotateSpeed) * (this.orbit + 4);
+
+		this.pos.x += ((x) - this.pos.x) * 0.05;
+		this.pos.y += ((y) - this.pos.y) * 0.05;
+
+		this.angle += this.speed;
+	}
+
+	update(middleX, middleY){
+
+		switch (this.state) {
+			case "idle":
+				this.idle(middleX, middleY);
+				break;
+
+			case "download":
+				this.download(middleX, middleY);
+				break;
+
+			default:
+				break;
+		}
 
 	}
 }
