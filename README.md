@@ -19,7 +19,12 @@ Contribution are wellcome, but the code is not commented yet (sorry).
 
 ## [Roadmap](https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk)
 
-[This list](https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk), is where i keep track of the next features and improvments.
+[This list](https://dynalist.io/d/pF1uVcw4BiXqUkAJZubFv9Wk), is where i keep track of the next features and improvements.
+Right now, the app is going though a rewriting and it's looking like this:
+
+<div align="center">
+  <img src="https://i.imgur.com/41Piu3R.png" title="new look" />
+</div>
 
 ## License
 
