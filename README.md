@@ -26,6 +26,8 @@ Right now, the app is going though a rewriting and it's looking like this:
   <img src="https://i.imgur.com/41Piu3R.png" title="new look" />
 </div>
 
+It's basically a new look, with better usability (and better code), with a canvas animation that react to the speedtest states.
+
 ## License
 
 MIT License
