@@ -68,42 +68,41 @@ export default function CanvasAnimation(props) {
 
     demo.events.on('before-tick', () => {
 
-
       demo.entities.forEach((entity) =>{
         entity.update(demo.canvas.width / 2, demo.canvas.height / 2);
       });
 
-      demo.canvas.ctx.fillStyle = 'rgba(248, 67, 111, 1)';
-      demo.canvas.ctx.fillRect(
-        margin,
-        demo.canvas.height - margin,
-        demo.canvas.width - margin * 2,
-        2,
-      );
+      // demo.canvas.ctx.fillStyle = 'rgba(248, 67, 111, 1)';
+      // demo.canvas.ctx.fillRect(
+      //   margin,
+      //   demo.canvas.height - margin,
+      //   demo.canvas.width - margin * 2,
+      //   2,
+      // );
 
-      demo.canvas.ctx.beginPath();
-      demo.canvas.ctx.arc(
-        margin,
-        demo.canvas.height - margin,
-        5,
-        0,
-        Math.PI * 2,
-        false,
-      );
-      demo.canvas.ctx.closePath();
-      demo.canvas.ctx.fill();
+      // demo.canvas.ctx.beginPath();
+      // demo.canvas.ctx.arc(
+      //   margin,
+      //   demo.canvas.height - margin,
+      //   5,
+      //   0,
+      //   Math.PI * 2,
+      //   false,
+      // );
+      // demo.canvas.ctx.closePath();
+      // demo.canvas.ctx.fill();
 
-      demo.canvas.ctx.beginPath();
-      demo.canvas.ctx.arc(
-        demo.canvas.width - margin,
-        demo.canvas.height - margin,
-        5,
-        0,
-        Math.PI * 2,
-        false,
-      );
-      demo.canvas.ctx.closePath();
-      demo.canvas.ctx.fill();
+      // demo.canvas.ctx.beginPath();
+      // demo.canvas.ctx.arc(
+      //   demo.canvas.width - margin,
+      //   demo.canvas.height - margin,
+      //   5,
+      //   0,
+      //   Math.PI * 2,
+      //   false,
+      // );
+      // demo.canvas.ctx.closePath();
+      // demo.canvas.ctx.fill();
     });
 
     return () => {
@@ -121,13 +120,15 @@ export default function CanvasAnimation(props) {
 
   }, [state])
 
+  const isClickable = state === 'idle' || state === "result";
+
   return (
     <div className={styles.container}>
       <canvas className={styles.canvas} ref={canvasElement} />
       <div
-        className={`${styles.play} ${state === 'idle' ? styles.idle : ''}`}
+        className={`${styles.play} ${isClickable ? styles.idle : ''}`}
         onClick={() => {
-          if (state === 'idle') {
+          if (isClickable) {
             onPlayClick();
           }
         }}

@@ -30,7 +30,7 @@ export default function Home() {
   const { upload, uploadProgress, resetUpload } = useUploadListener(0);
   const { testStart, resetTestStart } = useTestStartListener();
   const { lastID } = useLastIDListener();
-  const { state, resetState } = useRequestState("idle");
+  const { state, resetRequestState, setResuestState } = useRequestState("idle");
   const { errorMessage, resetErrorMessage } = useErrorMessageListener();
   const { speedtestPath } = useConfig();
 
@@ -40,7 +40,7 @@ export default function Home() {
     resetDownload();
     resetUpload();
     resetPing();
-    resetState();
+    setResuestState("waiting");
     resetTestStart();
     resetErrorMessage();
   }
@@ -62,8 +62,6 @@ export default function Home() {
     storage.setItem('scrollY', 0);
 
     return () => {
-      electron.ipcRenderer.removeListener('result', receiveData);
-      electron.ipcRenderer.removeListener('last-request-running', receiveWait);
 
       // kill speedtest process if it is running and the page is changed
       electron.ipcRenderer.send('kill-speedtest', 'data');
@@ -76,8 +74,9 @@ export default function Home() {
 
     requestData();
 
-  }
 
+
+  }
 
   return (
     <div className="layout">
@@ -90,7 +89,11 @@ export default function Home() {
               onPlayClick={handlePlayClick}
             />
           </div>
-          <Panel />
+          <Panel
+            ping={ping}
+            download={download}
+            upload={upload}
+           />
         </div>
       </div>
     </div>

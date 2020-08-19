@@ -50,6 +50,14 @@ export default class Ball extends Circle {
 				this.idle(middleX, middleY);
 				break;
 
+			case "result":
+				this.idle(middleX, middleY);
+				break;
+
+			case "waiting":
+				this.idle(middleX, middleY);
+				break;
+
 			case "download":
 				this.download(middleX, middleY);
 				break;

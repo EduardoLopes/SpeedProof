@@ -5,8 +5,12 @@ const electron = window.require('electron');
 export default function useRequestState(initialState) {
   const [state, setState] = useState(initialState);
 
-  function resetState() {
+  function resetRequestState() {
     setState(initialState);
+  }
+
+  function setResuestState(state) {
+    setState(state);
   }
 
   function receiveState(event, data) {
@@ -18,5 +22,5 @@ export default function useRequestState(initialState) {
     return () => electron.ipcRenderer.removeListener('state', receiveState);
   }, []);
 
-  return { state, resetState };
+  return { state, resetRequestState, setResuestState};
 }

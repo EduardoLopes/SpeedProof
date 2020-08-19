@@ -30,7 +30,10 @@ import styles from './Panel.module.scss';
 //   );
 // }
 
-export default function Panel() {
+export default function Panel(props) {
+
+  const {ping, download, upload} = props;
+
   // const [pingData, setPingData] = useState([]);
   // const [downloadData, setDownloadData] = useState([]);
   // const [uploadData, setUploadData] = useState([]);
@@ -148,21 +151,21 @@ export default function Panel() {
           <h2>Ping</h2>
         </div>
         <div className={styles.number}>
-          <span>39</span>
+          <span>{Math.floor(ping.latency)}</span>
           <div className={styles['data-type']}>ms</div>
         </div>
       </div>
       <div className={styles.download}>
         <h2>Download</h2>
         <div className={styles.number}>
-          <span>9.98</span>
+          <span>{parseFloat((download / 125000).toFixed(2))}</span>
           <div className={styles['data-type']}>mbps</div>
         </div>
       </div>
       <div className={styles.upload}>
         <h2>Upload</h2>
         <div className={styles.number}>
-          <span>2.67</span>
+          <span>{parseFloat((upload / 125000).toFixed(2))}</span>
           <div className={styles['data-type']}>mbps</div>
         </div>
       </div>
