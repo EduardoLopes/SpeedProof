@@ -53,9 +53,9 @@ export default class Ball extends Circle {
 
 	waiting(x, y){
 
-		this.rgb[0] += (248 - this.rgb[0]) * 0.05;
-		this.rgb[1] += (67 - this.rgb[1]) * 0.05;
-		this.rgb[2] += (111 - this.rgb[2]) * 0.05;
+		this.rgb[0] += (198 - this.rgb[0]) * 0.05;
+		this.rgb[1] += (198 - this.rgb[1]) * 0.05;
+		this.rgb[2] += (198 - this.rgb[2]) * 0.05;
 
 		this.orbit += (this.speed * 5);
 
