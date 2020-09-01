@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Panel.module.scss';
+import Chart from './Chart';
 // import {
 //   Segment,
 //   Label,
@@ -144,18 +145,48 @@ export default function Panel(props) {
   //   setPingData(data);
   // }, [rawPingData, rawPingJitterData]);
 
+  const downloadData = [
+    {
+      "data": 106,
+    },
+    {
+      "data": 178,
+    },
+    {
+      "data": 23,
+    },
+    {
+      "data": 86,
+    },
+    {
+      "data": 149,
+    },
+    {
+      "data": 85,
+    },
+    {
+      "data": 136,
+    },
+    {
+      "data": 178,
+    },
+    {
+      "data": 38,
+    }
+  ];
+
   return (
     <div className={styles.panel}>
       <div className={styles.ping}>
-        <div>
-          <h2>Ping</h2>
-        </div>
+        <Chart data={downloadData} color="#e6b31e" dataKey="ping" />
+        <h2>Ping</h2>
         <div className={styles.number}>
           <span>{Math.floor(ping.latency)}</span>
           <div className={styles['data-type']}>ms</div>
         </div>
       </div>
       <div className={styles.download}>
+        <Chart data={downloadData} color="#27ae60" dataKey="download" />
         <h2>Download</h2>
         <div className={styles.number}>
           <span>{parseFloat((download / 125000).toFixed(2))}</span>
@@ -163,6 +194,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.upload}>
+      <Chart data={downloadData} color="#2f80ed" dataKey="upload" />
         <h2>Upload</h2>
         <div className={styles.number}>
           <span>{parseFloat((upload / 125000).toFixed(2))}</span>

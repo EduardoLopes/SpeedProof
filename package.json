@@ -45,6 +45,7 @@
     ]
   },
   "dependencies": {
+    "@nivo/stream": "^0.62.0",
     "argila": "../argila/argila",
     "download": "^8.0.0",
     "electron-is-dev": "^1.2.0",

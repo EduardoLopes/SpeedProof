@@ -16,13 +16,24 @@
     border-bottom: 4px solid #2f80ed;
   }
 
+  .chart-container{
+    height: 128px;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+  }
+
   > div {
     border-right: 1px solid var(--smooth-border);
-    padding: var(--unit);
+    // padding: var(--unit);
     display: flex;
+    min-height: 128px;
+    position: relative;
 
     .number {
       margin-left: auto;
+      margin-top: var(--unit);
+      margin-right: var(--unit);
       align-self: end;
       font-size: 3em;
       height: 100%;
@@ -30,11 +41,13 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      z-index: 1;
 
       .data-type {
         font-size: 0.5em;
         color: var(--text-color-3);
         margin-top: -12px;
+        z-index: 1;
       }
     }
   }
@@ -44,5 +57,7 @@
     font-size: 1.3em;
     margin: 0;
     padding: 0;
+    z-index: 1;
+    margin: var(--unit) 0 0 var(--unit);
   }
 }
