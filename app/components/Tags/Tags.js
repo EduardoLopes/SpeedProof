@@ -12,8 +12,6 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import styles from './Tags.module.scss';
 
-const electron = window.require('electron');
-
 const storage = window.localStorage;
 
 export default function Tags(props) {
@@ -44,7 +42,7 @@ export default function Tags(props) {
     setTagsOnDB(tags);
     setTagsInputValue(tags.toString());
 
-    electron.ipcRenderer.send('update-tags', {
+    window.api.send('update-tags', {
       id,
       tags: tags.toString(),
     });
@@ -82,11 +80,11 @@ export default function Tags(props) {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.send('request-tags-data', id);
-    electron.ipcRenderer.on('tags-data', receiveTagsData);
+    window.api.send('request-tags-data', id);
+    window.api.receive('tags-data', receiveTagsData);
 
     return () => {
-      electron.ipcRenderer.removeListener('tags-data', receiveTagsData);
+      window.api.receiveOff('tags-data', receiveTagsData);
     };
   }, []);
 

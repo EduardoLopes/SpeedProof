@@ -13,8 +13,6 @@ import _lang from 'lodash/lang';
 import Terms from './Terms';
 import useSpeedtestCheck from '../../hooks/useSpeedtestCheck';
 
-const electron = window.require('electron');
-
 export default function Check() {
   const [loading, setLoading] = useState(false);
   const [willDownload, setWillDownload] = useState(true);
@@ -27,7 +25,7 @@ export default function Check() {
   function handleYes() {
     setLoading(true);
 
-    electron.ipcRenderer.send('request-speedtest-cli-download');
+    window.api.send('request-speedtest-cli-download');
   }
 
   function handleNo() {
@@ -49,14 +47,14 @@ export default function Check() {
 
   useEffect(() => {
     if (!_lang.isNull(filePath)) {
-      electron.ipcRenderer.send('config-set-speedtest-path', filePath);
+      window.api.send('config-set-speedtest-path', filePath);
     }
   }, [filePath]);
 
   useEffect(() => {
-    electron.ipcRenderer.on('speedtest-downloaded', speedtestDownload);
+    window.api.receive('speedtest-downloaded', speedtestDownload);
     return () =>
-      electron.ipcRenderer.removeListener(
+    window.api.receiveOff(
         'speedtest-downloaded',
         speedtestDownload,
       );
@@ -131,14 +129,14 @@ export default function Check() {
         {t('SpeedProof app only works with')}
         <a
           href="#"
-          onClick={() => electron.shell.openItem('https://www.speedtest.net/')}
+          onClick={() => window.api.openItem('https://www.speedtest.net/')}
         >
           {' Speedtest® '}
         </a>
         {t('cli tool developed by')}
         <a
           href="#"
-          onClick={() => electron.shell.openItem('https://www.ookla.com/')}
+          onClick={() => window.api.openItem('https://www.ookla.com/')}
         >
           {' Ookla®'}
         </a>

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function useRequestState(initialState) {
   const [state, setState] = useState(initialState);
 
@@ -18,8 +16,8 @@ export default function useRequestState(initialState) {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('state', receiveState);
-    return () => electron.ipcRenderer.removeListener('state', receiveState);
+    window.api.receive('state', receiveState);
+    return () => window.api.receiveOff('state', receiveState);
   }, []);
 
   return { state, resetRequestState, setResuestState};

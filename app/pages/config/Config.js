@@ -17,7 +17,6 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer/Footer';
 import useConfig from '../../hooks/useConfig';
 
-const electron = window.require('electron');
 const storage = window.localStorage;
 
 const languages = [
@@ -74,13 +73,13 @@ export default function Config() {
       !_lang.isNull(config.speedtestPath) &&
       speedtestPath !== config.speedtestPath
     ) {
-      electron.ipcRenderer.send('config-set-speedtest-path', speedtestPath);
+      window.api.send('config-set-speedtest-path', speedtestPath);
     }
   }, [speedtestPath]);
 
   useEffect(() => {
     if (!_lang.isNull(config.language) && language !== config.language) {
-      electron.ipcRenderer.send('config-set-language', language);
+      window.api.send('config-set-language', language);
     }
   }, [language]);
 
@@ -89,7 +88,7 @@ export default function Config() {
       !_lang.isNull(config.testChartLimit) &&
       testChartLimit !== config.testChartLimit
     ) {
-      electron.ipcRenderer.send('config-set-tests-chart-limit', testChartLimit);
+      window.api.send('config-set-tests-chart-limit', testChartLimit);
     }
   }, [testChartLimit]);
 

@@ -16,7 +16,6 @@ import useLastIDListener from '../../hooks/useLastIDListener';
 import useErrorMessageListener from '../../hooks/useErrorMessageListener';
 import styles from './Home.module.scss';
 
-const electron = window.require('electron');
 const storage = window.localStorage;
 
 export default function Home() {
@@ -35,7 +34,7 @@ export default function Home() {
   const { speedtestPath } = useConfig();
 
   function requestData() {
-    electron.ipcRenderer.send('request-data', speedtestPath);
+    window.api.send('request-data', speedtestPath);
 
     resetDownload();
     resetUpload();
@@ -47,7 +46,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!_lang.isNull(errorMessage)) {
-      electron.ipcRenderer.send('kill-speedtest', 'data');
+      window.api.send('kill-speedtest', 'data');
     }
   }, [errorMessage]);
 
@@ -64,7 +63,7 @@ export default function Home() {
     return () => {
 
       // kill speedtest process if it is running and the page is changed
-      electron.ipcRenderer.send('kill-speedtest', 'data');
+      window.api.send('kill-speedtest', 'data');
     };
   }, []);
 

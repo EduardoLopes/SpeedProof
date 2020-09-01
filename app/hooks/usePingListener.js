@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function usePing(initialState) {
   const [ping, setPing] = useState(initialState);
   const [pingProgress, setPingProgress] = useState(0);
@@ -20,9 +18,9 @@ export default function usePing(initialState) {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('ping', receivePing);
+    window.api.receive('ping', receivePing);
     return () => {
-      electron.ipcRenderer.removeListener('ping', receivePing);
+      window.api.receiveOff('ping', receivePing);
     };
   }, []);
 

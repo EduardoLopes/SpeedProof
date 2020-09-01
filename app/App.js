@@ -10,15 +10,13 @@ import About from './pages/about/About';
 import useSpeedtestCheck from './hooks/useSpeedtestCheck';
 import useConfig from './hooks/useConfig';
 
-const electron = window.require('electron');
-
 function App() {
   const speedtestIsValid = useSpeedtestCheck();
   const { speedtestLicense } = useConfig();
 
   useEffect(() => {
     window.addEventListener('beforeunload', () => {
-      electron.ipcRenderer.send('kill-speedtest', 'data');
+      window.api.send('kill-speedtest', 'data');
     });
   }, []);
 

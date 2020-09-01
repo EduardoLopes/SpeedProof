@@ -17,7 +17,6 @@ import Panel from '../../components/Panel';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer/Footer';
 
-const electron = window.require('electron');
 const storage = window.localStorage;
 
 export default function Info() {
@@ -31,8 +30,8 @@ export default function Info() {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.send('request-test-data', id);
-    electron.ipcRenderer.on('test-data', receiveData);
+    window.api.send('request-test-data', id);
+    window.api.receive('test-data', receiveData);
 
     window.scroll({
       top: 0,
@@ -40,7 +39,7 @@ export default function Info() {
     });
 
     return () => {
-      electron.ipcRenderer.removeListener('test-data', receiveData);
+      window.api.receiveOff('test-data', receiveData);
 
       window.scroll({
         top: parseInt(storage.getItem('scrollY'), 10),

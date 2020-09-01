@@ -10,8 +10,6 @@ import Charts from './Charts';
 import TableDataPlacehold from './TableDataPlacehold';
 import Footer from '../../components/Footer/Footer';
 
-const electron = window.require('electron');
-
 const storage = window.localStorage;
 
 export default function Tests() {
@@ -102,12 +100,12 @@ export default function Tests() {
   }, [testsDataChart, sorted]);
 
   useEffect(() => {
-    electron.ipcRenderer.on('tests-data', receiveData);
-    electron.ipcRenderer.on('tests-search-data', receiveSearchData);
-    electron.ipcRenderer.on('tests-count', receiveTestsCount);
-    electron.ipcRenderer.on('tests-search-data-count', receiveTestsCount);
-    electron.ipcRenderer.on('tests-data-chart', receiveChartData);
-    electron.ipcRenderer.on('tests-search-data-chart', receiveChartData);
+    window.api.receive('tests-data', receiveData);
+    window.api.receive('tests-search-data', receiveSearchData);
+    window.api.receive('tests-count', receiveTestsCount);
+    window.api.receive('tests-search-data-count', receiveTestsCount);
+    window.api.receive('tests-data-chart', receiveChartData);
+    window.api.receive('tests-search-data-chart', receiveChartData);
 
     const scrollTimeout = setTimeout(() => {
       window.scroll({
@@ -119,18 +117,18 @@ export default function Tests() {
     }, 120);
 
     return () => {
-      electron.ipcRenderer.removeListener('tests-data', receiveData);
-      electron.ipcRenderer.removeListener(
+      window.api.receiveOff('tests-data', receiveData);
+      window.api.receiveOff(
         'tests-search-data',
         receiveSearchData,
       );
-      electron.ipcRenderer.removeListener('tests-count', receiveTestsCount);
-      electron.ipcRenderer.removeListener(
+      window.api.receiveOff('tests-count', receiveTestsCount);
+      window.api.receiveOff(
         'tests-search-data-count',
         receiveTestsCount,
       );
-      electron.ipcRenderer.removeListener('tests-data-chart', receiveChartData);
-      electron.ipcRenderer.removeListener(
+      window.api.receiveOff('tests-data-chart', receiveChartData);
+      window.api.receiveOff(
         'tests-search-data-chart',
         receiveChartData,
       );
@@ -146,7 +144,7 @@ export default function Tests() {
 
   useEffect(() => {
     if (mode === 'normal') {
-      electron.ipcRenderer.send('request-tests-data', {
+      window.api.send('request-tests-data', {
         offset,
         limit,
         sortDirection: sorted.direction,

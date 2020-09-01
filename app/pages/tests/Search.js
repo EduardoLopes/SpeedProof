@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import Calendar from './Calendar';
 import NoResultSearch from './NoResultSearch';
 
-const electron = window.require('electron');
 const storage = window.localStorage;
 
 export default function Search(props) {
@@ -78,7 +77,7 @@ export default function Search(props) {
       sortColumn: 'id',
     });
 
-    electron.ipcRenderer.send('request-tests-data', {
+    window.api.send('request-tests-data', {
       offset: 0,
       limit,
       sortDirection: 'DESC',
@@ -106,7 +105,7 @@ export default function Search(props) {
     const search = getSearchConfig();
 
     if (!_lang.isEqual(search, lastSearch)) {
-      electron.ipcRenderer.send('request-test-search-data', search);
+      window.api.send('request-test-search-data', search);
       setLastSearch(search);
     }
   }
@@ -164,7 +163,7 @@ export default function Search(props) {
 
   useEffect(() => {
     if (mode === 'search') {
-      electron.ipcRenderer.send('request-test-search-data', lastSearch);
+      window.api.send('request-test-search-data', lastSearch);
     }
   }, []);
 

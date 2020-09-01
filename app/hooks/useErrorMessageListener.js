@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function useTestStart() {
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -14,8 +12,8 @@ export default function useTestStart() {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('speedtest-error', receiver);
-    return () => electron.ipcRenderer.removeListener('speedtest-error', receiver);
+    window.api.receive('speedtest-error', receiver);
+    return () => window.api.receiveOff('speedtest-error', receiver);
   }, []);
 
   return { errorMessage, resetErrorMessage };

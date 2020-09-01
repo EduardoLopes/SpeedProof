@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer/Footer';
 
-const electron = window.require('electron');
-
 export default function About() {
   const { t } = useTranslation();
 
@@ -21,7 +19,7 @@ export default function About() {
             {t('about p2 1')}
             <a
               href="#"
-              onClick={() => electron.shell.openItem('https://www.ookla.com/')}
+              onClick={() => window.api.openItem('https://www.ookla.com/')}
             >
               {' Ookla® '}
             </a>
@@ -29,7 +27,7 @@ export default function About() {
             <a
               href="#"
               onClick={() =>
-                electron.shell.openItem('https://www.speedtest.net/')
+                window.api.openItem('https://www.speedtest.net/')
               }
             >
               {' Speedtest® '}

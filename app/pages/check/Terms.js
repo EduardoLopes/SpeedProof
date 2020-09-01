@@ -3,14 +3,12 @@ import React, { useState } from 'react';
 import { Segment, Button, Header } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
 
-const electron = window.require('electron');
-
 export default function Terms() {
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   function handleYesClick() {
-    electron.ipcRenderer.send('config-set-accept-speedtest-license', 1);
+    window.api.send('config-set-accept-speedtest-license', 1);
     setLoading(true);
   }
 
@@ -24,7 +22,7 @@ export default function Terms() {
         <a
           href="#"
           onClick={() =>
-            electron.shell.openItem('https://www.speedtest.net/about/eula')
+            window.api.openItem('https://www.speedtest.net/about/eula')
           }
         >
           {' https://www.speedtest.net/about/eula '}
@@ -33,7 +31,7 @@ export default function Terms() {
         <a
           href="#"
           onClick={() =>
-            electron.shell.openItem('https://www.speedtest.net/about/terms')
+            window.api.openItem('https://www.speedtest.net/about/terms')
           }
         >
           {' https://www.speedtest.net/about/terms '}
@@ -42,7 +40,7 @@ export default function Terms() {
         <a
           href="#"
           onClick={() =>
-            electron.shell.openItem('https://www.speedtest.net/about/privacy')
+            window.api.openItem('https://www.speedtest.net/about/privacy')
           }
         >
           {' https://www.speedtest.net/about/privacy '}

@@ -1,7 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect, useCallback } from 'react';
-
-const electron = window.require('electron');
+import { useState, useEffect, useCallback } from 'react';
 
 export default function useConfig() {
   const [loading, setLoading] = useState(true);
@@ -25,13 +23,13 @@ export default function useConfig() {
   }, []);
 
   useEffect(() => {
-    electron.ipcRenderer.send('request-config-data');
-    electron.ipcRenderer.on('config-data', receiveConfig);
-    electron.ipcRenderer.on('requesting-config-data', requestingConfig);
+    window.api.send('request-config-data');
+    window.api.receive('config-data', receiveConfig);
+    window.api.receive('requesting-config-data', requestingConfig);
 
     return () => {
-      electron.ipcRenderer.removeListener('config-data', receiveConfig);
-      electron.ipcRenderer.removeListener('requesting-config-data', requestingConfig);
+      window.api.receiveOff('config-data', receiveConfig);
+      window.api.receiveOff('requesting-config-data', requestingConfig);
     };
   }, []);
 

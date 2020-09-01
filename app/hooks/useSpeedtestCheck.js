@@ -3,8 +3,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import _lang from 'lodash/lang';
 import useConfig from './useConfig';
 
-const electron = window.require('electron');
-
 export default function useSpeedtestCheck() {
   const [isValid, setIsValid] = useState(false);
   const { speedtestPath } = useConfig();
@@ -15,15 +13,15 @@ export default function useSpeedtestCheck() {
 
   useEffect(() => {
     if (!_lang.isNull(speedtestPath)) {
-      electron.ipcRenderer.send('check-speedtest', speedtestPath);
+      window.api.send('check-speedtest', speedtestPath);
     } else {
       setIsValid(false);
     }
   }, [speedtestPath]);
 
   useEffect(() => {
-    electron.ipcRenderer.on('speedtest-check-result', speedtestCheck);
-    return () => electron.ipcRenderer.removeListener('speedtest-check-result', speedtestCheck);
+    window.api.receive('speedtest-check-result', speedtestCheck);
+    return () => window.api.receiveOff('speedtest-check-result', speedtestCheck);
   }, []);
 
   return isValid;

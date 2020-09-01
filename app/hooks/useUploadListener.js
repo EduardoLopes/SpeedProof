@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function useUploadData(initialState) {
   const [upload, setUpload] = useState(initialState);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -17,8 +15,8 @@ export default function useUploadData(initialState) {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('upload', receiveUpload);
-    return () => electron.ipcRenderer.removeListener('upload', receiveUpload);
+    window.api.receive('upload', receiveUpload);
+    return () => window.api.receiveOff('upload', receiveUpload);
   }, []);
 
   return { upload, uploadProgress, resetUpload };

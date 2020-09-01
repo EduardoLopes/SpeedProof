@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function useTestStart() {
   const [testStart, setTestStart] = useState(null);
 
@@ -14,8 +12,8 @@ export default function useTestStart() {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('testStart', receiver);
-    return () => electron.ipcRenderer.removeListener('testStart', receiver);
+    window.api.receive('testStart', receiver);
+    return () => window.api.receiveOff('testStart', receiver);
   }, []);
 
   return { testStart, resetTestStart };

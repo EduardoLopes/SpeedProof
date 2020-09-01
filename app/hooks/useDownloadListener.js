@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-const electron = window.require('electron');
-
 export default function useDownloadData(initialState) {
   const [download, setDownload] = useState(initialState);
   const [downloadProgress, setDownloadProgress] = useState(0);
@@ -17,8 +15,8 @@ export default function useDownloadData(initialState) {
   }
 
   useEffect(() => {
-    electron.ipcRenderer.on('download', receiveDownload);
-    return () => electron.ipcRenderer.removeListener('download', receiveDownload);
+    window.api.receive('download', receiveDownload);
+    return () => window.api.receiveOff('download', receiveDownload);
   }, []);
 
   return { download, downloadProgress, resetDownload };
