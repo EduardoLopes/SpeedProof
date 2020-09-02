@@ -91,7 +91,9 @@ export default function Home() {
           <Panel
             ping={ping}
             download={download}
+            downloadProgress={downloadProgress}
             upload={upload}
+            uploadProgress={uploadProgress}
            />
         </div>
       </div>

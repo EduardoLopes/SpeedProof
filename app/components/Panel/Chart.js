@@ -9,17 +9,22 @@ export default function Chart(props) {
   const {
     data,
     color,
-    dataKey
+    dataKey,
+    progress
   } = props;
 
   return (
-    <div className={styles["chart-container"]}>
+    <div className={styles["chart-container"]} style={{width: `${progress}%`}}>
       <ResponsiveStream
           data={data}
           keys={[ 'data' ]}
-          margin={{ bottom: 4, top: 4 }}
+          margin={{ bottom: 0, top: 100 }}
           // borderWidth={1}
           // borderColor={color}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={null}
+          axisLeft={null}
           enableGridX={false}
           enableGridY={false}
           isInteractive={false}
@@ -29,15 +34,15 @@ export default function Chart(props) {
           defs={[
             linearGradientDef(`${dataKey}-gradient`, [
                 { offset: 0, color: color, opacity: 0.6 },
-                { offset: 100, color: color, opacity: 0.2 },
+                { offset: 100, color: color, opacity: 1 },
             ]),
           ]}
           fill={[
             { match: { id: 'data' }, id: `${dataKey}-gradient` },
           ]}
           animate={true}
-          motionStiffness={90}
-          motionDamping={15}
+          motionStiffness={300}
+          motionDamping={21}
       />
     </div>
   );

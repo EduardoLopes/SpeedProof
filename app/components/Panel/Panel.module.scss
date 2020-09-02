@@ -5,15 +5,15 @@
   grid-template-columns: repeat(3, 1fr);
 
   .ping {
-    border-bottom: 4px solid #e6b31e;
+    border-top: 4px solid #e6b31e;
   }
 
   .download {
-    border-bottom: 4px solid #27ae60;
+    border-top: 4px solid #27ae60;
   }
 
   .upload {
-    border-bottom: 4px solid #2f80ed;
+    border-top: 4px solid #2f80ed;
   }
 
   .chart-container{

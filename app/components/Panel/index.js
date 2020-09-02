@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from './Panel.module.scss';
 import Chart from './Chart';
 // import {
@@ -33,11 +33,11 @@ import Chart from './Chart';
 
 export default function Panel(props) {
 
-  const {ping, download, upload} = props;
+  const {ping, download, downloadProgress, upload, uploadProgress} = props;
 
   // const [pingData, setPingData] = useState([]);
-  // const [downloadData, setDownloadData] = useState([]);
-  // const [uploadData, setUploadData] = useState([]);
+  const [downloadData, setDownloadData] = useState([]);
+  const [uploadData, setUploadData] = useState([]);
   // const [maxDownload, setMaxDownload] = useState(0);
   // const { t } = useTranslation();
 
@@ -54,35 +54,31 @@ export default function Panel(props) {
   //   rawUploadData,
   // } = props;
 
-  // useEffect(() => {
-  //   if (downloadSpeed !== 0) {
-  //     setDownloadData([
-  //       ...downloadData,
-  //       { download: parseFloat((downloadSpeed / 125000).toFixed(2)) },
-  //     ]);
+  useEffect(() => {
+    if (download !== 0) {
+      setDownloadData([
+        ...downloadData,
+        { "data": Math.floor((download / 125000)) },
+      ]);
+    }
 
-  //     setMaxDownload(
-  //       Math.max(maxDownload, parseFloat((downloadSpeed / 125000).toFixed(2))),
-  //     );
-  //   }
+    if (download === 0) {
+      setDownloadData([]);
+    }
+  }, [download]);
 
-  //   if (downloadSpeed === 0) {
-  //     setDownloadData([]);
-  //   }
-  // }, [downloadSpeed]);
+  useEffect(() => {
+    if (upload !== 0) {
+      setUploadData([
+        ...uploadData,
+        { "data": Math.floor((upload / 125000)) },
+      ]);
+    }
 
-  // useEffect(() => {
-  //   if (uploadSpeed !== 0) {
-  //     setUploadData([
-  //       ...uploadData,
-  //       { upload: parseFloat((uploadSpeed / 125000).toFixed(2)) },
-  //     ]);
-  //   }
-
-  //   if (uploadSpeed === 0) {
-  //     setUploadData([]);
-  //   }
-  // }, [uploadSpeed]);
+    if (upload === 0) {
+      setUploadData([]);
+    }
+  }, [upload]);
 
   // useEffect(() => {
   //   if (!rawPingData) {
@@ -145,35 +141,37 @@ export default function Panel(props) {
   //   setPingData(data);
   // }, [rawPingData, rawPingJitterData]);
 
-  const downloadData = [
-    {
-      "data": 106,
-    },
-    {
-      "data": 178,
-    },
-    {
-      "data": 23,
-    },
-    {
-      "data": 86,
-    },
-    {
-      "data": 149,
-    },
-    {
-      "data": 85,
-    },
-    {
-      "data": 136,
-    },
-    {
-      "data": 178,
-    },
-    {
-      "data": 38,
-    }
-  ];
+  // const downloadData = [
+  //   {
+  //     "data": 106,
+  //   },
+  //   {
+  //     "data": 178,
+  //   },
+  //   {
+  //     "data": 23,
+  //   },
+  //   {
+  //     "data": 86,
+  //   },
+  //   {
+  //     "data": 149,
+  //   },
+  //   {
+  //     "data": 85,
+  //   },
+  //   {
+  //     "data": 136,
+  //   },
+  //   {
+  //     "data": 178,
+  //   },
+  //   {
+  //     "data": 38,
+  //   }
+  // ];
+
+  // console.log(downloadData);
 
   return (
     <div className={styles.panel}>
@@ -186,7 +184,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.download}>
-        <Chart data={downloadData} color="#27ae60" dataKey="download" />
+        <Chart data={downloadData} progress={downloadProgress} color="#27ae60" dataKey="download" />
         <h2>Download</h2>
         <div className={styles.number}>
           <span>{parseFloat((download / 125000).toFixed(2))}</span>
@@ -194,7 +192,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.upload}>
-      <Chart data={downloadData} color="#2f80ed" dataKey="upload" />
+      <Chart data={uploadData} progress={uploadProgress} color="#2f80ed" dataKey="upload" />
         <h2>Upload</h2>
         <div className={styles.number}>
           <span>{parseFloat((upload / 125000).toFixed(2))}</span>
