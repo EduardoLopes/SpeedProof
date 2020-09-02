@@ -33,32 +33,19 @@ import Chart from './Chart';
 
 export default function Panel(props) {
 
-  const {ping, download, downloadProgress, upload, uploadProgress} = props;
+  const {ping, pingProgress, download, downloadProgress, upload, uploadProgress} = props;
 
-  // const [pingData, setPingData] = useState([]);
+  const [pingData, setPingData] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
   const [uploadData, setUploadData] = useState([]);
-  // const [maxDownload, setMaxDownload] = useState(0);
-  // const { t } = useTranslation();
 
-  // const {
-  //   pingProgress,
-  //   downloadProgress,
-  //   uploadProgress,
-  //   downloadSpeed,
-  //   uploadSpeed,
-  //   ping,
-  //   rawPingData,
-  //   rawPingJitterData,
-  //   rawDownloadData,
-  //   rawUploadData,
-  // } = props;
+  // const { t } = useTranslation();
 
   useEffect(() => {
     if (download !== 0) {
       setDownloadData([
         ...downloadData,
-        { "data": Math.floor((download / 125000)) },
+        { "data": (download / 125000) },
       ]);
     }
 
@@ -71,7 +58,7 @@ export default function Panel(props) {
     if (upload !== 0) {
       setUploadData([
         ...uploadData,
-        { "data": Math.floor((upload / 125000)) },
+        { "data": (upload / 125000) },
       ]);
     }
 
@@ -80,103 +67,24 @@ export default function Panel(props) {
     }
   }, [upload]);
 
-  // useEffect(() => {
-  //   if (!rawPingData) {
-  //     if (ping.latency !== 0 || ping.jitter !== 0) {
-  //       setPingData([
-  //         ...pingData,
-  //         { latency: ping.latency, jitter: ping.jitter },
-  //       ]);
-  //     }
+  useEffect(() => {
+    if (ping.latency !== 0) {
+      setPingData([
+        ...pingData,
+        { "data2": ping.jitter, "data": ping.latency },
+      ]);
 
-  //     if (ping.latency === 0 && ping.jitter === 0) {
-  //       setPingData([]);
-  //     }
-  //   }
-  // }, [ping]);
+    }
 
-  // useEffect(() => {
-  //   const data = [];
-  //   let max = 0;
-
-  //   if (rawDownloadData) {
-  //     rawDownloadData.split(',').forEach((bandwidth) => {
-  //       data.push({ download: parseFloat((bandwidth / 125000).toFixed(2)) });
-  //       max = Math.max(max, parseFloat((bandwidth / 125000).toFixed(2)));
-  //     });
-
-  //     setDownloadData(data);
-  //     setMaxDownload(max);
-  //   }
-  // }, [rawDownloadData]);
-
-  // useEffect(() => {
-  //   const data = [];
-
-  //   if (rawUploadData) {
-  //     rawUploadData.split(',').forEach((bandwidth) => {
-  //       data.push({ upload: parseFloat((bandwidth / 125000).toFixed(2)) });
-  //     });
-
-  //     setUploadData(data);
-  //   }
-  // }, [rawUploadData]);
-
-  // useEffect(() => {
-  //   const latencyData = [];
-  //   const data = [];
-
-  //   if (rawPingData) {
-  //     rawPingData.split(',').forEach((latency) => {
-  //       latencyData.push(latency);
-  //     });
-  //   }
-
-  //   if (rawPingJitterData) {
-  //     rawPingJitterData.split(',').forEach((jitter, index) => {
-  //       data.push({ latency: latencyData[index], jitter });
-  //     });
-  //   }
-
-  //   setPingData(data);
-  // }, [rawPingData, rawPingJitterData]);
-
-  // const downloadData = [
-  //   {
-  //     "data": 106,
-  //   },
-  //   {
-  //     "data": 178,
-  //   },
-  //   {
-  //     "data": 23,
-  //   },
-  //   {
-  //     "data": 86,
-  //   },
-  //   {
-  //     "data": 149,
-  //   },
-  //   {
-  //     "data": 85,
-  //   },
-  //   {
-  //     "data": 136,
-  //   },
-  //   {
-  //     "data": 178,
-  //   },
-  //   {
-  //     "data": 38,
-  //   }
-  // ];
-
-  // console.log(downloadData);
+    if (ping.latency === 0) {
+      setPingData([]);
+    }
+  }, [ping]);
 
   return (
     <div className={styles.panel}>
       <div className={styles.ping}>
-        <Chart data={downloadData} color="#e6b31e" dataKey="ping" />
+        <Chart data={pingData} progress={pingProgress} color="#e6b31e" dataKey="ping" />
         <h2>Ping</h2>
         <div className={styles.number}>
           <span>{Math.floor(ping.latency)}</span>

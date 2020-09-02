@@ -29,6 +29,7 @@
     display: flex;
     min-height: 128px;
     position: relative;
+    overflow: hidden;
 
     .number {
       margin-left: auto;

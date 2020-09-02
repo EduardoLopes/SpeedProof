@@ -13,12 +13,18 @@ export default function Chart(props) {
     progress
   } = props;
 
+  let keys = ['data'];
+
+  if(data.length > 0){
+    keys = Object.keys(data[0]);
+  }
+
   return (
     <div className={styles["chart-container"]} style={{width: `${progress}%`}}>
       <ResponsiveStream
           data={data}
-          keys={[ 'data' ]}
-          margin={{ bottom: 0, top: 100 }}
+          keys={keys}
+          margin={{ bottom: 4, top: 100 }}
           // borderWidth={1}
           // borderColor={color}
           axisTop={null}
@@ -36,9 +42,14 @@ export default function Chart(props) {
                 { offset: 0, color: color, opacity: 0.6 },
                 { offset: 100, color: color, opacity: 1 },
             ]),
+            linearGradientDef(`${dataKey}-gradient2`, [
+              { offset: 0, color: color, opacity: 0.2 },
+              { offset: 100, color: color, opacity: 0.8 },
+            ]),
           ]}
           fill={[
             { match: { id: 'data' }, id: `${dataKey}-gradient` },
+            { match: { id: 'data2' }, id: `${dataKey}-gradient2` },
           ]}
           animate={true}
           motionStiffness={300}
@@ -48,17 +59,9 @@ export default function Chart(props) {
   );
 }
 
-// Chart.propTypes = {
-//   data: PropTypes.arrayOf(PropTypes.object).isRequired,
-//   dataKey: PropTypes.string.isRequired,
-//   color: PropTypes.string.isRequired,
-//   color2: PropTypes.string,
-//   domain: PropTypes.arrayOf(PropTypes.number),
-//   dataKey2: PropTypes.string,
-// };
-
-// Chart.defaultProps = {
-//   color2: '#000000',
-//   domain: [0, 10],
-//   dataKey2: '',
-// };
+Chart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dataKey: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  progress: PropTypes.number.isRequired
+};
