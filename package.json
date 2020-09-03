@@ -45,9 +45,13 @@
     ]
   },
   "dependencies": {
-    "@nivo/line": "^0.62.0",
-    "@nivo/stream": "^0.62.0",
+    "@vx/curve": "^0.0.198",
+    "@vx/gradient": "^0.0.198",
+    "@vx/mock-data": "^0.0.198",
+    "@vx/scale": "^0.0.198",
+    "@vx/shape": "^0.0.198",
     "argila": "../argila/argila",
+    "d3-time-format": "^3.0.0",
     "download": "^8.0.0",
     "electron-is-dev": "^1.2.0",
     "file-loader": "^6.0.0",

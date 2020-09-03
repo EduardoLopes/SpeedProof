@@ -48,7 +48,7 @@ export default function Panel(props) {
 
     if (download !== 0) {
       setDownloadData(prev => {
-        prev[prev.length] = { "data": (download / 125000) }
+        prev[prev.length] = { "date": Date.now(), "data": (download / 125000) }
         return prev;
       });
     }
@@ -61,7 +61,7 @@ export default function Panel(props) {
 
     if (upload !== 0) {
       setUploadData(prev => {
-        prev[prev.length] = { "data": (upload / 125000) };
+        prev[prev.length] = { "date": Date.now(), "data": (upload / 125000) };
         return prev;
       });
     }
@@ -74,7 +74,7 @@ export default function Panel(props) {
 
     if (ping.latency !== 0) {
       setPingData(prev => {
-        prev[prev.length] = { "data2": ping.jitter, "data": ping.latency };
+        prev[prev.length] = { "date": Date.now(), "data2": ping.jitter, "data": ping.latency };
         return prev;
       });
 

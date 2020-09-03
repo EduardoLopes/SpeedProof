@@ -21,6 +21,13 @@
     width: 100%;
     position: absolute;
     z-index: 0;
+    display: flex;
+    transition: transform 250ms cubic-bezier(0.66, 0.02, 0.22, 1);
+    transition-property: width;
+
+    svg{
+      margin-top: auto;
+    }
   }
 
   > div {
