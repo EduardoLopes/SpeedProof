@@ -48,6 +48,7 @@
     "@vx/curve": "^0.0.198",
     "@vx/gradient": "^0.0.198",
     "@vx/mock-data": "^0.0.198",
+    "@vx/responsive": "^0.0.198",
     "@vx/scale": "^0.0.198",
     "@vx/shape": "^0.0.198",
     "argila": "../argila/argila",
