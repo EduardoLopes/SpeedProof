@@ -24,13 +24,15 @@ export default function Chart(props) {
       <ResponsiveStream
           data={data}
           keys={keys}
-          margin={{ bottom: 4, top: 100 }}
+          margin={{ bottom: 2, top: 100 }}
           // borderWidth={1}
           // borderColor={color}
           axisTop={null}
-          axisRight={null}
+          yScale={{ type: 'point', min: 'auto', max: 1163, stacked: true, reverse: false }}
           axisBottom={null}
           axisLeft={null}
+          axisRight={null}
+          tooltipFormat={(value) => value.value.toFixed(2)}
           enableGridX={false}
           enableGridY={false}
           isInteractive={false}

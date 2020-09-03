@@ -5,15 +5,15 @@
   grid-template-columns: repeat(3, 1fr);
 
   .ping {
-    border-top: 4px solid #e6b31e;
+    border-top: 2px solid #e6b31e;
   }
 
   .download {
-    border-top: 4px solid #27ae60;
+    border-top: 2px solid #27ae60;
   }
 
   .upload {
-    border-top: 4px solid #2f80ed;
+    border-top: 2px solid #2f80ed;
   }
 
   .chart-container{
@@ -60,5 +60,6 @@
     padding: 0;
     z-index: 1;
     margin: var(--unit) 0 0 var(--unit);
+    max-height: 50px;
   }
 }

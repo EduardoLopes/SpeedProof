@@ -45,6 +45,7 @@
     ]
   },
   "dependencies": {
+    "@nivo/line": "^0.62.0",
     "@nivo/stream": "^0.62.0",
     "argila": "../argila/argila",
     "download": "^8.0.0",
