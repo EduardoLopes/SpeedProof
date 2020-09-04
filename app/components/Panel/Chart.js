@@ -1,19 +1,14 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { AreaStack } from '@vx/shape';
-import { SeriesPoint } from '@vx/shape/lib/types';
 import { LinearGradient } from '@vx/gradient';
-import browserUsage, { BrowserUsage } from '@vx/mock-data/lib/mocks/browserUsage';
 import { scaleTime, scaleLinear } from '@vx/scale';
 import { timeParse } from 'd3-time-format';
 import { ScaleSVG } from '@vx/responsive';
 
 import styles from './Panel.module.scss';
 
-// const data = browserUsage;
-// console.log(browserUsage);
-// const keys = Object.keys(data[0]).filter(k => k !== 'date');
 const parseDate = timeParse('%Y %b %d');
 export const background = '#f38181';
 
@@ -22,10 +17,6 @@ const getY0 = (d) => d[0];
 const getY1 = (d) => d[1];
 
 export default function Chart(props) {
-
-  const [height, setHeight] = useState(28);
-  const containerEl = useRef(null);
-
   const {
     color,
     data,
@@ -33,20 +24,17 @@ export default function Chart(props) {
     progress
   } = props;
 
-  const margin = { top: 0, right: 0, bottom: 0, left: 0 };
-  const events = false;
-
-  // bounds
-  const yMax = height - margin.top - margin.bottom;
+  const width = 500;
+  const height = 28;
 
   // scales
   const xScale = scaleTime({
-    range: [0, 500],
+    range: [0, width],
     domain: [Math.min(...data.map((d)=> d.date)), Math.max(...data.map((d)=> d.date))],
   });
 
   const yScale = scaleLinear({
-    range: [yMax, 0],
+    range: [height, 0],
     domain: [0, Math.max(...data.map((d)=> d.data))],
   });
 
@@ -57,13 +45,13 @@ export default function Chart(props) {
   }
 
   return (
-    <div className={styles["chart-container"]} ref={containerEl} style={{width: `${progress}%`}}>
-    {data && (<ScaleSVG width={500} height={height}>
-        <LinearGradient id={`gradient-${dataKey}`} from={color} to={color} toOpacity={0.5} />
+    <div className={styles["chart-container"]} style={{width: `${progress}%`}}>
+    {data && (<ScaleSVG width={width} height={height} preserveAspectRatio="none">
+        <LinearGradient id={`gradient-${dataKey}`} from={color} to={color} fromOpacity={0.5} />
 
         <AreaStack
-          top={margin.top}
-          left={margin.left}
+          top={0}
+          left={0}
           keys={keys}
           data={data}
           x={d => {
@@ -78,11 +66,8 @@ export default function Chart(props) {
               <path
                 key={`stack-${stack.key}`}
                 d={path(stack) || ''}
-                stroke="transparent"
+                stroke={color}
                 fill={`url(#gradient-${dataKey})`}
-                onClick={() => {
-                  if (events) alert(`${stack.key}`);
-                }}
               />
             )})
           }

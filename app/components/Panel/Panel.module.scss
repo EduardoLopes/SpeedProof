@@ -25,8 +25,13 @@
     transition: transform 250ms cubic-bezier(0.66, 0.02, 0.22, 1);
     transition-property: width;
 
-    > div{
+    div{
       margin-top: auto;
+      height: 28px;
+    }
+
+    svg{
+      height: 28px;
     }
   }
 
