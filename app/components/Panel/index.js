@@ -38,12 +38,15 @@ export default function Panel(props) {
   const [pingData, setPingData] = useState([]);
   const [downloadData, setDownloadData] = useState([]);
   const [uploadData, setUploadData] = useState([]);
+  const [maxDownload, setMaxDownload] = useState(0);
+  const [maxUpload, setMaxUpload] = useState(0);
 
   // const { t } = useTranslation();
 
   useEffect(() => {
     if (download === 0) {
       setDownloadData([]);
+      setMaxDownload(0);
     }
 
     if (download !== 0) {
@@ -51,12 +54,15 @@ export default function Panel(props) {
         prev[prev.length] = { "date": Date.now(), "data": (download / 125000) }
         return prev;
       });
+
+      setMaxDownload(Math.max(download / 125000, maxDownload / 125000));
     }
   }, [download]);
 
   useEffect(() => {
     if (upload === 0) {
       setUploadData([]);
+      setMaxUpload(0);
     }
 
     if (upload !== 0) {
@@ -64,6 +70,8 @@ export default function Panel(props) {
         prev[prev.length] = { "date": Date.now(), "data": (upload / 125000) };
         return prev;
       });
+
+      setMaxUpload(Math.max(upload / 125000, maxUpload / 125000));
     }
   }, [upload]);
 
@@ -92,7 +100,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.download}>
-        <Chart data={downloadData} progress={uploadProgress === 0 ? downloadProgress : 100} color="#27ae60" dataKey="download" />
+        <Chart data={downloadData} progress={uploadProgress === 0 ? downloadProgress : 100} color="#27ae60" dataKey="download" maxYDomain={maxUpload} />
         <h2>Download</h2>
         <div className={styles.number}>
           <span>{parseFloat((download / 125000).toFixed(2))}</span>
@@ -100,7 +108,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.upload}>
-      <Chart data={uploadData} progress={uploadProgress} color="#2f80ed" dataKey="upload" />
+      <Chart data={uploadData} progress={uploadProgress} color="#2f80ed" dataKey="upload" maxYDomain={maxDownload} />
         <h2>Upload</h2>
         <div className={styles.number}>
           <span>{parseFloat((upload / 125000).toFixed(2))}</span>

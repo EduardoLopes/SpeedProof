@@ -21,6 +21,7 @@ export default function Chart(props) {
     color,
     data,
     dataKey,
+    maxYDomain,
     progress
   } = props;
 
@@ -35,7 +36,7 @@ export default function Chart(props) {
 
   const yScale = scaleLinear({
     range: [height, 0],
-    domain: [0, Math.max(...data.map((d)=> d.data))],
+    domain: [0, Math.max(maxYDomain, Math.max(...data.map((d)=> d.data)))],
   });
 
   let keys = [];
@@ -81,5 +82,10 @@ Chart.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
   color: PropTypes.string.isRequired,
   dataKey: PropTypes.string.isRequired,
+  maxYDomain: PropTypes.number,
   progress: PropTypes.number.isRequired
 };
+
+Chart.defaultProps = {
+  maxYDomain: 0
+}
