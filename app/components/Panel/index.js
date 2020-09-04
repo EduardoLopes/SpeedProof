@@ -92,7 +92,7 @@ export default function Panel(props) {
         </div>
       </div>
       <div className={styles.download}>
-        <Chart data={downloadData} progress={downloadProgress} color="#27ae60" dataKey="download" />
+        <Chart data={downloadData} progress={uploadProgress === 0 ? downloadProgress : 100} color="#27ae60" dataKey="download" />
         <h2>Download</h2>
         <div className={styles.number}>
           <span>{parseFloat((download / 125000).toFixed(2))}</span>
