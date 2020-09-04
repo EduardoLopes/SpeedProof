@@ -49,7 +49,7 @@
       margin-right: var(--unit);
       align-self: end;
       font-size: 3em;
-      text-align: center;
+      text-align: right;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -58,7 +58,7 @@
       .data-type {
         font-size: 0.5em;
         color: var(--text-color-3);
-        margin-top: -12px;
+        margin-top: -6px;
         z-index: 1;
       }
     }
