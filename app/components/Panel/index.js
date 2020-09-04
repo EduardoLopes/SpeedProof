@@ -74,7 +74,7 @@ export default function Panel(props) {
 
     if (ping.latency !== 0) {
       setPingData(prev => {
-        prev[prev.length] = { "date": Date.now(), "data2": ping.jitter, "data": ping.latency };
+        prev[prev.length] = { "date": Date.now(), "data": ping.latency, "data2": ping.jitter };
         return prev;
       });
 
