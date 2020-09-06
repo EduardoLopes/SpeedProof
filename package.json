@@ -52,6 +52,7 @@
     "@vx/scale": "^0.0.198",
     "@vx/shape": "^0.0.198",
     "argila": "../argila/argila",
+    "better-sqlite3": "^7.1.0",
     "d3-time-format": "^3.0.0",
     "download": "^8.0.0",
     "electron-is-dev": "^1.2.0",
