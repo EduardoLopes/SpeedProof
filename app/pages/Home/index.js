@@ -14,6 +14,7 @@ import useUploadListener from '../../hooks/useUploadListener';
 import useTestStartListener from '../../hooks/useTestStartListener';
 import useLastIDListener from '../../hooks/useLastIDListener';
 import useErrorMessageListener from '../../hooks/useErrorMessageListener';
+import useResultListener from '../../hooks/useResultListener';
 import styles from './Home.module.scss';
 
 const storage = window.localStorage;
@@ -30,8 +31,12 @@ export default function Home() {
   const { testStart, resetTestStart } = useTestStartListener();
   const { lastID } = useLastIDListener();
   const { state, resetRequestState, setResuestState } = useRequestState("idle");
+  const { result, resetResult } = useResultListener(null);
+
   const { errorMessage, resetErrorMessage } = useErrorMessageListener();
   const { speedtestPath } = useConfig();
+
+  console.log(result);
 
   function requestData() {
     window.api.send('request-data', speedtestPath);
@@ -95,7 +100,9 @@ export default function Home() {
             downloadProgress={downloadProgress}
             upload={upload}
             uploadProgress={uploadProgress}
-           />
+            // server={server}
+            // client={client}
+          />
         </div>
       </div>
     </div>

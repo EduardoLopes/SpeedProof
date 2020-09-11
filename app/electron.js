@@ -65,6 +65,7 @@ ipcMain.on('request-data', (event, speedtestPath) => {
 
         if (countResults[json.type] > 0) {
           mainWindow.webContents.send(`${json.type}`, json);
+          console.log(json.type);
           mainWindow.webContents.send("state", json.type);
 
           if (json.type === 'ping') {

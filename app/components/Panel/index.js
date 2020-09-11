@@ -115,6 +115,9 @@ export default function Panel(props) {
           <div className={styles['data-type']}>mbps</div>
         </div>
       </div>
+      <div className={styles.servers}>
+
+      </div>
     </div>
   );
 }
