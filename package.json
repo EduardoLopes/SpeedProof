@@ -91,7 +91,7 @@
     "css-loader": "^4.2.2",
     "cssnano": "^4.1.10",
     "del-cli": "^3.0.1",
-    "electron": "^10.1.1",
+    "electron": "^15.5.5",
     "electron-builder": "^22.8.0",
     "html-webpack-plugin": "^4.4.1",
     "husky": "^4.2.5",
